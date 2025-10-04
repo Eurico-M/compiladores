@@ -8,7 +8,7 @@
 */
 typedef enum
   { ID, NUM, REAL, SEMICOLON, COMMA,
-    LPAREN, RPAREN, LBRACE, RBRACE, 
+    LPAREN, RPAREN, LBRACE, RBRACE,
     IF, INT, FLOAT, WHILE, FOR, END_OF_FILE
   } TokenType;
 
@@ -34,7 +34,7 @@ TokenType getToken(TokenValue *token_value) {
 
   case '{':
     return LBRACE;
-  
+
   case '}':
     return RBRACE;
 
@@ -57,7 +57,7 @@ TokenType getToken(TokenValue *token_value) {
     if(isdigit(c)) {
       int val = 0;       // acumulador do valor decimal
       while(isdigit(c)) {
-	      val = 10*val + c - '0';
+	      val = 10 * val + c - '0';
 	      c = getchar();
       }
       if (c == '.') {
@@ -65,12 +65,12 @@ TokenType getToken(TokenValue *token_value) {
         c = getchar();
         float k = 0.1;
         while(isdigit(c)) {
-	        dec = dec + k*(c - '0');
+	        dec = dec + k * (c - '0');
           k = k/10;
 	        c = getchar();
         }
         ungetc(c,stdin);
-        token_value->fval = (float)val + dec;
+        token_value->fval = val + dec;
         return REAL;
       }
       ungetc(c,stdin);   // devolver o último carater
@@ -81,12 +81,12 @@ TokenType getToken(TokenValue *token_value) {
     else if(isalpha(c)) {
       int k = 0;
       while(isalpha(c) || isdigit(c) || c == '_') {
-	      token_value->text[k++] = c;  // acumular texto 
+	      token_value->text[k++] = c;  // acumular texto
 	      c = getchar();
       }
       ungetc(c,stdin);
       token_value->text[k++] = '\0';  // terminar a string
-      if (strcmp(token_value->text, "if") == 0) 
+      if (strcmp(token_value->text, "if") == 0)
 	      return IF; // palavra reservada
       else if (strcmp(token_value->text, "while") == 0)
         return WHILE;
@@ -96,33 +96,33 @@ TokenType getToken(TokenValue *token_value) {
         return INT;
       else if (strcmp(token_value->text, "float") == 0)
         return FLOAT;
-      else 
+      else
 	      return ID; // caso contrário: identificador
     }
     else {
       fprintf(stderr,"unexpected character: %c\n", c);
       exit(-1);
-    }  
+    }
   }
 }
 
 
-/* função auxiliar para imprimir um token 
+/* função auxiliar para imprimir um token
  */
 void printToken(TokenType token_type, TokenValue *token_value) {
     switch(token_type) {
     case NUM:
       printf("NUM(%d) ", token_value->ival);
       break;
-      
+
     case REAL:
       printf("REAL(%f) ", token_value->fval);
       break;
-      
+
     case ID:
       printf ("ID(%s) ", token_value->text);
       break;
-      
+
     case IF:
       printf("IF ");
       break;
@@ -146,11 +146,11 @@ void printToken(TokenType token_type, TokenValue *token_value) {
     case SEMICOLON:
       printf("SEMICOLON ");
       break;
-      
+
     case COMMA:
       printf("COMMA ");
       break;
-     
+
     case LPAREN:
       printf ("LPAREN ");
       break;
@@ -170,7 +170,7 @@ void printToken(TokenType token_type, TokenValue *token_value) {
     case END_OF_FILE:
       printf ("END_OF_FILE ");
       break;
-    }  
+    }
 }
 
 
@@ -179,7 +179,7 @@ void printToken(TokenType token_type, TokenValue *token_value) {
 int main(void) {
   TokenValue tok_val;
   TokenType next =  getToken(&tok_val);  // obter o primeiro token
-  
+
   while(next != END_OF_FILE) { // enquanto não chegou ao fim
     printToken(next, &tok_val);  // imprimir e obter o próximo
     next = getToken(&tok_val);
