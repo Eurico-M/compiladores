@@ -3,6 +3,7 @@
 %{
 #include "tokens.h"
 #include <math.h>
+#include <stdio.h>
 
 int yynum;
 float yyreal;
@@ -27,7 +28,7 @@ while                           { return WHILE; }
 for                             { return FOR; }
 int                             { return INT; }
 float                           { return FLOAT; }
-if                              { return IF; printf("oupa"); }
+if                              { printf("oupa\n"); return IF; }
 {alpha}({alpha}|{digit})*       { return ID; }
 {digit}+                        { yynum = atoi(yytext); return NUM; }
 {digit}+"."{digit}+             { yyreal = atof(yytext); return REAL; }
