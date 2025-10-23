@@ -736,37 +736,37 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 9 "lexer.l"
-{ yylval = atof(yytext); printf("NUM = %f\n", yylval); return NUM; }
+{ yylval = atof(yytext); return NUM; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 10 "lexer.l"
-{ printf("PLUS\n"); return PLUS; }
+{ return PLUS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 11 "lexer.l"
-{ printf("MINUS\n"); return MINUS; }
+{ return MINUS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 12 "lexer.l"
-{ printf("MULT\n"); return MULT; }
+{ return MULT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 13 "lexer.l"
-{ printf("DIV\n"); return DIV; }
+{ return DIV; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 14 "lexer.l"
-{ printf("LPAREN\n"); return LPAREN; }
+{ return LPAREN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 15 "lexer.l"
-{ printf("RPAREN\n"); return RPAREN; }
+{ return RPAREN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 #line 16 "lexer.l"

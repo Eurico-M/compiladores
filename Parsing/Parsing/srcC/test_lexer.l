@@ -1,5 +1,6 @@
 %{
 #include "parser.tab.h"
+float yylval;
 %}
 %option noyywrap
 
@@ -16,3 +17,14 @@
 <<EOF>>                         { return T_EOF; }
 
 %%
+
+int main(void) {
+    int token;
+    while ((token = yylex()) != T_EOF) {
+        switch (token) {
+            case PLUS: printf("PLUS "); break;
+            case NUM: printf("NUM(%f) ", yylval); break;
+            case MINUS: printf("MINUS "); break;
+        }
+    }
+}

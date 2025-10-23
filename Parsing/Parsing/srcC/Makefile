@@ -1,6 +1,6 @@
 
 
-calc : parser.y lexer.x main.c
+calc : parser.y lexer.l main.c
 	bison -d parser.y
-	flex lexer.x
+	flex lexer.l
 	gcc -o calc parser.tab.c lex.yy.c main.c -lm
