@@ -59,9 +59,12 @@ extern int yydebug;
     MINUS = 260,                   /* MINUS  */
     MULT = 261,                    /* MULT  */
     DIV = 262,                     /* DIV  */
-    LPAREN = 263,                  /* LPAREN  */
-    RPAREN = 264,                  /* RPAREN  */
-    T_EOF = 265                    /* T_EOF  */
+    SQRT = 263,                    /* SQRT  */
+    EXP = 264,                     /* EXP  */
+    LOG = 265,                     /* LOG  */
+    LPAREN = 266,                  /* LPAREN  */
+    RPAREN = 267,                  /* RPAREN  */
+    NEWLINE = 268                  /* NEWLINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

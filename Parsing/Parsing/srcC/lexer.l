@@ -5,7 +5,8 @@
 
 %%
 
-[ \t\n\r]+
+[ \t]+
+\n                              { return NEWLINE; }
 [0-9]+"."[0-9]+|[0-9]+          { yylval = atof(yytext); return NUM; }
 \+                              { return PLUS; }
 \-                              { return MINUS; }
@@ -13,6 +14,10 @@
 \/                              { return DIV; }
 \(                              { return LPAREN; }
 \)                              { return RPAREN; }
-<<EOF>>                         { return T_EOF; }
+sqrt                            { return SQRT; }
+\^                              { return EXP; }
+log                             { return LOG; }
+quit                            { return EOF; }
+<<EOF>>                         { return EOF; }
 
 %%
