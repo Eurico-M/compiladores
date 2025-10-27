@@ -1,0 +1,17 @@
+int main(void) {
+    int token;
+    while ((token = yylex()) != EOF) {
+        switch (token) {
+            case REAL: printf("REAL(%.10g) ", yyreal); break;
+            case INT: printf("INT(%.10g) ", yyint); break;
+            case PLUS: printf("PLUS "); break;
+            case MINUS: printf("MINUS "); break;
+            case MULT: printf("MULT "); break;
+            case DIV: printf("DIV "); break;
+            case LPAREN: printf("LPAREN "); break;
+            case RPAREN: printf("RPAREN "); break;
+            case ID: printf("ID(%s) ", yytext); break;
+            case IF: printf("IF "); break;
+        }
+    }
+}
