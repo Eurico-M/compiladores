@@ -15,7 +15,7 @@ int eval(Expr* expr) {
   else if (expr->kind == E_OPERATION) {
     int vLeft = eval(expr->attr.op.left);
     int vRight = eval(expr->attr.op.right);
-    switch (expr->attr.op.operator) {
+    switch (expr->attr.op.bin_operator) {
       case PLUS:
         result = vLeft + vRight;
         break;
@@ -47,8 +47,10 @@ int main(int argc, char** argv) {
     }
   } //  yyin = stdin
   if (yyparse() == 0) {
-      printf("Result = %d\n", eval(root));
-      printExpr(root);
+      //printf("Result = %d\n", eval(root));
+      printExprParenthesis(root);
+      printf("\n");
+      printExpr(root, 0);
       printf("\n");
   }
   return 0;

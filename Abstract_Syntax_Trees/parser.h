@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 24 "parser.bison"
+#line 27 "parser.bison"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,7 +74,13 @@ extern Expr* root;
     MINUS = 260,                   /* MINUS  */
     TIMES = 261,                   /* TIMES  */
     DIV = 262,                     /* DIV  */
-    MOD = 263                      /* MOD  */
+    MOD = 263,                     /* MOD  */
+    EQUAL = 264,                   /* EQUAL  */
+    DIFF = 265,                    /* DIFF  */
+    LT = 266,                      /* LT  */
+    GT = 267,                      /* GT  */
+    LEQ = 268,                     /* LEQ  */
+    GEQ = 269                      /* GEQ  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -83,12 +89,13 @@ extern Expr* root;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "parser.bison"
+#line 14 "parser.bison"
 
   int intValue;
   Expr* exprValue;
+  BoolExpr* boolExprValue;
 
-#line 92 "parser.h"
+#line 99 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
