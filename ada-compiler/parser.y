@@ -2,50 +2,67 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include <math.h>
+  #include "ast.h"
+
   int yylex (void);
   void yyerror (char const *);
 %}
 
-%define api.value.type {float}
+// Root-level grammar symbol
+%start program;
 
-%token NEWLINE
+%union {
+    int int_val;
+    float float_val;
+    char* string_val;
+    bool bool_val;
+}
+
+%token <int_val> INT
+%token <float_val> FLOAT
+%token <string_val> ID
+%token <bool_val> BOOL
+
 %token ASSIGN
-%token ID REAL INT
 %token SEMI COLON
 %token IF THEN ELSE
-%token WHILE
+%token WHILE LOOP
 
 %left PLUS MINUS
-%left MULT DIV
+%left MULT DIV MOD
 %token LPAREN RPAREN
-%token EQUALS LESS GREATER
+%left EQUAL DIFF LESS GREATER LESS_EQUAL GREATER_EQUAL
 
 
 %%
 
-input:
-  %empty
-| input line
-;
+program:
+    stm_list {
+        $$ = $1; }
+    ;
 
-line:
-  NEWLINE
-| expr NEWLINE              { printf ("\t\t%.10g\n", $1); }
-| error NEWLINE             { yyerrok; }
-;
+stm_list:
+    stm {
+        $$ = $1; }
+    |
+    stm_list SEMI stm {
+        $$ = stm_compound($1, $3); }
+    ;
 
-expr:
-  INT                            { $$ = $1; }
-| expr PLUS expr                 { $$ = $1 + $3; }
-| expr MINUS expr                { $$ = $1 - $3; }
-| expr MULT expr                 { $$ = $1 * $3; }
-| expr DIV expr                  { $$ = $1 / $3; }
-| MINUS expr                     { $$ = -$2; }
-;
+stm:
+    ID ASSIGN expr {
+        $$ = stm_assign($1, $3); }
+    |
+    IF expr THEN stm_list ELSE stm_list END IF {
+        $$ = stm_if($2, $4, $6); }
+    |
+    WHILE expr LOOP stm_list END LOOP {
+        $$ = stm_while($2, $4); }
+    ;
 
 
 %%
 
-void yyerror(char const *msg) {
-   printf("parse error: %s\n", msg);
+void yyerror(const char* err) {
+   printf("Line %d: %s - '%s'\n", yyline, err, yytext);
 }

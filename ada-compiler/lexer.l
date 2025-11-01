@@ -1,5 +1,8 @@
 %{
-#include "parser.tab.h"
+#include <stdlib.h>
+#include "parser.h"
+
+int yyline = 1;
 %}
 
 %option noyywrap
@@ -9,28 +12,42 @@ digit                           [0-9]
 
 %%
 
-[ \t]+                                                      /* skip whitespace */
-\n                                                          { return NEWLINE; }
+[ \t\n\r]+                                                  /* skip whitespace */
+#.*\n                                                       { yyline++; }
+\n                                                          { yyline++; }
 \-\-.*$                                                     /* line comment */
-\:\=                                                        { return ASSIGN; }
-\+                                                          { return PLUS; }
-\-                                                          { return MINUS; }
-\*                                                          { return MULT; }
-\/                                                          { return DIV; }
-\(                                                          { return LPAREN; }
-\)                                                          { return RPAREN; }
-\=                                                          { return EQUALS; }
-\<                                                          { return LESS; }
-\>                                                          { return GREATER; }
-\;                                                          { return SEMI; }
-\:                                                          { return COLON; }
+
+":="                                                        { return ASSIGN; }
+"+"                                                         { return PLUS; }
+"-"                                                         { return MINUS; }
+"*"                                                         { return MULT; }
+"/"                                                         { return DIV; }
+"%"                                                         { return MOD; }
+"("                                                         { return LPAREN; }
+")"                                                         { return RPAREN; }
+
+"="                                                         { return EQUAL; }
+"!="                                                        { return DIFF; }
+"<"                                                         { return LESS; }
+">"                                                         { return GREATER; }
+"<="                                                        { return LESS_EQUAL; }
+">="                                                        { return GREATER_EQUAL; }
+
+";"                                                         { return SEMI; }
+":"                                                         { return COLON; }
 if                                                          { return IF; }
 then                                                        { return THEN; }
 else                                                        { return ELSE; }
 while                                                       { return WHILE; }
-{alpha}[{alpha}{digit}_]*                                   { return ID; }
-{digit}+\.{digit}+|{digit}+(\.{digit}+)?[eE][+-]{digit}+    { yylval = atof(yytext); return REAL; }
-{digit}+                                                    { yylval = atof(yytext); return INT; }
-<<EOF>>                                                     { return EOF; }
+loop                                                        { return LOOP; }
+end                                                         { return END; }
+
+True                                                        { yylval.bool_val = 1; return BOOL; }
+False                                                       { yylval.bool_val = 0; return BOOL; }
+{alpha}[{alpha}{digit}_]*                                   { yylval.string_val = strdup(yytext); return ID; }
+{digit}+\.{digit}+|{digit}+(\.{digit}+)?[eE][+-]{digit}+    { yylval.float_val = atof(yytext); return FLOAT; }
+{digit}+                                                    { yylval.int_val = atoi(yytext); return INT; }
+
+.                                                           { yyerror("unexpected character"); }
 
 %%
