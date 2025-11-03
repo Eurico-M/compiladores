@@ -52,6 +52,7 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
+extern Stm* program;
 }
 
 
