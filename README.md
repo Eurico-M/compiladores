@@ -1,17 +1,19 @@
+
 ### Para o Trabalho Prático, usar a pasta ada-compiler.
 
 Em ada-compiler, os ficheiros a editar são:
 
-- scanner.flex *tokens de leitura*
-- parser.bison *regras da gramática*
-- ast.h *definição das estruturas da Árvore Sintática Abstracta (AST)*
-- ast.c *implementação das funções definidas em ast.h*
-- printAbsTree.c *funções para imprimir a AST*
-- printAbsTree.h *declaração das funções (para outros ficheiros poderem importar as funções de impressão)
+- scanner.flex - *tokens de leitura*
 
-- interpreter.c *lê o input e imprime a AST*
+- parser.bison - *regras da gramática*
+- ast.h - *definição das estruturas da Árvore Sintática Abstracta (AST)*
+- ast.c - *implementação das funções definidas em ast.h*
+- printAbsTree.c - *funções para imprimir a AST*
+- printAbsTree.h - *declaração das funções (para outros ficheiros poderem importar as funções de impressão)*
 
-- Makefile *macro para compilar os ficheiros todos na ordem correcta e ligar o que for preciso*
+- interpreter.c - *lê o input e imprime a AST*
+
+- Makefile - *macro para compilar os ficheiros todos na ordem correcta e ligar o que for preciso*
 
 ### Para correr isto, é só:
 
@@ -32,6 +34,7 @@ Expressões:
 - aritméticas*
 
 ### O que falta:
+
 - boolean expressions
 - o procedure só aceita coisas do tipo
 ```
