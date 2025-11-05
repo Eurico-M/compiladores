@@ -18,10 +18,19 @@ int yyline = 1;
    yylval.intValue = atoi(yytext);
    return INT;
 }
+
 "+" { return PLUS; }
 "-" { return MINUS; }
 "*" { return TIMES; }
 "/" { return DIV; }
 "%" { return MOD; }
+
+"==" { return EQUAL; }
+"!=" { return DIFF; }
+"<" { return LT; }
+">" { return GT; }
+"<=" { return LEQ; }
+">=" { return GEQ; }
+
 .  { yyerror("unexpected character"); }
 %%

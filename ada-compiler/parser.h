@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_PARSER_H_INCLUDED
+# define YY_YY_PARSER_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -44,6 +44,21 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 56 "parser.bison"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "ast.h"
+
+extern int yylex();
+extern int yyline;
+extern char* yytext;
+extern FILE* yyin;
+extern void yyerror(const char* msg);
+extern Stm* program;
+
+#line 62 "parser.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -54,33 +69,60 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NEWLINE = 258,                 /* NEWLINE  */
-    ASSIGN = 259,                  /* ASSIGN  */
-    ID = 260,                      /* ID  */
-    REAL = 261,                    /* REAL  */
-    INT = 262,                     /* INT  */
-    SEMI = 263,                    /* SEMI  */
-    COLON = 264,                   /* COLON  */
-    IF = 265,                      /* IF  */
-    THEN = 266,                    /* THEN  */
-    ELSE = 267,                    /* ELSE  */
-    WHILE = 268,                   /* WHILE  */
-    PLUS = 269,                    /* PLUS  */
-    MINUS = 270,                   /* MINUS  */
-    MULT = 271,                    /* MULT  */
-    DIV = 272,                     /* DIV  */
-    LPAREN = 273,                  /* LPAREN  */
-    RPAREN = 274,                  /* RPAREN  */
-    EQUALS = 275,                  /* EQUALS  */
-    LESS = 276,                    /* LESS  */
-    GREATER = 277                  /* GREATER  */
+    TOKEN_INT = 258,               /* TOKEN_INT  */
+    TOKEN_ID = 259,                /* TOKEN_ID  */
+    TOKEN_PLUS = 260,              /* TOKEN_PLUS  */
+    TOKEN_MINUS = 261,             /* TOKEN_MINUS  */
+    TOKEN_MULT = 262,              /* TOKEN_MULT  */
+    TOKEN_DIV = 263,               /* TOKEN_DIV  */
+    TOKEN_MOD = 264,               /* TOKEN_MOD  */
+    TOKEN_EQUAL = 265,             /* TOKEN_EQUAL  */
+    TOKEN_DIFF = 266,              /* TOKEN_DIFF  */
+    TOKEN_LESS = 267,              /* TOKEN_LESS  */
+    TOKEN_GREATER = 268,           /* TOKEN_GREATER  */
+    TOKEN_LESS_EQUAL = 269,        /* TOKEN_LESS_EQUAL  */
+    TOKEN_GREATER_EQUAL = 270,     /* TOKEN_GREATER_EQUAL  */
+    TOKEN_EOF = 271,               /* TOKEN_EOF  */
+    TOKEN_ASSIGN = 272,            /* TOKEN_ASSIGN  */
+    TOKEN_SEMI = 273,              /* TOKEN_SEMI  */
+    TOKEN_COLON = 274,             /* TOKEN_COLON  */
+    TOKEN_IF = 275,                /* TOKEN_IF  */
+    TOKEN_THEN = 276,              /* TOKEN_THEN  */
+    TOKEN_ELSE = 277,              /* TOKEN_ELSE  */
+    TOKEN_WHILE = 278,             /* TOKEN_WHILE  */
+    TOKEN_LOOP = 279,              /* TOKEN_LOOP  */
+    TOKEN_WITH = 280,              /* TOKEN_WITH  */
+    TOKEN_USE = 281,               /* TOKEN_USE  */
+    TOKEN_PROC = 282,              /* TOKEN_PROC  */
+    TOKEN_IS = 283,                /* TOKEN_IS  */
+    TOKEN_BEGIN = 284,             /* TOKEN_BEGIN  */
+    TOKEN_END = 285,               /* TOKEN_END  */
+    TOKEN_LPAREN = 286,            /* TOKEN_LPAREN  */
+    TOKEN_RPAREN = 287             /* TOKEN_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef float YYSTYPE;
+union YYSTYPE
+{
+#line 14 "parser.bison"
+
+    int int_val;
+    //float float_val;
+    char* string_val;
+    //bool bool_val;
+    Stm* stm_val;
+    Stm* stm_vals;
+    Expr* expr_val;
+    ArExpr* arExpr_val;
+    //BoolExpr* boolExpr_val;
+
+#line 123 "parser.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -92,4 +134,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSER_H_INCLUDED  */
