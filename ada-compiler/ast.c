@@ -32,6 +32,7 @@ Stm* stm_while(Expr* condition, Stm* body) {
     node->kind = STM_WHILE;
     node->attr.while_stm.condition = condition;
     node->attr.while_stm.body = body;
+    return node;
 }
 
 Expr* expr_arithmetic(ArExpr* ar_expr) {
@@ -113,4 +114,5 @@ BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
     node->attr.bool_op.op = op;
     node->attr.bool_op.left = left;
     node->attr.bool_op.right = right;
+    return node;
 }
