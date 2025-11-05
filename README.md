@@ -46,5 +46,5 @@ end Main;
 ou seja, sem as declarações entre `is` e `begin`.
 - a function é um comando (não devolve nada) porque o prof disse que era esse tipo que queríamos para a função Put, mas a função Get tem de devolver, por isso tem de ser uma expressão(?)
 - as expressões aritméticas só aceitam INT
-- estou a tratar as declarações iniciais (`with` e `use`) como se fossem comandos (statements) normais.
+- estou a tratar as declarações iniciais (`with` e `use`) como se fossem comandos (statements) adicionais. se houver tempo (e não vai haver) podiamos pensar em criar um tipo de statement chamado header ou assim, e meter lá os withs e uses todos
 
