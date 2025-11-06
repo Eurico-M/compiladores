@@ -2,5 +2,10 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 procedure Test is
 begin
-    Put (41 + 1);
+    x := 41.0 + 1;
+    if x > 0 then
+        Put (x);
+    else
+        Put (y);
+    end if;
 end Test;

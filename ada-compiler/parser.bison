@@ -13,18 +13,18 @@
 
 %union {
     int int_val;
-    //float float_val;
+    float float_val;
     char* string_val;
     //bool bool_val;
     Stm* stm_val;
     Stm* stm_vals;
     Expr* expr_val;
     ArExpr* arExpr_val;
-    //BoolExpr* boolExpr_val;
+    BoolExpr* boolExpr_val;
 }
 
 %type <int_val> TOKEN_INT
-//%type <float_val> TOKEN_FLOAT
+%type <float_val> TOKEN_FLOAT
 %type <string_val> TOKEN_ID
 //%type <bool_val> TOKEN_BOOL
 
@@ -33,9 +33,9 @@
 %type <stm_vals> stm_list
 %type <expr_val> expr
 %type <arExpr_val> arExpr
-//%type <boolExpr_val> boolExpr
+%type <boolExpr_val> boolExpr
 
-%token TOKEN_INT
+%token TOKEN_INT TOKEN_FLOAT
 %token TOKEN_ID
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
@@ -51,7 +51,7 @@
 %left TOKEN_PLUS TOKEN_MINUS
 %left TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_LPAREN TOKEN_RPAREN
-//%left TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%left TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
 
 %code requires {
 #include <stdio.h>
@@ -112,6 +112,9 @@ stm:
 expr:
     arExpr {
         $$ = expr_arithmetic($1); }
+    |
+    boolExpr {
+        $$ = expr_boolean($1); }
     ;
 
 
@@ -121,6 +124,9 @@ arExpr:
     |
     TOKEN_INT {
         $$ = ar_expr_integer($1); }
+    |
+    TOKEN_FLOAT {
+        $$ = ar_expr_float($1); }
     |
     arExpr TOKEN_PLUS arExpr {
         $$ = ar_expr_operation(PLUS, $1, $3); }
@@ -138,6 +144,26 @@ arExpr:
         $$ = ar_expr_operation(MOD, $1, $3); }
     ;
 
+
+boolExpr:
+    arExpr TOKEN_EQUAL arExpr {
+        $$ = bool_expr_operation(EQUAL, $1, $3); }
+    |
+    arExpr TOKEN_DIFF arExpr {
+        $$ = bool_expr_operation(DIFF, $1, $3); }
+    |
+    arExpr TOKEN_LESS arExpr {
+        $$ = bool_expr_operation(LESS, $1, $3); }
+    |
+    arExpr TOKEN_GREATER arExpr {
+        $$ = bool_expr_operation(GREATER, $1, $3); }
+    |
+    arExpr TOKEN_LESS_EQUAL arExpr {
+        $$ = bool_expr_operation(LESS_EQUAL, $1, $3); }
+    |
+    arExpr TOKEN_GREATER_EQUAL arExpr {
+        $$ = bool_expr_operation(GREATER_EQUAL, $1, $3); }
+    ;
 
 
 %%
