@@ -36,7 +36,7 @@ Expressões:
 
 ### O que falta:
 
-- o assignment está muito básico `x:=41+1`, mas o Ada precisa de tipos lá pelo meio, ou antes, não sei
+- o assignment está muito básico `x := 41 + 1`, mas o Ada precisa de tipos lá pelo meio, ou antes, não sei
 - o procedure só aceita coisas do tipo
 ```
 procedure Main is
