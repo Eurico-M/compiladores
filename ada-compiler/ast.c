@@ -75,12 +75,12 @@ Expr* expr_arithmetic(ArExpr* ar_expr) {
     return node;
 }
 
-// Expr* expr_boolean(BoolExpr* bool_expr) {
-//     Expr* node = (Expr*) malloc(sizeof(Expr));
-//     node->kind = EXPR_BOOLEAN;
-//     node->attr.bool_expr = bool_expr;
-//     return node;
-// }
+Expr* expr_boolean(BoolExpr* bool_expr) {
+    Expr* node = (Expr*) malloc(sizeof(Expr));
+    node->kind = EXPR_BOOLEAN;
+    node->attr.bool_expr = bool_expr;
+    return node;
+}
 
 // Expr* expr_function(char* func_name, Expr* arg) {
 //     Expr* node = (Expr*) malloc(sizeof(Expr));
@@ -111,16 +111,16 @@ ArExpr* ar_expr_integer(int int_val) {
     return node;
 }
 
-// ArExpr* ar_expr_float(float float_val) {
-//     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-//     node->tag = FLOAT;
-//     node->attr.float_val = float_val;
-//     return node;
-// }
+ArExpr* ar_expr_float(float float_val) {
+    ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
+    node->tag = FLOAT;
+    node->attr.float_val = float_val;
+    return node;
+}
 
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = OP;
+    node->tag = AR_OP;
     node->attr.ar_op.op = op;
     node->attr.ar_op.left = left;
     node->attr.ar_op.right = right;
@@ -141,11 +141,11 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
 //     return node;
 // }
 
-// BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
-//     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-//     node->tag = OP;
-//     node->attr.bool_op.op = op;
-//     node->attr.bool_op.left = left;
-//     node->attr.bool_op.right = right;
-//     return node;
-// }
+BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
+    BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
+    node->tag = BOOL_OP;
+    node->attr.bool_op.op = op;
+    node->attr.bool_op.left = left;
+    node->attr.bool_op.right = right;
+    return node;
+}

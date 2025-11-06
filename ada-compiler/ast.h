@@ -7,13 +7,13 @@ struct _ArExpr {
     enum {
         ID,
         INT,
-        // FLOAT,
-        OP
+        FLOAT,
+        AR_OP
     } tag;
     union {
         char* id;
         int int_val;
-        // float float_val;
+        float float_val;
         struct {
             ar_op op;
             struct _ArExpr* left;
@@ -23,23 +23,23 @@ struct _ArExpr {
 };
 
 
-// typedef enum {EQUAL, DIFF, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL} bool_op;
-// struct _BoolExpr {
-//     enum {
-//         ID,
-//         BOOL,
-//         OP
-//     } tag;
-//     union {
-//         char* id;
-//         bool boolean;
-//         struct {
-//             bool_op op;
-//             struct _ArExpr* left;
-//             struct _ArExpr* right;
-//         } bool_op;
-//     } attr;
-// };
+typedef enum {EQUAL, DIFF, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL} bool_op;
+struct _BoolExpr {
+    enum {
+        // ID,
+        // BOOL,
+        BOOL_OP
+    } tag;
+    union {
+        // char* id;
+        // bool boolean;
+        struct {
+            bool_op op;
+            struct _ArExpr* left;
+            struct _ArExpr* right;
+        } bool_op;
+    } attr;
+};
 
 struct _Stm {
     enum {
@@ -87,13 +87,13 @@ struct _Stm {
 struct _Expr {
     enum {
         EXPR_ARITHMETIC,
-        // EXPR_BOOLEAN,
+        EXPR_BOOLEAN,
         // EXPR_FUNCTION,
         // EXPR_VARIABLE
     } kind;
     union {
         struct _ArExpr* ar_expr;
-        // _BoolExpr* bool_expr;
+        struct _BoolExpr* bool_expr;
         // struct {
         //     char* func_name;
         //     _Expr* arg;
@@ -106,7 +106,7 @@ struct _Expr {
 typedef struct _Stm Stm;
 typedef struct _Expr Expr;
 typedef struct _ArExpr ArExpr;
-// typedef struct _BoolExpr BoolExpr;
+typedef struct _BoolExpr BoolExpr;
 
 
 Stm* stm_compound(Stm* first, Stm* second);
@@ -119,18 +119,18 @@ Stm* stm_procedure(char* proc_id, Stm* body);
 Stm* stm_function(char* func_id, Expr* arg);
 
 Expr* expr_arithmetic(ArExpr* ar_expr);
-// Expr* expr_boolean(BoolExpr* bool_expr);
+Expr* expr_boolean(BoolExpr* bool_expr);
 // Expr* expr_function(char* func_name, Expr* arg);
 // Expr* expr_variable(char* var_name);
 
 ArExpr* ar_expr_identifier(char* id);
 ArExpr* ar_expr_integer(int int_val);
-// ArExpr* ar_expr_float(float float_val);
+ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
 
 // BoolExpr* bool_expr_identifier(char* id);
 // BoolExpr* bool_expr_bool(bool boolean);
-// BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
+BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
 
 
 #endif

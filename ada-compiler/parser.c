@@ -109,41 +109,43 @@ enum yysymbol_kind_t
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_TOKEN_INT = 3,                  /* TOKEN_INT  */
-  YYSYMBOL_TOKEN_ID = 4,                   /* TOKEN_ID  */
-  YYSYMBOL_TOKEN_PLUS = 5,                 /* TOKEN_PLUS  */
-  YYSYMBOL_TOKEN_MINUS = 6,                /* TOKEN_MINUS  */
-  YYSYMBOL_TOKEN_MULT = 7,                 /* TOKEN_MULT  */
-  YYSYMBOL_TOKEN_DIV = 8,                  /* TOKEN_DIV  */
-  YYSYMBOL_TOKEN_MOD = 9,                  /* TOKEN_MOD  */
-  YYSYMBOL_TOKEN_EQUAL = 10,               /* TOKEN_EQUAL  */
-  YYSYMBOL_TOKEN_DIFF = 11,                /* TOKEN_DIFF  */
-  YYSYMBOL_TOKEN_LESS = 12,                /* TOKEN_LESS  */
-  YYSYMBOL_TOKEN_GREATER = 13,             /* TOKEN_GREATER  */
-  YYSYMBOL_TOKEN_LESS_EQUAL = 14,          /* TOKEN_LESS_EQUAL  */
-  YYSYMBOL_TOKEN_GREATER_EQUAL = 15,       /* TOKEN_GREATER_EQUAL  */
-  YYSYMBOL_TOKEN_EOF = 16,                 /* TOKEN_EOF  */
-  YYSYMBOL_TOKEN_ASSIGN = 17,              /* TOKEN_ASSIGN  */
-  YYSYMBOL_TOKEN_SEMI = 18,                /* TOKEN_SEMI  */
-  YYSYMBOL_TOKEN_COLON = 19,               /* TOKEN_COLON  */
-  YYSYMBOL_TOKEN_IF = 20,                  /* TOKEN_IF  */
-  YYSYMBOL_TOKEN_THEN = 21,                /* TOKEN_THEN  */
-  YYSYMBOL_TOKEN_ELSE = 22,                /* TOKEN_ELSE  */
-  YYSYMBOL_TOKEN_WHILE = 23,               /* TOKEN_WHILE  */
-  YYSYMBOL_TOKEN_LOOP = 24,                /* TOKEN_LOOP  */
-  YYSYMBOL_TOKEN_WITH = 25,                /* TOKEN_WITH  */
-  YYSYMBOL_TOKEN_USE = 26,                 /* TOKEN_USE  */
-  YYSYMBOL_TOKEN_PROC = 27,                /* TOKEN_PROC  */
-  YYSYMBOL_TOKEN_IS = 28,                  /* TOKEN_IS  */
-  YYSYMBOL_TOKEN_BEGIN = 29,               /* TOKEN_BEGIN  */
-  YYSYMBOL_TOKEN_END = 30,                 /* TOKEN_END  */
-  YYSYMBOL_TOKEN_LPAREN = 31,              /* TOKEN_LPAREN  */
-  YYSYMBOL_TOKEN_RPAREN = 32,              /* TOKEN_RPAREN  */
-  YYSYMBOL_YYACCEPT = 33,                  /* $accept  */
-  YYSYMBOL_program = 34,                   /* program  */
-  YYSYMBOL_stm_list = 35,                  /* stm_list  */
-  YYSYMBOL_stm = 36,                       /* stm  */
-  YYSYMBOL_expr = 37,                      /* expr  */
-  YYSYMBOL_arExpr = 38                     /* arExpr  */
+  YYSYMBOL_TOKEN_FLOAT = 4,                /* TOKEN_FLOAT  */
+  YYSYMBOL_TOKEN_ID = 5,                   /* TOKEN_ID  */
+  YYSYMBOL_TOKEN_PLUS = 6,                 /* TOKEN_PLUS  */
+  YYSYMBOL_TOKEN_MINUS = 7,                /* TOKEN_MINUS  */
+  YYSYMBOL_TOKEN_MULT = 8,                 /* TOKEN_MULT  */
+  YYSYMBOL_TOKEN_DIV = 9,                  /* TOKEN_DIV  */
+  YYSYMBOL_TOKEN_MOD = 10,                 /* TOKEN_MOD  */
+  YYSYMBOL_TOKEN_EQUAL = 11,               /* TOKEN_EQUAL  */
+  YYSYMBOL_TOKEN_DIFF = 12,                /* TOKEN_DIFF  */
+  YYSYMBOL_TOKEN_LESS = 13,                /* TOKEN_LESS  */
+  YYSYMBOL_TOKEN_GREATER = 14,             /* TOKEN_GREATER  */
+  YYSYMBOL_TOKEN_LESS_EQUAL = 15,          /* TOKEN_LESS_EQUAL  */
+  YYSYMBOL_TOKEN_GREATER_EQUAL = 16,       /* TOKEN_GREATER_EQUAL  */
+  YYSYMBOL_TOKEN_EOF = 17,                 /* TOKEN_EOF  */
+  YYSYMBOL_TOKEN_ASSIGN = 18,              /* TOKEN_ASSIGN  */
+  YYSYMBOL_TOKEN_SEMI = 19,                /* TOKEN_SEMI  */
+  YYSYMBOL_TOKEN_COLON = 20,               /* TOKEN_COLON  */
+  YYSYMBOL_TOKEN_IF = 21,                  /* TOKEN_IF  */
+  YYSYMBOL_TOKEN_THEN = 22,                /* TOKEN_THEN  */
+  YYSYMBOL_TOKEN_ELSE = 23,                /* TOKEN_ELSE  */
+  YYSYMBOL_TOKEN_WHILE = 24,               /* TOKEN_WHILE  */
+  YYSYMBOL_TOKEN_LOOP = 25,                /* TOKEN_LOOP  */
+  YYSYMBOL_TOKEN_WITH = 26,                /* TOKEN_WITH  */
+  YYSYMBOL_TOKEN_USE = 27,                 /* TOKEN_USE  */
+  YYSYMBOL_TOKEN_PROC = 28,                /* TOKEN_PROC  */
+  YYSYMBOL_TOKEN_IS = 29,                  /* TOKEN_IS  */
+  YYSYMBOL_TOKEN_BEGIN = 30,               /* TOKEN_BEGIN  */
+  YYSYMBOL_TOKEN_END = 31,                 /* TOKEN_END  */
+  YYSYMBOL_TOKEN_LPAREN = 32,              /* TOKEN_LPAREN  */
+  YYSYMBOL_TOKEN_RPAREN = 33,              /* TOKEN_RPAREN  */
+  YYSYMBOL_YYACCEPT = 34,                  /* $accept  */
+  YYSYMBOL_program = 35,                   /* program  */
+  YYSYMBOL_stm_list = 36,                  /* stm_list  */
+  YYSYMBOL_stm = 37,                       /* stm  */
+  YYSYMBOL_expr = 38,                      /* expr  */
+  YYSYMBOL_arExpr = 39,                    /* arExpr  */
+  YYSYMBOL_boolExpr = 40                   /* boolExpr  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -469,21 +471,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  20
+#define YYFINAL  22
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   84
+#define YYLAST   104
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  33
+#define YYNTOKENS  34
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  19
+#define YYNRULES  27
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  57
+#define YYNSTATES  71
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   287
+#define YYMAXUTOK   288
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -525,7 +527,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32
+      25,    26,    27,    28,    29,    30,    31,    32,    33
 };
 
 #if YYDEBUG
@@ -533,7 +535,8 @@ static const yytype_int8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    74,    74,    80,    83,    89,    92,    95,    98,   101,
-     104,   107,   113,   119,   122,   125,   128,   131,   134,   137
+     104,   107,   113,   116,   122,   125,   128,   131,   134,   137,
+     140,   143,   149,   152,   155,   158,   161,   164
 };
 #endif
 
@@ -550,13 +553,14 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "TOKEN_INT",
-  "TOKEN_ID", "TOKEN_PLUS", "TOKEN_MINUS", "TOKEN_MULT", "TOKEN_DIV",
-  "TOKEN_MOD", "TOKEN_EQUAL", "TOKEN_DIFF", "TOKEN_LESS", "TOKEN_GREATER",
-  "TOKEN_LESS_EQUAL", "TOKEN_GREATER_EQUAL", "TOKEN_EOF", "TOKEN_ASSIGN",
-  "TOKEN_SEMI", "TOKEN_COLON", "TOKEN_IF", "TOKEN_THEN", "TOKEN_ELSE",
-  "TOKEN_WHILE", "TOKEN_LOOP", "TOKEN_WITH", "TOKEN_USE", "TOKEN_PROC",
-  "TOKEN_IS", "TOKEN_BEGIN", "TOKEN_END", "TOKEN_LPAREN", "TOKEN_RPAREN",
-  "$accept", "program", "stm_list", "stm", "expr", "arExpr", YY_NULLPTR
+  "TOKEN_FLOAT", "TOKEN_ID", "TOKEN_PLUS", "TOKEN_MINUS", "TOKEN_MULT",
+  "TOKEN_DIV", "TOKEN_MOD", "TOKEN_EQUAL", "TOKEN_DIFF", "TOKEN_LESS",
+  "TOKEN_GREATER", "TOKEN_LESS_EQUAL", "TOKEN_GREATER_EQUAL", "TOKEN_EOF",
+  "TOKEN_ASSIGN", "TOKEN_SEMI", "TOKEN_COLON", "TOKEN_IF", "TOKEN_THEN",
+  "TOKEN_ELSE", "TOKEN_WHILE", "TOKEN_LOOP", "TOKEN_WITH", "TOKEN_USE",
+  "TOKEN_PROC", "TOKEN_IS", "TOKEN_BEGIN", "TOKEN_END", "TOKEN_LPAREN",
+  "TOKEN_RPAREN", "$accept", "program", "stm_list", "stm", "expr",
+  "arExpr", "boolExpr", YY_NULLPTR
 };
 
 static const char *
@@ -566,7 +570,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-26)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -580,12 +584,14 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      41,   -15,    10,    10,    -1,    11,    14,    19,    41,   -16,
-      10,    10,   -16,   -16,     9,     0,    18,     3,    17,    15,
-     -16,   -16,    20,    22,    41,    10,    10,    10,    10,    10,
-      41,   -16,   -16,    23,   -16,    31,    33,    68,    68,   -16,
-     -16,   -16,    -3,    41,   -16,    41,    26,     6,    21,    44,
-      53,    58,   -16,    47,    61,   -16,   -16
+      54,   -15,    11,    11,     5,    15,    17,    26,    54,   -26,
+      11,    11,   -26,   -26,   -26,    22,    77,   -26,     2,    18,
+      24,     4,   -26,   -26,    27,    16,    54,    11,    11,    11,
+      11,    11,    11,    11,    11,    11,    11,    11,    54,   -26,
+     -26,    33,   -26,    28,    45,    21,    21,   -26,   -26,   -26,
+      -1,    -1,    -1,    -1,    -1,    -1,    -3,    54,   -26,    54,
+      31,    14,    34,    32,    47,    36,   -26,    48,    51,   -26,
+     -26
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -594,23 +600,25 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     2,     3,
-       0,     0,    14,    13,     0,    12,     0,     0,     0,     0,
-       1,     4,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     8,     9,     0,     5,     0,     0,    15,    16,    17,
-      18,    19,     0,     0,    11,     0,     0,     0,     0,     0,
-       0,     0,     7,     0,     0,    10,     6
+       0,     0,    15,    16,    14,     0,    12,    13,     0,     0,
+       0,     0,     1,     4,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     8,
+       9,     0,     5,     0,     0,    17,    18,    19,    20,    21,
+      22,    23,    24,    25,    26,    27,     0,     0,    11,     0,
+       0,     0,     0,     0,     0,     0,     7,     0,     0,    10,
+       6
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,    39,    -8,     1,    45
+     -26,   -26,   -25,    -8,     1,    67,   -26
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     7,     8,     9,    14,    15
+       0,     7,     8,     9,    15,    16,    17
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -618,54 +626,62 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      21,     1,    10,    17,    16,    25,    26,    27,    28,    29,
-       1,    22,    23,    12,    13,    18,    11,     2,    19,    20,
-       3,    31,     4,     5,     6,     1,     2,    46,    21,     3,
-      24,     4,     5,     6,    21,    32,    50,     1,    34,    21,
-      21,     2,    30,    33,     3,     1,     4,     5,     6,    44,
-      49,    51,    43,     2,    35,    45,     3,    53,     4,     5,
-       6,     2,    52,    36,     3,    55,     4,     5,     6,    42,
-      37,    38,    39,    40,    41,    27,    28,    29,    54,    56,
-       0,     0,    47,     0,    48
+      23,    44,     1,    10,    18,    27,    28,    29,    30,    31,
+      19,    24,    25,    56,    12,    13,    14,    11,     2,     1,
+      20,     3,    21,     4,     5,     6,    22,    38,    60,    29,
+      30,    31,    61,    41,    62,     2,    23,    39,     3,     1,
+       4,     5,     6,    40,    26,    64,    42,    58,    23,    43,
+       1,    66,    67,    23,    23,     2,    63,    68,     3,     1,
+       4,     5,     6,    57,     0,    65,     2,    69,    59,     3,
+      70,     4,     5,     6,     0,     2,     0,     0,     3,     0,
+       4,     5,     6,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55
 };
 
 static const yytype_int8 yycheck[] =
 {
-       8,     4,    17,     4,     3,     5,     6,     7,     8,     9,
-       4,    10,    11,     3,     4,     4,    31,    20,     4,     0,
-      23,    18,    25,    26,    27,     4,    20,    30,    36,    23,
-      21,    25,    26,    27,    42,    18,    30,     4,    18,    47,
-      48,    20,    24,    28,    23,     4,    25,    26,    27,    18,
-      24,    30,    29,    20,    32,    22,    23,     4,    25,    26,
-      27,    20,    18,    24,    23,    18,    25,    26,    27,    30,
-      25,    26,    27,    28,    29,     7,     8,     9,    20,    18,
-      -1,    -1,    43,    -1,    45
+       8,    26,     5,    18,     3,     6,     7,     8,     9,    10,
+       5,    10,    11,    38,     3,     4,     5,    32,    21,     5,
+       5,    24,     5,    26,    27,    28,     0,    25,    31,     8,
+       9,    10,    57,    29,    59,    21,    44,    19,    24,     5,
+      26,    27,    28,    19,    22,    31,    19,    19,    56,    33,
+       5,    19,     5,    61,    62,    21,    25,    21,    24,     5,
+      26,    27,    28,    30,    -1,    31,    21,    19,    23,    24,
+      19,    26,    27,    28,    -1,    21,    -1,    -1,    24,    -1,
+      26,    27,    28,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     4,    20,    23,    25,    26,    27,    34,    35,    36,
-      17,    31,     3,     4,    37,    38,    37,     4,     4,     4,
-       0,    36,    37,    37,    21,     5,     6,     7,     8,     9,
-      24,    18,    18,    28,    18,    32,    35,    38,    38,    38,
-      38,    38,    35,    29,    18,    22,    30,    35,    35,    24,
-      30,    30,    18,     4,    20,    18,    18
+       0,     5,    21,    24,    26,    27,    28,    35,    36,    37,
+      18,    32,     3,     4,     5,    38,    39,    40,    38,     5,
+       5,     5,     0,    37,    38,    38,    22,     6,     7,     8,
+       9,    10,    11,    12,    13,    14,    15,    16,    25,    19,
+      19,    29,    19,    33,    36,    39,    39,    39,    39,    39,
+      39,    39,    39,    39,    39,    39,    36,    30,    19,    23,
+      31,    36,    36,    25,    31,    31,    19,     5,    21,    19,
+      19
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    33,    34,    35,    35,    36,    36,    36,    36,    36,
-      36,    36,    37,    38,    38,    38,    38,    38,    38,    38
+       0,    34,    35,    36,    36,    37,    37,    37,    37,    37,
+      37,    37,    38,    38,    39,    39,    39,    39,    39,    39,
+      39,    39,    40,    40,    40,    40,    40,    40
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     1,     2,     4,     9,     7,     3,     3,
-       8,     5,     1,     1,     1,     3,     3,     3,     3,     3
+       8,     5,     1,     1,     1,     1,     1,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3
 };
 
 
@@ -1132,130 +1148,186 @@ yyreduce:
 #line 74 "parser.bison"
              {
         program = (yyval.stm_vals) = (yyvsp[0].stm_vals); }
-#line 1136 "parser.c"
+#line 1152 "parser.c"
     break;
 
   case 3: /* stm_list: stm  */
 #line 80 "parser.bison"
         {
         (yyval.stm_vals) = (yyvsp[0].stm_val); }
-#line 1143 "parser.c"
+#line 1159 "parser.c"
     break;
 
   case 4: /* stm_list: stm_list stm  */
 #line 83 "parser.bison"
                  {
         (yyval.stm_vals) = stm_compound((yyvsp[-1].stm_vals), (yyvsp[0].stm_val)); }
-#line 1150 "parser.c"
+#line 1166 "parser.c"
     break;
 
   case 5: /* stm: TOKEN_ID TOKEN_ASSIGN expr TOKEN_SEMI  */
 #line 89 "parser.bison"
                                           {
         (yyval.stm_val) = stm_assign((yyvsp[-3].string_val), (yyvsp[-1].expr_val)); }
-#line 1157 "parser.c"
+#line 1173 "parser.c"
     break;
 
   case 6: /* stm: TOKEN_IF expr TOKEN_THEN stm_list TOKEN_ELSE stm_list TOKEN_END TOKEN_IF TOKEN_SEMI  */
 #line 92 "parser.bison"
                                                                                         {
         (yyval.stm_val) = stm_if((yyvsp[-7].expr_val), (yyvsp[-5].stm_vals), (yyvsp[-3].stm_vals)); }
-#line 1164 "parser.c"
+#line 1180 "parser.c"
     break;
 
   case 7: /* stm: TOKEN_WHILE expr TOKEN_LOOP stm_list TOKEN_END TOKEN_LOOP TOKEN_SEMI  */
 #line 95 "parser.bison"
                                                                          {
         (yyval.stm_val) = stm_while((yyvsp[-5].expr_val), (yyvsp[-3].stm_vals)); }
-#line 1171 "parser.c"
+#line 1187 "parser.c"
     break;
 
   case 8: /* stm: TOKEN_WITH TOKEN_ID TOKEN_SEMI  */
 #line 98 "parser.bison"
                                    {
         (yyval.stm_val) = stm_with((yyvsp[-1].string_val)); }
-#line 1178 "parser.c"
+#line 1194 "parser.c"
     break;
 
   case 9: /* stm: TOKEN_USE TOKEN_ID TOKEN_SEMI  */
 #line 101 "parser.bison"
                                   {
         (yyval.stm_val) = stm_use((yyvsp[-1].string_val)); }
-#line 1185 "parser.c"
+#line 1201 "parser.c"
     break;
 
   case 10: /* stm: TOKEN_PROC TOKEN_ID TOKEN_IS TOKEN_BEGIN stm_list TOKEN_END TOKEN_ID TOKEN_SEMI  */
 #line 104 "parser.bison"
                                                                                     {
         (yyval.stm_val) = stm_procedure((yyvsp[-6].string_val), (yyvsp[-3].stm_vals)); }
-#line 1192 "parser.c"
+#line 1208 "parser.c"
     break;
 
   case 11: /* stm: TOKEN_ID TOKEN_LPAREN expr TOKEN_RPAREN TOKEN_SEMI  */
 #line 107 "parser.bison"
                                                        {
         (yyval.stm_val) = stm_function((yyvsp[-4].string_val), (yyvsp[-2].expr_val)); }
-#line 1199 "parser.c"
+#line 1215 "parser.c"
     break;
 
   case 12: /* expr: arExpr  */
 #line 113 "parser.bison"
            {
         (yyval.expr_val) = expr_arithmetic((yyvsp[0].arExpr_val)); }
-#line 1206 "parser.c"
+#line 1222 "parser.c"
     break;
 
-  case 13: /* arExpr: TOKEN_ID  */
-#line 119 "parser.bison"
+  case 13: /* expr: boolExpr  */
+#line 116 "parser.bison"
+             {
+        (yyval.expr_val) = expr_boolean((yyvsp[0].boolExpr_val)); }
+#line 1229 "parser.c"
+    break;
+
+  case 14: /* arExpr: TOKEN_ID  */
+#line 122 "parser.bison"
              {
         (yyval.arExpr_val) = ar_expr_identifier((yyvsp[0].string_val)); }
-#line 1213 "parser.c"
+#line 1236 "parser.c"
     break;
 
-  case 14: /* arExpr: TOKEN_INT  */
-#line 122 "parser.bison"
+  case 15: /* arExpr: TOKEN_INT  */
+#line 125 "parser.bison"
               {
         (yyval.arExpr_val) = ar_expr_integer((yyvsp[0].int_val)); }
-#line 1220 "parser.c"
+#line 1243 "parser.c"
     break;
 
-  case 15: /* arExpr: arExpr TOKEN_PLUS arExpr  */
-#line 125 "parser.bison"
-                             {
-        (yyval.arExpr_val) = ar_expr_operation(PLUS, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
-#line 1227 "parser.c"
-    break;
-
-  case 16: /* arExpr: arExpr TOKEN_MINUS arExpr  */
+  case 16: /* arExpr: TOKEN_FLOAT  */
 #line 128 "parser.bison"
-                              {
-        (yyval.arExpr_val) = ar_expr_operation(MINUS, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
-#line 1234 "parser.c"
+                {
+        (yyval.arExpr_val) = ar_expr_float((yyvsp[0].float_val)); }
+#line 1250 "parser.c"
     break;
 
-  case 17: /* arExpr: arExpr TOKEN_MULT arExpr  */
+  case 17: /* arExpr: arExpr TOKEN_PLUS arExpr  */
 #line 131 "parser.bison"
                              {
-        (yyval.arExpr_val) = ar_expr_operation(TIMES, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
-#line 1241 "parser.c"
+        (yyval.arExpr_val) = ar_expr_operation(PLUS, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1257 "parser.c"
     break;
 
-  case 18: /* arExpr: arExpr TOKEN_DIV arExpr  */
+  case 18: /* arExpr: arExpr TOKEN_MINUS arExpr  */
 #line 134 "parser.bison"
+                              {
+        (yyval.arExpr_val) = ar_expr_operation(MINUS, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1264 "parser.c"
+    break;
+
+  case 19: /* arExpr: arExpr TOKEN_MULT arExpr  */
+#line 137 "parser.bison"
+                             {
+        (yyval.arExpr_val) = ar_expr_operation(TIMES, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1271 "parser.c"
+    break;
+
+  case 20: /* arExpr: arExpr TOKEN_DIV arExpr  */
+#line 140 "parser.bison"
                             {
         (yyval.arExpr_val) = ar_expr_operation(DIV, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
-#line 1248 "parser.c"
+#line 1278 "parser.c"
     break;
 
-  case 19: /* arExpr: arExpr TOKEN_MOD arExpr  */
-#line 137 "parser.bison"
+  case 21: /* arExpr: arExpr TOKEN_MOD arExpr  */
+#line 143 "parser.bison"
                             {
         (yyval.arExpr_val) = ar_expr_operation(MOD, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
-#line 1255 "parser.c"
+#line 1285 "parser.c"
+    break;
+
+  case 22: /* boolExpr: arExpr TOKEN_EQUAL arExpr  */
+#line 149 "parser.bison"
+                              {
+        (yyval.boolExpr_val) = bool_expr_operation(EQUAL, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1292 "parser.c"
+    break;
+
+  case 23: /* boolExpr: arExpr TOKEN_DIFF arExpr  */
+#line 152 "parser.bison"
+                             {
+        (yyval.boolExpr_val) = bool_expr_operation(DIFF, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1299 "parser.c"
+    break;
+
+  case 24: /* boolExpr: arExpr TOKEN_LESS arExpr  */
+#line 155 "parser.bison"
+                             {
+        (yyval.boolExpr_val) = bool_expr_operation(LESS, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1306 "parser.c"
+    break;
+
+  case 25: /* boolExpr: arExpr TOKEN_GREATER arExpr  */
+#line 158 "parser.bison"
+                                {
+        (yyval.boolExpr_val) = bool_expr_operation(GREATER, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1313 "parser.c"
+    break;
+
+  case 26: /* boolExpr: arExpr TOKEN_LESS_EQUAL arExpr  */
+#line 161 "parser.bison"
+                                   {
+        (yyval.boolExpr_val) = bool_expr_operation(LESS_EQUAL, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1320 "parser.c"
+    break;
+
+  case 27: /* boolExpr: arExpr TOKEN_GREATER_EQUAL arExpr  */
+#line 164 "parser.bison"
+                                      {
+        (yyval.boolExpr_val) = bool_expr_operation(GREATER_EQUAL, (yyvsp[-2].arExpr_val), (yyvsp[0].arExpr_val)); }
+#line 1327 "parser.c"
     break;
 
 
-#line 1259 "parser.c"
+#line 1331 "parser.c"
 
       default: break;
     }
@@ -1448,7 +1520,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 143 "parser.bison"
+#line 169 "parser.bison"
 
 
 void yyerror(const char* err) {
