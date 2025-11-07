@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include "ast.h"
 #include "parser.h"
@@ -17,28 +16,30 @@ void printArExpr(ArExpr* arExpr) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
     else if (arExpr->tag == AR_OP) {
-        printf("(");
+        // printf("(");
         printArExpr(arExpr->attr.ar_op.left);
+        
         switch (arExpr->attr.ar_op.op) {
-        case PLUS:
-            printf("+");
-            break;
-        case MINUS:
-            printf("-");
-            break;
-        case TIMES:
-            printf("*");
-            break;
-        case DIV:
-            printf("/");
-            break;
-        case MOD:
-            printf("%%");
-            break;
-        default: yyerror("unkown arithmetic operator");
+            case PLUS:
+                printf("+");
+                break;
+            case MINUS:
+                printf("-");
+                break;
+            case TIMES:
+                printf("*");
+                break;
+            case DIV:
+                printf("/");
+                break;
+            case MOD:
+                printf("%%");
+                break;
+            default: yyerror("Unkown arithmetic operator");
         }
+        
         printArExpr(arExpr->attr.ar_op.right);
-        printf(")");
+        // printf(")");
     }
 }
 
@@ -49,27 +50,29 @@ void printBoolExpr(BoolExpr* boolExpr) {
     else if (boolExpr->tag == BOOL_OP) {
         printf("(");
         printArExpr(boolExpr->attr.bool_op.left);
+        
         switch (boolExpr->attr.bool_op.op) {
-        case EQUAL:
-            printf(" == ");
-            break;
-        case DIFF:
-            printf(" != ");
-            break;
-        case LESS:
-            printf(" < ");
-            break;
-        case GREATER:
-            printf(" > ");
-            break;
-        case LESS_EQUAL:
-            printf(" <= ");
-            break;
-        case GREATER_EQUAL:
-            printf(" >= ");
-            break;
-        default: yyerror("unkown boolean operator");
+            case EQUAL:
+                printf(" == ");
+                break;
+            case DIFF:
+                printf(" != ");
+                break;
+            case LESS:
+                printf(" < ");
+                break;
+            case GREATER:
+                printf(" > ");
+                break;
+            case LESS_EQUAL:
+                printf(" <= ");
+                break;
+            case GREATER_EQUAL:
+                printf(" >= ");
+                break;
+            default: yyerror("Unkown boolean operator");
         }
+
         printArExpr(boolExpr->attr.bool_op.right);
         printf(")");
     }
