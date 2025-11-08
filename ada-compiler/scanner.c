@@ -949,34 +949,39 @@ YY_RULE_SETUP
 case 33:
 YY_RULE_SETUP
 #line 49 "scanner.flex"
-{ yylval.string_val = strdup(yytext); return TOKEN_STRING; }
+{
+    // Remove the surrounding quotes
+    yytext[strlen(yytext)-1] = '\0';  // Remove trailing quote
+    yylval.string_val = strdup(yytext + 1);  // Skip leading quote
+    return TOKEN_STRING;
+}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 51 "scanner.flex"
+#line 56 "scanner.flex"
 { yylval.string_val = strdup(yytext); return TOKEN_ID; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 53 "scanner.flex"
+#line 58 "scanner.flex"
 { yylval.float_val = atof(yytext); return TOKEN_FLOAT; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 55 "scanner.flex"
+#line 60 "scanner.flex"
 { yylval.int_val = atoi(yytext); return TOKEN_INT; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 57 "scanner.flex"
+#line 62 "scanner.flex"
 { yyerror("unexpected character"); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 59 "scanner.flex"
+#line 64 "scanner.flex"
 ECHO;
 	YY_BREAK
-#line 980 "scanner.c"
+#line 985 "scanner.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1981,6 +1986,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 59 "scanner.flex"
+#line 64 "scanner.flex"
 
 

@@ -139,6 +139,9 @@ expr:
     |
     boolExpr {
         $$ = expr_boolean($1); }
+    |
+    TOKEN_STRING {
+        $$ = expr_string($1); }
     ;
 
 

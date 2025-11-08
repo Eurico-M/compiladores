@@ -127,6 +127,9 @@ void printExpr(Expr* expr) {
         printBoolExpr(expr->attr.bool_expr);
         printf(")");
     }
+    else if (expr->kind == EXPR_STRING) {
+        printf("STRING(\"%s\"", expr->attr.string_expr);
+    }
 }
 
 void printDclr(Dclr* dclr) {

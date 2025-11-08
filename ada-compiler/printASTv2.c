@@ -3,8 +3,8 @@
 #include "parser.h"
 
 void printArExpr_v2(ArExpr* arExpr, long tabs) {
-    
-    char tabString[4 * tabs + 1]; 
+
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -24,7 +24,7 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
     else if (arExpr->tag == FLOAT) {
         printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
     }
-    else if (arExpr->tag == AR_OP) {     
+    else if (arExpr->tag == AR_OP) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("%sPLUS(\n", tabString);
@@ -63,7 +63,7 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
 
 void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
 
-    char tabString[4 * tabs + 1]; 
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -74,7 +74,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     if (boolExpr == 0) {
         yyerror("Null boolean expression");
     }
-    else if (boolExpr->tag == BOOL_OP) {   
+    else if (boolExpr->tag == BOOL_OP) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("%sEQUAL(\n", tabString);
@@ -120,7 +120,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
 
 void printExpr_v2(Expr* expr, long tabs) {
 
-    char tabString[4 * tabs + 1]; 
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -141,11 +141,14 @@ void printExpr_v2(Expr* expr, long tabs) {
         printBoolExpr_v2(expr->attr.bool_expr, tabs + 1);
         printf("%s)\n", tabString);
     }
+    else if (expr->kind == EXPR_STRING) {
+        printf("%sSTRING(\"%s\")\n)", tabString, expr->attr.string_expr);
+    }
 }
 
 void printDclr_v2(Dclr* dclr, long tabs) {
 
-    char tabString[4 * tabs + 1]; 
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -177,8 +180,8 @@ void printDclr_v2(Dclr* dclr, long tabs) {
 }
 
 void printPckg_v2(Pckg* pckg, long tabs) {
-    
-    char tabString[4 * tabs + 1]; 
+
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -202,8 +205,8 @@ void printPckg_v2(Pckg* pckg, long tabs) {
 }
 
 void printStm_v2(Stm* stm, long tabs) {
-    
-    char tabString[4 * tabs + 1]; 
+
+    char tabString[4 * tabs + 1];
 
     for (int i = 0; i < 4 * tabs; i++) {
         tabString[i] = ' ';
@@ -219,7 +222,7 @@ void printStm_v2(Stm* stm, long tabs) {
         // printStm_v2(stm->attr.compound.first, tabs + 1);
         // printStm_v2(stm->attr.compound.second, tabs + 1);
         // printf("%s)\n", tabString);
-        
+
         printStm_v2(stm->attr.compound.first, tabs);
         printStm_v2(stm->attr.compound.second, tabs);
     }

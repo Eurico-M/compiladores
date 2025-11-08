@@ -139,17 +139,12 @@ struct _Expr {
     enum {
         EXPR_ARITHMETIC,
         EXPR_BOOLEAN,
-        // EXPR_FUNCTION,
-        // EXPR_VARIABLE
+        EXPR_STRING
     } kind;
     union {
         struct _ArExpr* ar_expr;
         struct _BoolExpr* bool_expr;
-        // struct {
-        //     char* func_name;
-        //     _Expr* arg;
-        // } func_expr;
-        // char* var_name;
+        char* string_expr;
     } attr;
 };
 
@@ -174,16 +169,13 @@ Stm* stm_function(char* func_id, Expr* arg);
 
 Expr* expr_arithmetic(ArExpr* ar_expr);
 Expr* expr_boolean(BoolExpr* bool_expr);
-// Expr* expr_function(char* func_name, Expr* arg);
-// Expr* expr_variable(char* var_name);
+Expr* expr_string(char* string_expr);
 
 ArExpr* ar_expr_identifier(char* id);
 ArExpr* ar_expr_integer(int int_val);
 ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
 
-// BoolExpr* bool_expr_identifier(char* id);
-// BoolExpr* bool_expr_bool(bool boolean);
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
 
 Dclr* dclr_compound(Dclr* first, Dclr* second);
