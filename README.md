@@ -60,8 +60,10 @@ Por isso, temos um novo tipo, Dclr, declarações, que pode ser vazio, ou uma li
 
 O If Then Else foi implementado como o exemplo do slide 24 da aula teórica 6.
 
+```
 Stm -> if Exp then Stm
 Stm -> if Exp then Stm else Stm
+```
 
 Ou seja, com a resolução shift do dangling else.
 
@@ -92,6 +94,8 @@ end Test;
 
 
 ### O que falta:
+
+Falta alguma coisa?
 
 ## Docs porreiros:
 
