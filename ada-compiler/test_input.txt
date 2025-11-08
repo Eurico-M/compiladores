@@ -1,8 +1,11 @@
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Test is
     x : Integer;
 begin
+    Put ("Input an Integer: ");
     Get (x);
+    Put ("The square of that number is: ");
     Put (x * x);
 end Test;

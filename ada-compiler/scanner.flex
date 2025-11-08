@@ -46,7 +46,12 @@ begin     { return TOKEN_BEGIN; }
 procedure { return TOKEN_PROC; }
 is        { return TOKEN_IS; }
 
-\"(.*)\"  { yylval.string_val = strdup(yytext); return TOKEN_STRING; }
+\"(.*)\"  {
+    // Remove the surrounding quotes
+    yytext[strlen(yytext)-1] = '\0';  // Remove trailing quote
+    yylval.string_val = strdup(yytext + 1);  // Skip leading quote
+    return TOKEN_STRING;
+}
 
 [a-zA-Z][a-zA-Z0-9_]* { yylval.string_val = strdup(yytext); return TOKEN_ID; }
 

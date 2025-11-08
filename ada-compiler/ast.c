@@ -91,20 +91,12 @@ Expr* expr_boolean(BoolExpr* bool_expr) {
     return node;
 }
 
-// Expr* expr_function(char* func_name, Expr* arg) {
-//     Expr* node = (Expr*) malloc(sizeof(Expr));
-//     node->kind = EXPR_FUNCTION;
-//     node->attr.func_expr.func_name = func_name;
-//     node->attr.func_expr.arg = arg;
-//     return node;
-// }
-
-// Expr* expr_variable(char* var_name) {
-//     Expr* node = (Expr*) malloc(sizeof(Expr));
-//     node->kind = EXPR_VARIABLE;
-//     node->attr.var_name = var_name;
-//     return node;
-// }
+Expr* expr_string(char* string_expr) {
+    Expr* node = (Expr*) malloc(sizeof(Expr));
+    node->kind = EXPR_STRING;
+    node->attr.string_expr = string_expr;
+    return node;
+}
 
 // Arithmetic Expressions
 
@@ -137,20 +129,6 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     node->attr.ar_op.right = right;
     return node;
 }
-
-// BoolExpr* bool_expr_identifier(char* id) {
-//     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-//     node->tag = ID;
-//     node->attr.id = id;
-//     return node;
-// }
-
-// BoolExpr* bool_expr_bool(bool boolean) {
-//     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-//     node->tag = BOOL;
-//     node->attr.boolean = boolean;
-//     return node;
-// }
 
 // Boolean Expressions
 
