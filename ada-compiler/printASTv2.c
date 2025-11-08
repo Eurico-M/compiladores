@@ -208,30 +208,42 @@ void printStm_v2(Stm* stm, long tabs) {
         yyerror("Null statement");
     }
     else if (stm->kind == STM_COMPOUND) {
-        printf("%sCOMPOUND_STM(\n", tabString);
-        printStm_v2(stm->attr.compound.first, tabs + 1);
-        printStm_v2(stm->attr.compound.second, tabs + 1);
-        printf("%s)\n", tabString);
+        // printf("%sCOMPOUND_STM(\n", tabString);
+        // printStm_v2(stm->attr.compound.first, tabs + 1);
+        // printStm_v2(stm->attr.compound.second, tabs + 1);
+        // printf("%s)\n", tabString);
+        
+        printStm_v2(stm->attr.compound.first, tabs);
+        printStm_v2(stm->attr.compound.second, tabs);
     }
     else if (stm->kind == STM_ASSIGNMENT) {
-        printf("%sASSIGN_STM(\n%s    %s\n", tabString, tabString, stm->attr.assign.ident);
+        printf("%sASSIGN_STM(\n%s    ID(%s)\n", tabString, tabString, stm->attr.assign.ident);
         printExpr_v2(stm->attr.assign.expr, tabs + 1);
         printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_IF_THEN) {
-        printf("%sIF_THEN(\n", tabString);
+        printf("%sIF(\n", tabString);
         printExpr_v2(stm->attr.if_then.condition, tabs + 1);
+        printf("%s) THEN (\n", tabString);
         printStm_v2(stm->attr.if_then.then_branch, tabs + 1);
-        printf("%s)\n", tabString);
+        printf("%s) END_IF\n", tabString);
     }
     else if (stm->kind == STM_IF_THEN_ELSE) {
         printf("%sIF(\n", tabString);
         printExpr_v2(stm->attr.if_then_else.condition, tabs + 1);
-        printf("%sTHEN\n", tabString);
+        printf("%s) THEN(\n", tabString);
         printStm_v2(stm->attr.if_then_else.then_branch, tabs + 1);
-        printf("%sELSE\n", tabString);
-        printStm_v2(stm->attr.if_then_else.else_branch, tabs + 1);
         printf("%s)\n", tabString);
+        printf("%sELSE(\n", tabString);
+        printStm_v2(stm->attr.if_then_else.else_branch, tabs + 1);
+        printf("%s) END_IF\n", tabString);
+    }
+    else if (stm->kind == STM_WHILE) {
+        printf("%sWHILE(\n", tabString);
+        printExpr_v2(stm->attr.while_stm.condition, tabs + 1);
+        printf("%s) LOOP(\n", tabString);
+        printStm_v2(stm->attr.while_stm.body, tabs + 1);
+        printf("%s) END_LOOP\n", tabString);
     }
     else if (stm->kind == STM_WITH) {
         printf("%sWITH(\n", tabString);
@@ -244,12 +256,13 @@ void printStm_v2(Stm* stm, long tabs) {
         printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_PROCEDURE) {
-        printf("%sPROCEDURE(%s) (\n", tabString, stm->attr.stm_proc.proc_id);
-            if (stm->attr.stm_proc.dclr != 0) {
+        printf("%sPROCEDURE(%s) IS (\n", tabString, stm->attr.stm_proc.proc_id);
+        if (stm->attr.stm_proc.dclr != 0) {
             printDclr_v2(stm->attr.stm_proc.dclr, tabs + 1);
         }
+        printf("%sBEGIN(\n", tabString);
         printStm_v2(stm->attr.stm_proc.body, tabs + 1);
-        printf("%s)\n", tabString);
+        printf("%s)) END_%s\n", tabString, stm->attr.stm_proc.proc_id);
     }
     else if (stm->kind == STM_FUNCTION) {
         printf("%sFUNCTION(\n%s    %s(\n", tabString, tabString, stm->attr.stm_func.func_id);
