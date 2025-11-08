@@ -94,9 +94,9 @@ end Test;
 ```
 #### Strings:
 
-As strings são simplesmente mais uma expressão, que só pode ser do tipo char*.
+As strings são simplesmente mais uma expressão, que tem como atributo um simples char*.
 
-Requer trabalho adicional no scanner.flex para remover as aspas.
+Requer trabalho adicional no scanner.flex para remover as aspas. Isto porque o Flex não tem capture groups nas expressões regulares, senão podiamos fazer só `\"(.*)\"` e apanhar só o que está dentro de parentesis.
 
 Ou seja, se o scanner ler `"isto é uma string"` deve guardar no yylval.string_val `isto é uma string`.
 
