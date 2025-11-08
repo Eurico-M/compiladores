@@ -34,18 +34,29 @@ Expressões:
 - aritméticas
 - booleanas
 
-### O que falta:
+### Notas:
 
-- o assignment está muito básico `x := 41 + 1`, mas o Ada precisa de tipos lá pelo meio, ou antes, não sei
-- o procedure só aceita coisas do tipo
+#### Assignment:
+
+Há dois tipos de assignment:
+- o assignment no meio do código `x := x + 1`
+- o assignment declarativo `x : Integer := 42`
+
+O assignment no meio do código é um Statement, pode aparecer em qualquer parte do código.
+
+O assignment declarativo só aparece na parte declarativa de um Procedure, entre `is` e `begin`:
 ```
 procedure Main is
+  x : Integer := 42
 begin
---code;
+  Put(x);
 end Main;
 ```
-ou seja, sem as declarações entre `is` e `begin`.
+
+Por isso, temos um novo tipo, Dclr, declarações, que pode ser vazio, ou uma lista, que aparece entre `is` e `begin` num Procedure.
+
+
+### O que falta:
+
 - a function é um comando (não devolve nada) porque o prof disse que era esse tipo que queríamos para a função Put, mas a função Get tem de devolver, por isso tem de ser uma expressão(?)
 - estou a tratar as declarações iniciais (`with` e `use`) como se fossem comandos (statements) adicionais. se houver tempo (e não vai haver) podiamos pensar em criar um tipo de statement chamado header ou assim, e meter lá os withs e uses todos
-- a impressão da árvore está com parentesis: function(function(argument, argument), argument, function(argument)). se houver tempo, arranjar outras formas de imprimir (que sejam minimamente legíveis)
-
