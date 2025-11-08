@@ -44,17 +44,17 @@ Stm* stm_while(Expr* condition, Stm* body) {
     return node;
 }
 
-Stm* stm_with(char* with_id) {
+Stm* stm_with(Pckg* pckg_with) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_WITH;
-    node->attr.with_id = with_id;
+    node->attr.pckg_with = pckg_with;
     return node;
 }
 
-Stm* stm_use(char* use_id) {
+Stm* stm_use(Pckg* pckg_use) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_USE;
-    node->attr.use_id = use_id;
+    node->attr.pckg_use = pckg_use;
     return node;
 }
 
@@ -187,5 +187,22 @@ Dclr* dclr_assignment(char* id, char* type, Expr* expr) {
     node->attr.dclr_assignment.id = id;
     node->attr.dclr_assignment.type = type;
     node->attr.dclr_assignment.expr = expr;
+    return node;
+}
+
+// Packages
+
+Pckg* pckg_simple(char* id) {
+    Pckg* node = (Pckg*) malloc(sizeof(Pckg));
+    node->kind = PCKG_SIMPLE;
+    node->attr.pckg_id = id;
+    return node;
+}
+
+Pckg* pckg_compound(Pckg* first, Pckg* second) {
+    Pckg* node = (Pckg*) malloc(sizeof(Pckg));
+    node->kind = PCKG_COMPOUND;
+    node->attr.compound.first = first;
+    node->attr.compound.second = second;
     return node;
 }

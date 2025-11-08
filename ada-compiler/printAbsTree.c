@@ -113,6 +113,20 @@ void printDclr(Dclr* dclr) {
     }
 }
 
+void printPckg(Pckg* pckg) {
+    if (pckg == 0) {
+        yyerror("Null package");
+    }
+    else if (pckg->kind == PCKG_SIMPLE) {
+        printf("%s", pckg->attr.pckg_id);
+    }
+    else if (pckg->kind == PCKG_COMPOUND) {
+        printPckg(pckg->attr.compound.first);
+        printf(".");
+        printPckg(pckg->attr.compound.second);
+    }
+}
+
 
 void printStm(Stm* stm) {
     if (stm == 0) {
@@ -148,10 +162,14 @@ void printStm(Stm* stm) {
         printf(")");
     }
     else if (stm->kind == STM_WITH) {
-        printf("WITH(%s)", stm->attr.with_id);
+        printf("WITH(");
+        printPckg(stm->attr.pckg_with);
+        printf(")");
     }
     else if (stm->kind == STM_USE) {
-        printf("USE(%s)", stm->attr.use_id);
+        printf("USE(");
+        printPckg(stm->attr.pckg_use);
+        printf(")");
     }
     else if (stm->kind == STM_PROCEDURE) {
         printf("PROCEDURE(%s", stm->attr.stm_proc.proc_id);
