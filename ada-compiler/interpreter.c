@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include "parser.h"
 #include "printAbsTree.h"
+#include "printASTv2.h"
 
 Stm* program = NULL;
-
+long tabs = 0;
 
 int main(int argc, char** argv) {
     --argc; ++argv;
@@ -26,8 +27,12 @@ int main(int argc, char** argv) {
         printf("program NULL after parse\n");
         return 1;
     }
-
+    
+    printf("AST_V1:\n");
     printStm(program);
+    printf("\n\nAST_V2:\n");
+    printStm_v2(program, tabs);
+    
     printf("\n");
 
     return 0;
