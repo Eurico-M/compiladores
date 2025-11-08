@@ -29,6 +29,7 @@ Comandos (statements):
 - while
 - procedure
 - function
+- with, use
 
 Expressões:
 - aritméticas
@@ -55,6 +56,21 @@ end Main;
 
 Por isso, temos um novo tipo, Dclr, declarações, que pode ser vazio, ou uma lista, que aparece entre `is` e `begin` num Procedure.
 
+#### If Then Else:
+
+O If Then Else foi implementado como o exemplo do slide 24 da aula teórica 6.
+
+Stm -> if Exp then Stm
+Stm -> if Exp then Stm else Stm
+
+Ou seja, com a resolução shift do dangling else.
+
+#### With, Use:
+
+Para as funções Put e Get temos de incluir dois comandos, `with` e `use`.
+
+Como estes comandos podem ter como argumento um package do tipo `Package1.Package2.Package3`, temos uma nova estrutura Pckg para construir os Packages com separador `.` (ponto). 
+
 #### Function:
 
 As duas funções a implementar (Put e Get) não precisam de devolver nada, por isso são Comandos e não Expressões.
@@ -77,3 +93,10 @@ end Test;
 
 ### O que falta:
 
+## Docs porreiros:
+
+https://learn.adacore.com/courses/Ada_For_The_CPP_Java_Developer/chapters/04_Statements_Declarations_and_Control_Structures.html
+
+https://ada-lang.io/docs/arm/AA-10/AA-10.1
+
+https://ada-lang.io/docs/learn/overview/building-blocks
