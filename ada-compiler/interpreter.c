@@ -28,11 +28,11 @@ int main(int argc, char** argv) {
         return 1;
     }
     
-    printf("Abstract Syntax Tree v1:\n");
+    printf("+ Abstract Syntax Tree v1 +\n\n");
     printStm(program);
-    printf("\n\nAbstract Syntax Tree v2:\n");
+    printf("\n\n\n");
+    printf("+ Abstract Syntax Tree v2 +\n\n");
     printStm_v2(program, tabs);
-    
     printf("\n");
 
     return 0;

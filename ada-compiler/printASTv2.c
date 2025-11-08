@@ -77,7 +77,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     else if (boolExpr->tag == BOOL_OP) {   
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
-                printf("%sEQUALS(\n", tabString);
+                printf("%sEQUAL(\n", tabString);
                 printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
                 printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
                 printf("%s)\n", tabString);
@@ -155,17 +155,24 @@ void printDclr_v2(Dclr* dclr, long tabs) {
 
     if (dclr == 0) {}
     else if (dclr->kind == DCLR_COMPOUND) {
-        printf("%sDCLR_COMPOUND(\n", tabString);
-        printDclr_v2(dclr->attr.dclr_compound.first, tabs + 1);
-        printDclr_v2(dclr->attr.dclr_compound.second, tabs + 1);
-        printf("%s)\n", tabString);
+        // printf("%sDCLR_COMPOUND(\n", tabString);
+        // printDclr_v2(dclr->attr.dclr_compound.first, tabs + 1);
+        // printDclr_v2(dclr->attr.dclr_compound.second, tabs + 1);
+        // printf("%s)\n", tabString);
+
+        printDclr_v2(dclr->attr.dclr_compound.first, tabs);
+        printDclr_v2(dclr->attr.dclr_compound.second, tabs);
     }
     else if (dclr->kind == DCLR_SIMPLE) {
-        printf("%s%s(%s)\n", tabString, dclr->attr.dclr_simple.type, dclr->attr.dclr_simple.id);
+        printf("%sDCLR_SIMPLE(\n", tabString);
+        printf("%s    %s(%s)\n", tabString, dclr->attr.dclr_simple.type, dclr->attr.dclr_simple.id);
+        printf("%s)\n", tabString);
     }
     else if (dclr->kind == DCLR_ASSIGNMENT) {
-        printf("%s (%s) = ", dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
-        printExpr_v2(dclr->attr.dclr_assignment.expr, tabs + 1);
+        printf("%sDCLR_ASSIGN(\n", tabString);
+        printf("%s    %s(%s) =\n", tabString, dclr->attr.dclr_assignment.type, dclr->attr.dclr_assignment.id);
+        printExpr_v2(dclr->attr.dclr_assignment.expr, tabs + 2);
+        printf("%s)\n", tabString);
     }
 }
 
@@ -217,14 +224,14 @@ void printStm_v2(Stm* stm, long tabs) {
         printStm_v2(stm->attr.compound.second, tabs);
     }
     else if (stm->kind == STM_ASSIGNMENT) {
-        printf("%sASSIGN_STM(\n%s    ID(%s)\n", tabString, tabString, stm->attr.assign.ident);
+        printf("%sASSIGN(\n%s    ID(%s)\n", tabString, tabString, stm->attr.assign.ident);
         printExpr_v2(stm->attr.assign.expr, tabs + 1);
         printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_IF_THEN) {
         printf("%sIF(\n", tabString);
         printExpr_v2(stm->attr.if_then.condition, tabs + 1);
-        printf("%s) THEN (\n", tabString);
+        printf("%s) THEN(\n", tabString);
         printStm_v2(stm->attr.if_then.then_branch, tabs + 1);
         printf("%s) END_IF\n", tabString);
     }
@@ -256,7 +263,7 @@ void printStm_v2(Stm* stm, long tabs) {
         printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_PROCEDURE) {
-        printf("%sPROCEDURE(%s) IS (\n", tabString, stm->attr.stm_proc.proc_id);
+        printf("%sPROCEDURE(%s) IS(\n", tabString, stm->attr.stm_proc.proc_id);
         if (stm->attr.stm_proc.dclr != 0) {
             printDclr_v2(stm->attr.stm_proc.dclr, tabs + 1);
         }

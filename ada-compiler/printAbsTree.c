@@ -16,30 +16,45 @@ void printArExpr(ArExpr* arExpr) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
     else if (arExpr->tag == AR_OP) {
-        // printf("(");
-        printArExpr(arExpr->attr.ar_op.left);
 
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
-                printf("+");
+                printf("PLUS(");
+                printArExpr(arExpr->attr.ar_op.left);
+                printf(" ");
+                printArExpr(arExpr->attr.ar_op.right);
+                printf(")");
                 break;
             case MINUS:
-                printf("-");
+                printf("MINUS(");
+                printArExpr(arExpr->attr.ar_op.left);
+                printf(" ");
+                printArExpr(arExpr->attr.ar_op.right);
+                printf(")");
                 break;
             case TIMES:
-                printf("*");
+                printf("TIMES(");
+                printArExpr(arExpr->attr.ar_op.left);
+                printf(" ");
+                printArExpr(arExpr->attr.ar_op.right);
+                printf(")");
                 break;
             case DIV:
-                printf("/");
+                printf("DIV(");
+                printArExpr(arExpr->attr.ar_op.left);
+                printf(" ");
+                printArExpr(arExpr->attr.ar_op.right);
+                printf(")");
                 break;
             case MOD:
-                printf("%%");
+                printf("MOD(");
+                printArExpr(arExpr->attr.ar_op.left);
+                printf(" ");
+                printArExpr(arExpr->attr.ar_op.right);
+                printf(")");
                 break;
             default: yyerror("Unkown arithmetic operator");
         }
-
-        printArExpr(arExpr->attr.ar_op.right);
-        // printf(")");
     }
 }
 
@@ -48,33 +63,52 @@ void printBoolExpr(BoolExpr* boolExpr) {
         yyerror("Null boolean expression");
     }
     else if (boolExpr->tag == BOOL_OP) {
-        printf("(");
-        printArExpr(boolExpr->attr.bool_op.left);
 
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
-                printf(" == ");
+                printf("EQUAL(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             case DIFF:
-                printf(" != ");
+                printf("DIFF(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             case LESS:
-                printf(" < ");
+                printf("LESS(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             case GREATER:
-                printf(" > ");
+                printf("GREATER(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             case LESS_EQUAL:
-                printf(" <= ");
+                printf("LESS_EQUAL(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             case GREATER_EQUAL:
-                printf(" >= ");
+                printf("GREATER_EQUAL(");
+                printArExpr(boolExpr->attr.bool_op.left);
+                printf(" ");
+                printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
                 break;
             default: yyerror("Unkown boolean operator");
         }
-
-        printArExpr(boolExpr->attr.bool_op.right);
-        printf(")");
     }
 }
 
@@ -98,18 +132,20 @@ void printExpr(Expr* expr) {
 void printDclr(Dclr* dclr) {
     if (dclr == 0) {}
     else if (dclr->kind == DCLR_COMPOUND) {
-        printf("DCLR_COMPOUND(");
+        // printf("DCLR_COMPOUND(");
         printDclr(dclr->attr.dclr_compound.first);
-        printf(" , ");
+        printf(" ");
         printDclr(dclr->attr.dclr_compound.second);
-        printf(")");
+        // printf(")");
     }
     else if (dclr->kind == DCLR_SIMPLE) {
-        printf("%s (%s)", dclr->attr.dclr_simple.id, dclr->attr.dclr_simple.type);
+        printf("DCLR_SIMPLE(%s(%s)", dclr->attr.dclr_simple.type, dclr->attr.dclr_simple.id);
+        printf(")");
     }
     else if (dclr->kind == DCLR_ASSIGNMENT) {
-        printf("%s (%s) = ", dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
+        printf("DCLR_ASSIGN(%s(%s) = ", dclr->attr.dclr_assignment.type, dclr->attr.dclr_assignment.id);
         printExpr(dclr->attr.dclr_assignment.expr);
+        printf(")");
     }
 }
 
@@ -133,33 +169,40 @@ void printStm(Stm* stm) {
         yyerror("Null statement");
     }
     else if (stm->kind == STM_COMPOUND) {
-        printf("COMPOUND_STM(");
+        // printf("COMPOUND_STM(");
         printStm(stm->attr.compound.first);
-        printf(", ");
+        printf(" ");
         printStm(stm->attr.compound.second);
-        printf(")");
+        // printf(")");
     }
     else if (stm->kind == STM_ASSIGNMENT) {
-        printf("ASSIGN_STM(%s", stm->attr.assign.ident);
-        printf(", ");
+        printf("ASSIGN(ID(%s)", stm->attr.assign.ident);
+        printf(" ");
         printExpr(stm->attr.assign.expr);
         printf(")");
     }
     else if (stm->kind == STM_IF_THEN) {
-        printf("IF_THEN(");
+        printf("IF(");
         printExpr(stm->attr.if_then.condition);
-        printf(" , ");
+        printf(") THEN(");
         printStm(stm->attr.if_then.then_branch);
-        printf(")");
+        printf(") END_IF");
     }
     else if (stm->kind == STM_IF_THEN_ELSE) {
-        printf("IF_THEN_ELSE(");
+        printf("IF(");
         printExpr(stm->attr.if_then_else.condition);
-        printf(" , ");
+        printf(") THEN(");
         printStm(stm->attr.if_then_else.then_branch);
-        printf(" , ");
+        printf(") ELSE(");
         printStm(stm->attr.if_then_else.else_branch);
-        printf(")");
+        printf(") END_IF");
+    }
+    else if (stm->kind == STM_WHILE) {
+        printf("WHILE(");
+        printExpr(stm->attr.while_stm.condition);
+        printf(") LOOP(");
+        printStm(stm->attr.while_stm.body);
+        printf(") END_LOOP");
     }
     else if (stm->kind == STM_WITH) {
         printf("WITH(");
@@ -172,18 +215,17 @@ void printStm(Stm* stm) {
         printf(")");
     }
     else if (stm->kind == STM_PROCEDURE) {
-        printf("PROCEDURE(%s", stm->attr.stm_proc.proc_id);
+        printf("PROCEDURE(%s) IS(", stm->attr.stm_proc.proc_id);
         if (stm->attr.stm_proc.dclr != 0) {
-            printf(", ");
             printDclr(stm->attr.stm_proc.dclr);
         }
-        printf(" BEGIN ");
+        printf(" BEGIN(");
         printStm(stm->attr.stm_proc.body);
-        printf(")");
+        printf(")) END_%s", stm->attr.stm_proc.proc_id);
     }
     else if (stm->kind == STM_FUNCTION) {
-        printf("FUNCTION_STM(%s(", stm->attr.stm_func.func_id);
+        printf("FUNCTION(%s(", stm->attr.stm_func.func_id);
         printExpr(stm->attr.stm_func.arg);
-        printf(")");
+        printf("))");
     }
 }
