@@ -23,12 +23,12 @@ Em ada-compiler, os ficheiros a editar são:
 
 ### O que está feito:
 
-Comandos:
-- assigment*
+Comandos (statements):
+- assigment
 - if then else
 - while
-- procedure*
-- function*
+- procedure
+- function
 
 Expressões:
 - aritméticas
@@ -55,8 +55,25 @@ end Main;
 
 Por isso, temos um novo tipo, Dclr, declarações, que pode ser vazio, ou uma lista, que aparece entre `is` e `begin` num Procedure.
 
+#### Function:
+
+As duas funções a implementar (Put e Get) não precisam de devolver nada, por isso são Comandos e não Expressões.
+
+A função Put(argument) faz output do argument, e a função Get(argument) recebe para o argument.
+
+Por exemplo, isto funciona:
+
+```
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+
+procedure Test is
+    x : Integer;
+begin
+    Get (x);
+    Put (x * x);
+end Test;
+```
+
 
 ### O que falta:
 
-- a function é um comando (não devolve nada) porque o prof disse que era esse tipo que queríamos para a função Put, mas a função Get tem de devolver, por isso tem de ser uma expressão(?)
-- estou a tratar as declarações iniciais (`with` e `use`) como se fossem comandos (statements) adicionais. se houver tempo (e não vai haver) podiamos pensar em criar um tipo de statement chamado header ou assim, e meter lá os withs e uses todos
