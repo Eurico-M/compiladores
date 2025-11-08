@@ -4,6 +4,7 @@
 void printArExpr_v2(ArExpr* arExpr, long tabs);
 void printBoolExpr_v2(BoolExpr* boolExpr, long tabs);
 void printExpr_v2(Expr* expr, long tabs);
+void printDclr_v2(Dclr* dclr, long tabs);
 void printStm_v2(Stm* stm, long tabs);
 
 #endif
