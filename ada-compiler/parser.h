@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 57 "parser.bison"
+#line 59 "parser.bison"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,19 +88,20 @@ extern Stm* program;
     TOKEN_ASSIGN = 274,            /* TOKEN_ASSIGN  */
     TOKEN_SEMI = 275,              /* TOKEN_SEMI  */
     TOKEN_COLON = 276,             /* TOKEN_COLON  */
-    TOKEN_IF = 277,                /* TOKEN_IF  */
-    TOKEN_THEN = 278,              /* TOKEN_THEN  */
-    TOKEN_ELSE = 279,              /* TOKEN_ELSE  */
-    TOKEN_WHILE = 280,             /* TOKEN_WHILE  */
-    TOKEN_LOOP = 281,              /* TOKEN_LOOP  */
-    TOKEN_WITH = 282,              /* TOKEN_WITH  */
-    TOKEN_USE = 283,               /* TOKEN_USE  */
-    TOKEN_PROC = 284,              /* TOKEN_PROC  */
-    TOKEN_IS = 285,                /* TOKEN_IS  */
-    TOKEN_BEGIN = 286,             /* TOKEN_BEGIN  */
-    TOKEN_END = 287,               /* TOKEN_END  */
-    TOKEN_LPAREN = 288,            /* TOKEN_LPAREN  */
-    TOKEN_RPAREN = 289             /* TOKEN_RPAREN  */
+    TOKEN_DOT = 277,               /* TOKEN_DOT  */
+    TOKEN_IF = 278,                /* TOKEN_IF  */
+    TOKEN_THEN = 279,              /* TOKEN_THEN  */
+    TOKEN_ELSE = 280,              /* TOKEN_ELSE  */
+    TOKEN_WHILE = 281,             /* TOKEN_WHILE  */
+    TOKEN_LOOP = 282,              /* TOKEN_LOOP  */
+    TOKEN_WITH = 283,              /* TOKEN_WITH  */
+    TOKEN_USE = 284,               /* TOKEN_USE  */
+    TOKEN_PROC = 285,              /* TOKEN_PROC  */
+    TOKEN_IS = 286,                /* TOKEN_IS  */
+    TOKEN_BEGIN = 287,             /* TOKEN_BEGIN  */
+    TOKEN_END = 288,               /* TOKEN_END  */
+    TOKEN_LPAREN = 289,            /* TOKEN_LPAREN  */
+    TOKEN_RPAREN = 290             /* TOKEN_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -120,8 +121,9 @@ union YYSTYPE
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
     Dclr* dclr_val;
+    Pckg* pckg_val;
 
-#line 125 "parser.h"
+#line 127 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

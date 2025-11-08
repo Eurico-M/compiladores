@@ -80,8 +80,8 @@ struct _Stm {
             struct _Expr* condition;
             struct _Stm* body;
         } while_stm;
-        char* with_id;
-        char* use_id;
+        struct _Pckg* pckg_with;
+        struct _Pckg* pckg_use;
         struct {
             char* proc_id;
             struct _Dclr* dclr;
@@ -91,6 +91,20 @@ struct _Stm {
             char* func_id;
             struct _Expr* arg;
         } stm_func;
+    } attr;
+};
+
+struct _Pckg {
+    enum {
+        PCKG_SIMPLE,
+        PCKG_COMPOUND
+    } kind;
+    union {
+        char* pckg_id;
+        struct {
+            struct _Pckg* first;
+            struct _Pckg* second;
+        } compound;
     } attr;
 };
 
@@ -145,6 +159,7 @@ typedef struct _Expr Expr;
 typedef struct _ArExpr ArExpr;
 typedef struct _BoolExpr BoolExpr;
 typedef struct _Dclr Dclr;
+typedef struct _Pckg Pckg;
 
 
 Stm* stm_compound(Stm* first, Stm* second);
@@ -152,8 +167,8 @@ Stm* stm_assign(char* ident, Expr* expr);
 Stm* stm_if_then(Expr* condition, Stm* then_branch);
 Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch);
 Stm* stm_while(Expr* condition, Stm* body);
-Stm* stm_with(char* with_id);
-Stm* stm_use(char* use_id);
+Stm* stm_with(Pckg* pckg_with);
+Stm* stm_use(Pckg* pckg_use);
 Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
 Stm* stm_function(char* func_id, Expr* arg);
 
@@ -174,6 +189,9 @@ BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
 Dclr* dclr_compound(Dclr* first, Dclr* second);
 Dclr* dclr_simple(char* id, char* type);
 Dclr* dclr_assignment(char* id, char* type, Expr* expr);
+
+Pckg* pckg_simple(char* id);
+Pckg* pckg_compound(Pckg* first, Pckg* second);
 
 
 #endif

@@ -32,6 +32,7 @@ int yyline = 1;
 
 ";"       { return TOKEN_SEMI; }
 ":"       { return TOKEN_COLON; }
+"."       { return TOKEN_DOT; }
 if        { return TOKEN_IF; }
 then      { return TOKEN_THEN; }
 else      { return TOKEN_ELSE; }
@@ -47,7 +48,7 @@ is        { return TOKEN_IS; }
 
 \"(.*)\"  { yylval.string_val = strdup(yytext); return TOKEN_STRING; }
 
-[a-zA-Z][a-zA-Z0-9_"."]* { yylval.string_val = strdup(yytext); return TOKEN_ID; }
+[a-zA-Z][a-zA-Z0-9_]* { yylval.string_val = strdup(yytext); return TOKEN_ID; }
 
 [0-9]+"."[0-9]+ { yylval.float_val = atof(yytext); return TOKEN_FLOAT; }
 

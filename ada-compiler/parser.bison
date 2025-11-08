@@ -21,6 +21,7 @@
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
     Dclr* dclr_val;
+    Pckg* pckg_val;
 }
 
 %type <int_val> TOKEN_INT
@@ -34,6 +35,7 @@
 %type <arExpr_val> arExpr
 %type <boolExpr_val> boolExpr
 %type <dclr_val> dclr dclr_list
+%type <pckg_val> pckg pckg_list
 
 
 %token TOKEN_INT TOKEN_FLOAT
@@ -43,7 +45,7 @@
 
 %token TOKEN_EOF
 %token TOKEN_ASSIGN
-%token TOKEN_SEMI TOKEN_COLON
+%token TOKEN_SEMI TOKEN_COLON TOKEN_DOT
 %token TOKEN_IF TOKEN_THEN TOKEN_ELSE
 %token TOKEN_WHILE TOKEN_LOOP
 %token TOKEN_WITH TOKEN_USE
@@ -99,10 +101,10 @@ stm:
     TOKEN_WHILE expr TOKEN_LOOP stm_list TOKEN_END TOKEN_LOOP TOKEN_SEMI {
         $$ = stm_while($2, $4); }
     |
-    TOKEN_WITH TOKEN_ID TOKEN_SEMI {
+    TOKEN_WITH pckg_list TOKEN_SEMI {
         $$ = stm_with($2); }
     |
-    TOKEN_USE TOKEN_ID TOKEN_SEMI {
+    TOKEN_USE pckg_list TOKEN_SEMI {
         $$ = stm_use($2); }
     |
     TOKEN_PROC TOKEN_ID TOKEN_IS dclr_list TOKEN_BEGIN stm_list TOKEN_END TOKEN_ID TOKEN_SEMI {
@@ -187,6 +189,20 @@ boolExpr:
         $$ = bool_expr_operation(GREATER_EQUAL, $1, $3); }
     ;
 
+
+pckg_list:
+    pckg {
+        $$ = $1; }
+    |
+    pckg_list TOKEN_DOT pckg {
+        $$ = pckg_compound($1, $3); }
+    ;
+
+
+pckg:
+    TOKEN_ID {
+        $$ = pckg_simple($1); }
+    ;
 
 %%
 
