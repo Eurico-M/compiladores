@@ -1,4 +1,4 @@
-OBJS = scanner.o parser.o ast.o interpreter.o printAbsTree.o
+OBJS = scanner.o parser.o ast.o interpreter.o printAbsTree.o printASTv2.o
 INTERM = scanner.c parser.c parser.h
 PROGRAM = ./interpreter
 CC = gcc
