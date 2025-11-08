@@ -25,7 +25,7 @@
 
 %type <int_val> TOKEN_INT
 %type <float_val> TOKEN_FLOAT
-%type <string_val> TOKEN_ID
+%type <string_val> TOKEN_ID TOKEN_STRING
 //%type <bool_val> TOKEN_BOOL
 
 %type <stm_val> program
@@ -37,7 +37,7 @@
 
 
 %token TOKEN_INT TOKEN_FLOAT
-%token TOKEN_ID
+%token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
 
