@@ -1,0 +1,35 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Main is
+   X : Integer := 42;
+   Y : String;
+   Z : Boolean;
+   K: Random_Type;
+begin
+   -- Comment
+   Get(X);
+   Put(X % 3);
+
+   -- if-then statement
+   if X = 0 then
+      Put(X + 1);
+      X := 5;
+   end if;
+
+   -- if-then-else statement
+   if X > 3 then
+      Put(100);   -- Example action if X > 3
+   else
+      Put(200);   -- Example action if X <= 3
+   end if;
+
+   -- While loop
+   while X > 0 loop
+      Put(X - 1);
+      Put(X / 7);
+      X := X - 1;
+   end loop;
+
+   -- Although left associative, multiplication and division have priority
+   Put(1 + X * X / 3);
+end Main;
