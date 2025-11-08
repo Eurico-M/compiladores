@@ -17,10 +17,10 @@
     char* string_val;
     //bool bool_val;
     Stm* stm_val;
-    Stm* stm_vals;
     Expr* expr_val;
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
+    Dclr* dclr_val;
 }
 
 %type <int_val> TOKEN_INT
@@ -28,12 +28,13 @@
 %type <string_val> TOKEN_ID
 //%type <bool_val> TOKEN_BOOL
 
-%type <stm_vals> program
-%type <stm_val> stm
-%type <stm_vals> stm_list
+%type <stm_val> program
+%type <stm_val> stm stm_list
 %type <expr_val> expr
 %type <arExpr_val> arExpr
 %type <boolExpr_val> boolExpr
+%type <dclr_val> dclr dclr_list
+
 
 %token TOKEN_INT TOKEN_FLOAT
 %token TOKEN_ID
@@ -89,8 +90,11 @@ stm:
     TOKEN_ID TOKEN_ASSIGN expr TOKEN_SEMI {
         $$ = stm_assign($1, $3); }
     |
+    TOKEN_IF expr TOKEN_THEN stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
+        $$ = stm_if_then($2, $4); }
+    |
     TOKEN_IF expr TOKEN_THEN stm_list TOKEN_ELSE stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
-        $$ = stm_if($2, $4, $6); }
+        $$ = stm_if_then_else($2, $4, $6); }
     |
     TOKEN_WHILE expr TOKEN_LOOP stm_list TOKEN_END TOKEN_LOOP TOKEN_SEMI {
         $$ = stm_while($2, $4); }
@@ -101,13 +105,31 @@ stm:
     TOKEN_USE TOKEN_ID TOKEN_SEMI {
         $$ = stm_use($2); }
     |
-    TOKEN_PROC TOKEN_ID TOKEN_IS TOKEN_BEGIN stm_list TOKEN_END TOKEN_ID TOKEN_SEMI {
-        $$ = stm_procedure($2, $5); }
+    TOKEN_PROC TOKEN_ID TOKEN_IS dclr_list TOKEN_BEGIN stm_list TOKEN_END TOKEN_ID TOKEN_SEMI {
+        $$ = stm_procedure($2, $4, $6); }
     |
     TOKEN_ID TOKEN_LPAREN expr TOKEN_RPAREN TOKEN_SEMI {
         $$ = stm_function($1, $3); }
     ;
 
+
+dclr_list:
+    %empty {}
+    |
+    dclr {
+        $$ = $1; }
+    |
+    dclr_list dclr {
+        $$ = dclr_compound($1, $2); }
+
+
+dclr:
+    TOKEN_ID TOKEN_COLON TOKEN_ID TOKEN_SEMI {
+        $$ = dclr_simple($1, $3); }
+    |
+    TOKEN_ID TOKEN_COLON TOKEN_ID TOKEN_ASSIGN expr TOKEN_SEMI {
+        $$ = dclr_assignment($1, $3, $5); }
+    ;
 
 expr:
     arExpr {

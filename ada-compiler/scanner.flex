@@ -46,6 +46,7 @@ procedure { return TOKEN_PROC; }
 is        { return TOKEN_IS; }
 
 
+
 [a-zA-Z][a-zA-Z0-9_"."]* { yylval.string_val = strdup(yytext); return TOKEN_ID; }
 
 [0-9]+"."[0-9]+ { yylval.float_val = atof(yytext); return TOKEN_FLOAT; }

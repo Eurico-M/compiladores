@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 56 "parser.bison"
+#line 57 "parser.bison"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,10 +115,10 @@ union YYSTYPE
     char* string_val;
     //bool bool_val;
     Stm* stm_val;
-    Stm* stm_vals;
     Expr* expr_val;
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
+    Dclr* dclr_val;
 
 #line 124 "parser.h"
 
