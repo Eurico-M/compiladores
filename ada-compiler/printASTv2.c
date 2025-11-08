@@ -169,6 +169,31 @@ void printDclr_v2(Dclr* dclr, long tabs) {
     }
 }
 
+void printPckg_v2(Pckg* pckg, long tabs) {
+    
+    char tabString[4 * tabs + 1]; 
+
+    for (int i = 0; i < 4 * tabs; i++) {
+        tabString[i] = ' ';
+    }
+
+    tabString[4 * tabs] = '\0';
+
+    if (pckg == 0) {
+        yyerror("Null package");
+    }
+    else if (pckg->kind == PCKG_SIMPLE) {
+        printf("%s", pckg->attr.pckg_id);
+    }
+    else if (pckg->kind == PCKG_COMPOUND) {
+        printf("%s", tabString);
+        printPckg_v2(pckg->attr.compound.first, tabs);
+        printf(".");
+        printPckg_v2(pckg->attr.compound.second, tabs);
+        printf("\n");
+    }
+}
+
 void printStm_v2(Stm* stm, long tabs) {
     
     char tabString[4 * tabs + 1]; 
@@ -209,10 +234,14 @@ void printStm_v2(Stm* stm, long tabs) {
         printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_WITH) {
-        printf("%sWITH(%s)\n", tabString, stm->attr.with_id);
+        printf("%sWITH(\n", tabString);
+        printPckg_v2(stm->attr.pckg_with, tabs + 1);
+        printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_USE) {
-        printf("%sUSE(%s)\n", tabString, stm->attr.use_id);
+        printf("%sUSE(\n", tabString);
+        printPckg_v2(stm->attr.pckg_use, tabs + 1);
+        printf("%s)\n", tabString);
     }
     else if (stm->kind == STM_PROCEDURE) {
         printf("%sPROCEDURE(%s) (\n", tabString, stm->attr.stm_proc.proc_id);
