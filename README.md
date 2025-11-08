@@ -34,6 +34,7 @@ Comandos (statements):
 Expressões:
 - aritméticas
 - booleanas
+- strings
 
 ### Notas:
 
@@ -91,7 +92,15 @@ begin
     Put (x * x);
 end Test;
 ```
+#### Strings:
 
+As strings são simplesmente mais uma expressão, que só pode ser do tipo char*.
+
+Requer trabalho adicional no scanner.flex para remover as aspas.
+
+Ou seja, se o scanner ler `"isto é uma string"` deve guardar no yylval.string_val `isto é uma string`.
+
+Para podermos fazer output de strings com o Get().
 
 ### O que falta:
 
