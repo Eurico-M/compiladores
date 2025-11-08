@@ -1,7 +1,8 @@
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 procedure Test is
-    x : Integer := 41 + 1;
+    x : Integer;
 begin
-    Put (x);
+    Get (x);
+    Put (x * x);
 end Test;

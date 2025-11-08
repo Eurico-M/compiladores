@@ -72,34 +72,35 @@ extern Stm* program;
     TOKEN_INT = 258,               /* TOKEN_INT  */
     TOKEN_FLOAT = 259,             /* TOKEN_FLOAT  */
     TOKEN_ID = 260,                /* TOKEN_ID  */
-    TOKEN_PLUS = 261,              /* TOKEN_PLUS  */
-    TOKEN_MINUS = 262,             /* TOKEN_MINUS  */
-    TOKEN_MULT = 263,              /* TOKEN_MULT  */
-    TOKEN_DIV = 264,               /* TOKEN_DIV  */
-    TOKEN_MOD = 265,               /* TOKEN_MOD  */
-    TOKEN_EQUAL = 266,             /* TOKEN_EQUAL  */
-    TOKEN_DIFF = 267,              /* TOKEN_DIFF  */
-    TOKEN_LESS = 268,              /* TOKEN_LESS  */
-    TOKEN_GREATER = 269,           /* TOKEN_GREATER  */
-    TOKEN_LESS_EQUAL = 270,        /* TOKEN_LESS_EQUAL  */
-    TOKEN_GREATER_EQUAL = 271,     /* TOKEN_GREATER_EQUAL  */
-    TOKEN_EOF = 272,               /* TOKEN_EOF  */
-    TOKEN_ASSIGN = 273,            /* TOKEN_ASSIGN  */
-    TOKEN_SEMI = 274,              /* TOKEN_SEMI  */
-    TOKEN_COLON = 275,             /* TOKEN_COLON  */
-    TOKEN_IF = 276,                /* TOKEN_IF  */
-    TOKEN_THEN = 277,              /* TOKEN_THEN  */
-    TOKEN_ELSE = 278,              /* TOKEN_ELSE  */
-    TOKEN_WHILE = 279,             /* TOKEN_WHILE  */
-    TOKEN_LOOP = 280,              /* TOKEN_LOOP  */
-    TOKEN_WITH = 281,              /* TOKEN_WITH  */
-    TOKEN_USE = 282,               /* TOKEN_USE  */
-    TOKEN_PROC = 283,              /* TOKEN_PROC  */
-    TOKEN_IS = 284,                /* TOKEN_IS  */
-    TOKEN_BEGIN = 285,             /* TOKEN_BEGIN  */
-    TOKEN_END = 286,               /* TOKEN_END  */
-    TOKEN_LPAREN = 287,            /* TOKEN_LPAREN  */
-    TOKEN_RPAREN = 288             /* TOKEN_RPAREN  */
+    TOKEN_STRING = 261,            /* TOKEN_STRING  */
+    TOKEN_PLUS = 262,              /* TOKEN_PLUS  */
+    TOKEN_MINUS = 263,             /* TOKEN_MINUS  */
+    TOKEN_MULT = 264,              /* TOKEN_MULT  */
+    TOKEN_DIV = 265,               /* TOKEN_DIV  */
+    TOKEN_MOD = 266,               /* TOKEN_MOD  */
+    TOKEN_EQUAL = 267,             /* TOKEN_EQUAL  */
+    TOKEN_DIFF = 268,              /* TOKEN_DIFF  */
+    TOKEN_LESS = 269,              /* TOKEN_LESS  */
+    TOKEN_GREATER = 270,           /* TOKEN_GREATER  */
+    TOKEN_LESS_EQUAL = 271,        /* TOKEN_LESS_EQUAL  */
+    TOKEN_GREATER_EQUAL = 272,     /* TOKEN_GREATER_EQUAL  */
+    TOKEN_EOF = 273,               /* TOKEN_EOF  */
+    TOKEN_ASSIGN = 274,            /* TOKEN_ASSIGN  */
+    TOKEN_SEMI = 275,              /* TOKEN_SEMI  */
+    TOKEN_COLON = 276,             /* TOKEN_COLON  */
+    TOKEN_IF = 277,                /* TOKEN_IF  */
+    TOKEN_THEN = 278,              /* TOKEN_THEN  */
+    TOKEN_ELSE = 279,              /* TOKEN_ELSE  */
+    TOKEN_WHILE = 280,             /* TOKEN_WHILE  */
+    TOKEN_LOOP = 281,              /* TOKEN_LOOP  */
+    TOKEN_WITH = 282,              /* TOKEN_WITH  */
+    TOKEN_USE = 283,               /* TOKEN_USE  */
+    TOKEN_PROC = 284,              /* TOKEN_PROC  */
+    TOKEN_IS = 285,                /* TOKEN_IS  */
+    TOKEN_BEGIN = 286,             /* TOKEN_BEGIN  */
+    TOKEN_END = 287,               /* TOKEN_END  */
+    TOKEN_LPAREN = 288,            /* TOKEN_LPAREN  */
+    TOKEN_RPAREN = 289             /* TOKEN_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -120,7 +121,7 @@ union YYSTYPE
     BoolExpr* boolExpr_val;
     Dclr* dclr_val;
 
-#line 124 "parser.h"
+#line 125 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

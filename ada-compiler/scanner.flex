@@ -45,7 +45,7 @@ begin     { return TOKEN_BEGIN; }
 procedure { return TOKEN_PROC; }
 is        { return TOKEN_IS; }
 
-
+\"(.*)\"  { yylval.string_val = strdup(yytext); return TOKEN_STRING; }
 
 [a-zA-Z][a-zA-Z0-9_"."]* { yylval.string_val = strdup(yytext); return TOKEN_ID; }
 
