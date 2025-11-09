@@ -102,6 +102,17 @@ Ou seja, se o scanner ler `"isto é uma string"` deve guardar no yylval.string_v
 
 Para podermos fazer output de strings com o Get().
 
+#### Booleans:
+
+(A implementação dos bools é temporária e não óptima)
+
+O tipo bool pode aparecer sozinho, mas também em expressões do tipo `x = false` ou `y /= true`.
+
+(? Também pode aparecer em expressões lógicas `x > 3 and false`? Será que sim? Alguma vez usamos isto?)
+
+Como os ID estão definidos nas expressões aritméticas, a única forma de obter estas expressões é colocar o tipo bool nas expressões aritméticas.
+
+
 ### O que falta:
 
 Falta alguma coisa?
