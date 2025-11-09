@@ -1,27 +1,26 @@
 
-### Para o Trabalho Prático, usar a pasta ada-compiler.
+### Ficheiros criados/incluidos no Trabalho:
 
-Em ada-compiler, os ficheiros a editar são:
-
+- Makefile - *macro para compilar os ficheiros todos na ordem correcta e ligar o que for necessário*
 - scanner.flex - *tokens de leitura*
-
 - parser.bison - *regras da gramática*
 - ast.h - *definição das estruturas da Árvore Sintática Abstracta (AST)*
 - ast.c - *implementação das funções definidas em ast.h*
-- printAbsTree.c - *funções para imprimir a AST*
-- printAbsTree.h - *declaração das funções (para outros ficheiros poderem importar as funções de impressão)*
-
+- printASTv1.h / printASTv2.h - *declaração das funções (para outros ficheiros poderem importar as funções de impressão)*
+- printASTv1.c / printASTv2.c - *funções para imprimir a AST*
 - interpreter.c - *lê o input e imprime a AST*
 
-- Makefile - *macro para compilar os ficheiros todos na ordem correcta e ligar o que for preciso*
-
-### Para correr isto, é só:
+### Para correr basta fazer:
 
 `$ make`
 
-`$ ./interpreter < test_input.txt`
+`$ make tests`
 
-### O que está feito:
+ou individualmente,
+
+`$ ./interpreter < tests/input1.txt`
+
+### O que está incluido:
 
 ![ast viz](./ada-compiler/flowchart.png)
 
@@ -43,21 +42,22 @@ Expressões:
 #### Assignment:
 
 Há dois tipos de assignment:
-- o assignment no meio do código `x := x + 1`
 - o assignment declarativo `x : Integer := 42`
+- o assignment não declarativo (no meio do código) `x := x + 1`
 
-O assignment no meio do código é um Statement, pode aparecer em qualquer parte do código.
+O assignment não declarativo é um Statement, pode aparecer em qualquer parte do código.
 
-O assignment declarativo só aparece na parte declarativa de um Procedure, entre `is` e `begin`:
+O assignment declarativo só aparece na parte declarativa de um Procedure, entre `is` e `begin`, por exemplo:
 ```
 procedure Main is
   x : Integer := 42
 begin
-  Put(x);
+  Put_Line(x);
 end Main;
 ```
 
-Por isso, temos um novo tipo, Dclr, declarações, que pode ser vazio, ou uma lista, que aparece entre `is` e `begin` num Procedure.
+Por isso, temos um tipo, Dclr, declarações, que pode ser vazio, ou uma lista, que aparece entre `is` e `begin` num Procedure.
+
 
 #### If Then Else:
 
@@ -70,30 +70,21 @@ Stm -> if Exp then Stm else Stm
 
 Ou seja, com a resolução shift do dangling else.
 
+
 #### With, Use:
 
-Para as funções Put e Get temos de incluir dois comandos, `with` e `use`.
+Para as funções Put_Line() e Get_Line() temos de incluir dois comandos, `with` e `use`.
 
-Como estes comandos podem ter como argumento um package do tipo `Package1.Package2.Package3`, temos uma nova estrutura Pckg para construir os Packages com separador `.` (ponto). 
+Como estes comandos podem ter como argumento um package do tipo `Package1.Package2.Package3`, temos uma estrutura Pckg para construir os Packages com separador `.` (ponto). 
+
 
 #### Function:
 
-As duas funções a implementar (Put e Get) não precisam de devolver nada, por isso são Comandos e não Expressões.
+As duas funções a implementar (Put_Line() e Get_Line()) não precisam de devolver nada, por isso são Comandos e não Expressões.
 
-A função Put(argument) faz output do argument, e a função Get(argument) recebe para o argument.
+A função Put_Line(argument) faz output do argument, e a função Get_Line(argument) recebe input para o argument.
 
-Por exemplo, isto funciona:
 
-```
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-
-procedure Test is
-    x : Integer;
-begin
-    Get (x);
-    Put (x * x);
-end Test;
-```
 #### Strings:
 
 As strings são simplesmente mais uma expressão, que tem como atributo um simples char*.
@@ -102,7 +93,8 @@ Requer trabalho adicional no scanner.flex para remover as aspas. Isto porque o F
 
 Ou seja, se o scanner ler `"isto é uma string"` deve guardar no yylval.string_val `isto é uma string`.
 
-Para podermos fazer output de strings com o Get().
+Para podermos fazer output de strings com o Put_Line().
+
 
 #### Booleans:
 
@@ -110,18 +102,10 @@ Para podermos fazer output de strings com o Get().
 
 O tipo bool pode aparecer sozinho, mas também em expressões do tipo `x = false` ou `y /= true`.
 
-(? Também pode aparecer em expressões lógicas `x > 3 and false`? Será que sim? Alguma vez usamos isto?)
-
 Como os ID estão definidos nas expressões aritméticas, a única forma de obter estas expressões é colocar o tipo bool nas expressões aritméticas.
 
-Redefinir ID para estarem numa estrutura à parte? Redefinir expressões lógicas e booleanas?
 
-
-### O que falta:
-
-Falta alguma coisa?
-
-## Docs porreiros:
+## Referências Consultadas:
 
 https://learn.adacore.com/courses/Ada_For_The_CPP_Java_Developer/chapters/04_Statements_Declarations_and_Control_Structures.html
 

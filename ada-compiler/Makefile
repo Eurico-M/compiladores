@@ -17,7 +17,7 @@ $(PROGRAM): $(OBJS)
 clean:
 	rm -f $(PROGRAM) $(OBJS) $(INTERM)
 
-test: $(PROGRAM)
+tests: $(PROGRAM)
 	$(PROGRAM) tests/input1.txt
 	$(PROGRAM) tests/input2.txt
 	$(PROGRAM) tests/input3.txt
