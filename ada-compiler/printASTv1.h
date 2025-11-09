@@ -1,5 +1,5 @@
-#ifndef PRINT_ABS_TREE_H
-#define PRINT_ABS_TREE_H
+#ifndef PRINT_AST_V1_H
+#define PRINT_AST_V1_H
 
 void printArExpr(ArExpr* arExpr);
 void printBoolExpr(BoolExpr* boolExpr);

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "parser.h"
-#include "printAbsTree.h"
+#include "printASTv1.h"
 #include "printASTv2.h"
 
 Stm* program = NULL;
