@@ -24,6 +24,14 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
     else if (arExpr->tag == FLOAT) {
         printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
     }
+    else if (arExpr->tag == BOOLEAN) {
+        if (arExpr->attr.boolean_ent) {
+            printf("%strue\n", tabString);
+        }
+        else {
+            printf("%sfalse\n", tabString);
+        }
+    }
     else if(arExpr->tag == DELIMITED_AR_EXPR) {
         printArExpr_v2(arExpr->attr.delimited_ar_expr, tabs);
     }
@@ -31,36 +39,24 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("%sPLUS(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case MINUS:
                 printf("%sMINUS(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case TIMES:
                 printf("%sTIMES(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case DIV:
                 printf("%sDIV(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case MOD:
                 printf("%sMOD(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown arithmetic operator");
         }
+        printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
+        printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
+        printf("%s)\n", tabString);
     }
 }
 
@@ -74,80 +70,55 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
 
     tabString[4 * tabs] = '\0';
 
-    if (boolExpr == 0) {
-        yyerror("Null boolean expression");
-    }
-    else if(boolExpr->tag == DELIMITED_BOOL_EXPR) {
+    if (boolExpr == 0) {}
+    else if (boolExpr->tag == DELIMITED_BOOL_EXPR) {
         printBoolExpr_v2(boolExpr->attr.delimited_bool_expr, tabs);
     }
     else if (boolExpr->tag == BOOL_OP) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("%sEQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case DIFF:
                 printf("%sDIFF(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case LESS:
                 printf("%sLESS(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case GREATER:
                 printf("%sGREATER(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case LESS_EQUAL:
                 printf("%sLESS_EQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case GREATER_EQUAL:
                 printf("%sGREATER_EQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown boolean operator");
         }
-    } 
+        printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
+        printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
+        printf("%s)\n", tabString);
+    }
     else if (boolExpr->tag == BOOL_OP2) {
         switch (boolExpr->attr.bool_op2.op){
             case AND:
                 printf("%sAND(\n", tabString);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case OR:
                 printf("%sOR(\n", tabString);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case XOR:
                 printf("%sXOR(\n", tabString);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case NOT:
                 printf("%sNOT(\n", tabString);
-                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown boolean operator");
         }
+        printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+        printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
+        printf("%s)\n", tabString);
     }
 }
 

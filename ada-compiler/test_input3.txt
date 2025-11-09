@@ -29,7 +29,7 @@ begin
       Put(X + Z);
    end if;
 
-   if not (X = 5) and (Y = 5) or (Z > 0) then
+   if not (X = true) and (Y = 5) or (Z > 0) then
       Put(Y + Z);
    end if;
 

@@ -15,7 +15,7 @@
     int int_val;
     float float_val;
     char* string_val;
-    //bool bool_val;
+    bool bool_val;
     Stm* stm_val;
     Expr* expr_val;
     ArExpr* arExpr_val;
@@ -27,7 +27,7 @@
 %type <int_val> TOKEN_INT
 %type <float_val> TOKEN_FLOAT
 %type <string_val> TOKEN_ID TOKEN_STRING
-//%type <bool_val> TOKEN_BOOL
+%type <bool_val> TOKEN_BOOL
 
 %type <stm_val> program
 %type <stm_val> stm stm_list
@@ -38,7 +38,7 @@
 %type <pckg_val> pckg pckg_list
 
 
-%token TOKEN_INT TOKEN_FLOAT
+%token TOKEN_INT TOKEN_FLOAT TOKEN_BOOL
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
@@ -158,7 +158,10 @@ arExpr:
     |
     TOKEN_FLOAT {
         $$ = ar_expr_float($1); }
-    |    
+    |
+    TOKEN_BOOL {
+        $$ = ar_expr_boolean($1); }
+    |
     TOKEN_LPAREN arExpr TOKEN_RPAREN {
         $$ = ar_expr_delimited($2); }
     |
@@ -181,7 +184,7 @@ arExpr:
 
 boolExpr:
     TOKEN_LPAREN boolExpr TOKEN_RPAREN {
-    $$ = bool_expr_delimited($2); }
+        $$ = bool_expr_delimited($2); }
     |
     arExpr TOKEN_EQUAL arExpr {
         $$ = bool_expr_operation(EQUAL, $1, $3); }

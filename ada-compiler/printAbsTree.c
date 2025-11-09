@@ -15,6 +15,14 @@ void printArExpr(ArExpr* arExpr) {
     else if (arExpr->tag == FLOAT) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
+    else if (arExpr->tag == BOOLEAN) {
+        if (arExpr->attr.boolean_ent) {
+            printf("TRUE");
+        }
+        else {
+            printf("FALSE");
+        }
+    }
     else if(arExpr->tag == DELIMITED_AR_EXPR) {
         printArExpr(arExpr->attr.delimited_ar_expr);
     }
