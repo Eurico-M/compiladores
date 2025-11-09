@@ -15,6 +15,9 @@ void printArExpr(ArExpr* arExpr) {
     else if (arExpr->tag == FLOAT) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
+    else if(arExpr->tag == DELIMITED_AR_EXPR) {
+        printArExpr(arExpr->attr.delimited_ar_expr);
+    }
     else if (arExpr->tag == AR_OP) {
 
         switch (arExpr->attr.ar_op.op) {
@@ -62,6 +65,9 @@ void printBoolExpr(BoolExpr* boolExpr) {
     if (boolExpr == 0) {
         yyerror("Null boolean expression");
     }
+    else if(boolExpr->tag == DELIMITED_BOOL_EXPR) {
+        printBoolExpr(boolExpr->attr.delimited_bool_expr);
+    }
     else if (boolExpr->tag == BOOL_OP) {
 
         switch (boolExpr->attr.bool_op.op) {
@@ -105,6 +111,34 @@ void printBoolExpr(BoolExpr* boolExpr) {
                 printArExpr(boolExpr->attr.bool_op.left);
                 printf(" ");
                 printArExpr(boolExpr->attr.bool_op.right);
+                printf(")");
+                break;
+            default: yyerror("Unkown boolean operator");
+        }
+    }
+    else if (boolExpr->tag == BOOL_OP2) {
+        switch (boolExpr->attr.bool_op2.op){
+            case AND:
+                printf("AND(");
+                printBoolExpr(boolExpr->attr.bool_op2.left);
+                printBoolExpr(boolExpr->attr.bool_op2.right);
+                printf(")");
+                break;
+            case OR:
+                printf("OR(");
+                printBoolExpr(boolExpr->attr.bool_op2.left);
+                printBoolExpr(boolExpr->attr.bool_op2.right);
+                printf(")");
+                break;
+            case XOR:
+                printf("XOR(");
+                printBoolExpr(boolExpr->attr.bool_op2.left);
+                printBoolExpr(boolExpr->attr.bool_op2.right);
+                printf(")");
+                break;
+            case NOT:
+                printf("NOT(");
+                printBoolExpr(boolExpr->attr.bool_op2.right);
                 printf(")");
                 break;
             default: yyerror("Unkown boolean operator");

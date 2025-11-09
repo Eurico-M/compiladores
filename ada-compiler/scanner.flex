@@ -24,11 +24,15 @@ int yyline = 1;
 ")"       { return TOKEN_RPAREN; }
 
 "="       { return TOKEN_EQUAL; }
-"!="      { return TOKEN_DIFF; }
+"/="      { return TOKEN_DIFF; }
 "<"       { return TOKEN_LESS; }
 ">"       { return TOKEN_GREATER; }
 "<="      { return TOKEN_LESS_EQUAL; }
 ">="      { return TOKEN_GREATER_EQUAL; }
+"and"     { return TOKEN_AND; }
+"or"      { return TOKEN_OR; }
+"xor"     { return TOKEN_XOR; }
+"not"     { return TOKEN_NOT; }
 
 ";"       { return TOKEN_SEMI; }
 ":"       { return TOKEN_COLON; }

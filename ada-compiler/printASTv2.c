@@ -24,6 +24,9 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
     else if (arExpr->tag == FLOAT) {
         printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
     }
+    else if(arExpr->tag == DELIMITED_AR_EXPR) {
+        printArExpr_v2(arExpr->attr.delimited_ar_expr, tabs);
+    }
     else if (arExpr->tag == AR_OP) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
@@ -74,6 +77,9 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     if (boolExpr == 0) {
         yyerror("Null boolean expression");
     }
+    else if(boolExpr->tag == DELIMITED_BOOL_EXPR) {
+        printBoolExpr_v2(boolExpr->attr.delimited_bool_expr, tabs);
+    }
     else if (boolExpr->tag == BOOL_OP) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
@@ -86,7 +92,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
                 printf("%sDIFF(\n", tabString);
                 printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
                 printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);;
+                printf("%s)\n", tabString);
                 break;
             case LESS:
                 printf("%sLESS(\n", tabString);
@@ -110,6 +116,34 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
                 printf("%sGREATER_EQUAL(\n", tabString);
                 printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
                 printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            default: yyerror("Unkown boolean operator");
+        }
+    } 
+    else if (boolExpr->tag == BOOL_OP2) {
+        switch (boolExpr->attr.bool_op2.op){
+            case AND:
+                printf("%sAND(\n", tabString);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            case OR:
+                printf("%sOR(\n", tabString);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            case XOR:
+                printf("%sXOR(\n", tabString);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            case NOT:
+                printf("%sNOT(\n", tabString);
+                printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
                 printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown boolean operator");

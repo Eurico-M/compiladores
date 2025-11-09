@@ -41,7 +41,7 @@
 %token TOKEN_INT TOKEN_FLOAT
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
-%token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
 
 %token TOKEN_EOF
 %token TOKEN_ASSIGN
@@ -54,7 +54,11 @@
 %left TOKEN_PLUS TOKEN_MINUS
 %left TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_LPAREN TOKEN_RPAREN
-%left TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%left TOKEN_OR TOKEN_XOR
+%left TOKEN_AND
+%nonassoc TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%right TOKEN_NOT
+
 
 %code requires {
 #include <stdio.h>
@@ -154,6 +158,9 @@ arExpr:
     |
     TOKEN_FLOAT {
         $$ = ar_expr_float($1); }
+    |    
+    TOKEN_LPAREN arExpr TOKEN_RPAREN {
+        $$ = ar_expr_delimited($2); }
     |
     arExpr TOKEN_PLUS arExpr {
         $$ = ar_expr_operation(PLUS, $1, $3); }
@@ -173,6 +180,9 @@ arExpr:
 
 
 boolExpr:
+    TOKEN_LPAREN boolExpr TOKEN_RPAREN {
+    $$ = bool_expr_delimited($2); }
+    |
     arExpr TOKEN_EQUAL arExpr {
         $$ = bool_expr_operation(EQUAL, $1, $3); }
     |
@@ -190,6 +200,18 @@ boolExpr:
     |
     arExpr TOKEN_GREATER_EQUAL arExpr {
         $$ = bool_expr_operation(GREATER_EQUAL, $1, $3); }
+    |
+    boolExpr TOKEN_AND boolExpr {
+        $$ = bool_expr_operation2(AND, $1, $3); }
+    |
+    boolExpr TOKEN_OR boolExpr {
+        $$ = bool_expr_operation2(OR, $1, $3); }
+    |
+    boolExpr TOKEN_XOR boolExpr {
+        $$ = bool_expr_operation2(XOR, $1, $3); }
+    |
+    TOKEN_NOT boolExpr {
+        $$ = bool_expr_operation2(NOT, NULL, $2); }
     ;
 
 
