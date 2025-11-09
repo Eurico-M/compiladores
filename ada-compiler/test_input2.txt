@@ -2,11 +2,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main is
    X : Integer := 42;
-   Y : String;
-   Z : Boolean;
-   K: Random_Type;
+   Y : String := "Hello";
+   Z : Boolean := false;
 begin
-   -- Comment
    Get(X);
    Put(X % 3);
 
