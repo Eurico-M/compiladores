@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include "ast.h"
 
@@ -145,6 +144,7 @@ ArExpr* ar_expr_boolean(bool bool_ent) {
 }
 
 // Boolean Expressions
+
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
     node->tag = DELIMITED_BOOL_EXPR;
@@ -169,7 +169,6 @@ BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right) {
     node->attr.bool_op2.right = right;
     return node;
 }
-
 
 // Declarations
 

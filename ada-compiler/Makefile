@@ -18,8 +18,7 @@ clean:
 	rm -f $(PROGRAM) $(OBJS) $(INTERM)
 
 test: $(PROGRAM)
-	$(PROGRAM) example1.txt
-	$(PROGRAM) example2.txt
-	$(PROGRAM) example3.txt
-	$(PROGRAM) example4.txt
+	$(PROGRAM) test_input1.txt
+	$(PROGRAM) test_input2.txt
+	$(PROGRAM) test_input3.txt
 	

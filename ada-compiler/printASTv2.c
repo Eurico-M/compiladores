@@ -52,7 +52,7 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
             case MOD:
                 printf("%sMOD(\n", tabString);
                 break;
-            default: yyerror("Unkown arithmetic operator");
+            default: yyerror("Unkown arithmetic operator(");
         }
         printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
         printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
@@ -94,7 +94,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
             case GREATER_EQUAL:
                 printf("%sGREATER_EQUAL(\n", tabString);
                 break;
-            default: yyerror("Unkown boolean operator");
+            default: yyerror("Unkown boolean operator(");
         }
         printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
         printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
@@ -114,9 +114,12 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
             case NOT:
                 printf("%sNOT(\n", tabString);
                 break;
-            default: yyerror("Unkown boolean operator");
+            default: yyerror("Unkown boolean operator(");
         }
-        printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+
+        if (boolExpr->attr.bool_op2.op != NOT) {
+            printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+        }
         printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
         printf("%s)\n", tabString);
     }
@@ -147,7 +150,7 @@ void printExpr_v2(Expr* expr, long tabs) {
         printf("%s)\n", tabString);
     }
     else if (expr->kind == EXPR_STRING) {
-        printf("%sSTRING(\"%s\")\n)", tabString, expr->attr.string_expr);
+        printf("%sSTRING(\"%s\")\n", tabString, expr->attr.string_expr);
     }
 }
 
