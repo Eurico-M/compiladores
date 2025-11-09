@@ -112,6 +112,8 @@ O tipo bool pode aparecer sozinho, mas também em expressões do tipo `x = false
 
 Como os ID estão definidos nas expressões aritméticas, a única forma de obter estas expressões é colocar o tipo bool nas expressões aritméticas.
 
+Redefinir ID para estarem numa estrutura à parte? Redefinir expressões lógicas e booleanas?
+
 
 ### O que falta:
 
