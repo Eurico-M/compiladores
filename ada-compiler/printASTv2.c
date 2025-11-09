@@ -15,16 +15,16 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
     if (arExpr == 0) {
         yyerror("Null arithmetic expression");
     }
-    else if (arExpr->tag == ID) {
+    else if (arExpr->kind == ID) {
         printf("%sID(%s)\n", tabString, arExpr->attr.id);
     }
-    else if (arExpr->tag == INT) {
+    else if (arExpr->kind == INT) {
         printf("%sINT(%d)\n", tabString, arExpr->attr.int_val);
     }
-    else if (arExpr->tag == FLOAT) {
+    else if (arExpr->kind == FLOAT) {
         printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
     }
-    else if (arExpr->tag == BOOLEAN) {
+    else if (arExpr->kind == BOOLEAN) {
         if (arExpr->attr.boolean_ent) {
             printf("%strue\n", tabString);
         }
@@ -32,10 +32,10 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
             printf("%sfalse\n", tabString);
         }
     }
-    else if(arExpr->tag == DELIMITED_AR_EXPR) {
+    else if(arExpr->kind == DELIMITED_AR_EXPR) {
         printArExpr_v2(arExpr->attr.delimited_ar_expr, tabs);
     }
-    else if (arExpr->tag == AR_OP) {
+    else if (arExpr->kind == AR_OP) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("%sPLUS(\n", tabString);
@@ -71,10 +71,10 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     tabString[4 * tabs] = '\0';
 
     if (boolExpr == 0) {}
-    else if (boolExpr->tag == DELIMITED_BOOL_EXPR) {
+    else if (boolExpr->kind == DELIMITED_BOOL_EXPR) {
         printBoolExpr_v2(boolExpr->attr.delimited_bool_expr, tabs);
     }
-    else if (boolExpr->tag == BOOL_OP) {
+    else if (boolExpr->kind == BOOL_OP) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("%sEQUAL(\n", tabString);
@@ -100,7 +100,7 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
         printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
         printf("%s)\n", tabString);
     }
-    else if (boolExpr->tag == BOOL_OP2) {
+    else if (boolExpr->kind == BOOL_OP2) {
         switch (boolExpr->attr.bool_op2.op){
             case AND:
                 printf("%sAND(\n", tabString);

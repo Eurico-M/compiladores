@@ -6,16 +6,16 @@ void printArExpr(ArExpr* arExpr) {
     if (arExpr == 0) {
         yyerror("Null arithmetic expression");
     }
-    else if (arExpr->tag == ID) {
+    else if (arExpr->kind == ID) {
         printf("ID(%s)", arExpr->attr.id);
     }
-    else if (arExpr->tag == INT) {
+    else if (arExpr->kind == INT) {
         printf("INT(%d)", arExpr->attr.int_val);
     }
-    else if (arExpr->tag == FLOAT) {
+    else if (arExpr->kind == FLOAT) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
-    else if (arExpr->tag == BOOLEAN) {
+    else if (arExpr->kind == BOOLEAN) {
         if (arExpr->attr.boolean_ent) {
             printf("TRUE");
         }
@@ -23,10 +23,10 @@ void printArExpr(ArExpr* arExpr) {
             printf("FALSE");
         }
     }
-    else if(arExpr->tag == DELIMITED_AR_EXPR) {
+    else if(arExpr->kind == DELIMITED_AR_EXPR) {
         printArExpr(arExpr->attr.delimited_ar_expr);
     }
-    else if (arExpr->tag == AR_OP) {
+    else if (arExpr->kind == AR_OP) {
 
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
@@ -57,10 +57,10 @@ void printBoolExpr(BoolExpr* boolExpr) {
     if (boolExpr == 0) {
         yyerror("Null boolean expression");
     }
-    else if(boolExpr->tag == DELIMITED_BOOL_EXPR) {
+    else if(boolExpr->kind == DELIMITED_BOOL_EXPR) {
         printBoolExpr(boolExpr->attr.delimited_bool_expr);
     }
-    else if (boolExpr->tag == BOOL_OP) {
+    else if (boolExpr->kind == BOOL_OP) {
 
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
@@ -88,7 +88,7 @@ void printBoolExpr(BoolExpr* boolExpr) {
             printArExpr(boolExpr->attr.bool_op.right);
             printf(")");
     }
-    else if (boolExpr->tag == BOOL_OP2) {
+    else if (boolExpr->kind == BOOL_OP2) {
         switch (boolExpr->attr.bool_op2.op){
             case AND:
                 printf("AND(");
