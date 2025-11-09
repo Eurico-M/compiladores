@@ -20,41 +20,25 @@ void printArExpr(ArExpr* arExpr) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("PLUS(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case MINUS:
                 printf("MINUS(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case TIMES:
                 printf("TIMES(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case DIV:
                 printf("DIV(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case MOD:
                 printf("MOD(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             default: yyerror("Unkown arithmetic operator");
         }
+        printArExpr(arExpr->attr.ar_op.left);
+        printf(" ");
+        printArExpr(arExpr->attr.ar_op.right);
+        printf(")");
     }
 }
 
@@ -67,48 +51,66 @@ void printBoolExpr(BoolExpr* boolExpr) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case DIFF:
                 printf("DIFF(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case LESS:
                 printf("LESS(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case GREATER:
                 printf("GREATER(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case LESS_EQUAL:
                 printf("LESS_EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case GREATER_EQUAL:
                 printf("GREATER_EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             default: yyerror("Unkown boolean operator");
         }
+        printArExpr(boolExpr->attr.bool_op.left);
+        printf(" ");
+        printArExpr(boolExpr->attr.bool_op.right);
+        printf(")");
+    }
+}
+
+void printLogExpr(LogExpr* logExpr) {
+    if (logExpr == 0) {
+        yyerror("Null logic expression");
+    }
+    else if (logExpr->tag == LOG_BOOL) {
+        printf("BOOLEAN_EXPRESSION(");
+        printBoolExpr(logExpr->attr.boolExpr);
+        printf(")");
+    }
+    else if (logExpr->tag == LOG_UNARY) {
+        switch (logExpr->attr.unary_op.op) {
+            case L_NOT:
+                printf("NOT(");
+                printLogExpr(logExpr->attr.unary_op.unary);
+                break;
+            default:  yyerror("Unknown logical operator");
+        }
+    }
+    else if (logExpr->tag == LOG_OP) {
+        switch(logExpr->attr.op_log.op) {
+            case L_AND:
+                printf("AND(");
+                break;
+            case L_OR:
+                printf("OR(");
+                break;
+            case L_XOR:
+                printf("XOR(");
+                break;
+            default: yyerror("Unkown logical operator");
+        }
+        printLogExpr(logExpr->attr.op_log.left);
+        printf(" ");
+        printLogExpr(logExpr->attr.op_log.right);
+        printf(")");
     }
 }
 
@@ -122,9 +124,9 @@ void printExpr(Expr* expr) {
         printArExpr(expr->attr.ar_expr);
         printf(")");
     }
-    else if (expr->kind == EXPR_BOOLEAN) {
-        printf("BOOLEAN_EXPRESSION(");
-        printBoolExpr(expr->attr.bool_expr);
+    else if (expr->kind == EXPR_LOGIC) {
+        printf("LOGIC_EXPRESSION(");
+        printLogExpr(expr->attr.log_expr);
         printf(")");
     }
     else if (expr->kind == EXPR_STRING) {

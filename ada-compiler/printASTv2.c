@@ -28,36 +28,24 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("%sPLUS(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case MINUS:
                 printf("%sMINUS(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case TIMES:
                 printf("%sTIMES(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case DIV:
                 printf("%sDIV(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case MOD:
                 printf("%sMOD(\n", tabString);
-                printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
-                printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown arithmetic operator");
         }
+        printArExpr_v2(arExpr->attr.ar_op.left, tabs + 1);
+        printArExpr_v2(arExpr->attr.ar_op.right, tabs + 1);
+        printf("%s)\n", tabString);
     }
 }
 
@@ -78,45 +66,76 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("%sEQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case DIFF:
                 printf("%sDIFF(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);;
                 break;
             case LESS:
                 printf("%sLESS(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case GREATER:
                 printf("%sGREATER(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case LESS_EQUAL:
                 printf("%sLESS_EQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             case GREATER_EQUAL:
                 printf("%sGREATER_EQUAL(\n", tabString);
-                printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-                printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
-                printf("%s)\n", tabString);
                 break;
             default: yyerror("Unkown boolean operator");
         }
+        printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
+        printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
+        printf("%s)\n", tabString);
     }
 }
 
+void printLogExpr_v2(LogExpr* logExpr, long tabs) {
+
+    char tabString[4 * tabs + 1];
+
+    for (int i = 0; i < 4 * tabs; i++) {
+        tabString[i] = ' ';
+    }
+
+    tabString[4 * tabs] = '\0';
+
+    if (logExpr == 0) {
+        yyerror("Null logic expression");
+    }
+    else if (logExpr->tag == LOG_BOOL) {
+        printf("%sBOOLEAN_EXPRESSION(\n", tabString);
+        printBoolExpr_v2(logExpr->attr.boolExpr, tabs + 1);
+        printf("%s)\n", tabString);
+    }
+    else if (logExpr->tag == LOG_UNARY) {
+        switch (logExpr->attr.unary_op.op) {
+            case L_NOT:
+                printf("%sNOT(\n", tabString);
+                break;
+            default: yyerror("Unkown logical operator");
+        }
+        printLogExpr_v2(logExpr->attr.unary_op.unary, tabs + 1);
+        printf("%s)\n", tabString);
+    }
+    else if (logExpr->tag == LOG_OP) {
+        switch (logExpr->attr.op_log.op) {
+            case L_AND:
+                printf("%sAND(\n", tabString);
+                break;
+            case L_OR:
+                printf("%sNOT(\n", tabString);
+                break;
+            case L_XOR:
+                printf("%sXOR(\n", tabString);
+                break;
+            default: yyerror("Unknown logical operator");
+        }
+        printLogExpr_v2(logExpr->attr.op_log.left, tabs + 1);
+        printLogExpr_v2(logExpr->attr.op_log.right, tabs + 1);
+        printf("%s)", tabString);
+    }
+}
 
 void printExpr_v2(Expr* expr, long tabs) {
 
@@ -136,9 +155,9 @@ void printExpr_v2(Expr* expr, long tabs) {
         printArExpr_v2(expr->attr.ar_expr, tabs + 1);
         printf("%s)\n", tabString);
     }
-    else if (expr->kind == EXPR_BOOLEAN) {
-        printf("%sBOOLEAN_EXPRESSION(\n", tabString);
-        printBoolExpr_v2(expr->attr.bool_expr, tabs + 1);
+    else if (expr->kind == EXPR_LOGIC) {
+        printf("%sLOGIC_EXPRESSION(\n", tabString);
+        printLogExpr_v2(expr->attr.log_expr, tabs + 1);
         printf("%s)\n", tabString);
     }
     else if (expr->kind == EXPR_STRING) {

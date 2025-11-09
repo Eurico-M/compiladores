@@ -20,6 +20,7 @@
     Expr* expr_val;
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
+    LogExpr* logExpr_val;
     Dclr* dclr_val;
     Pckg* pckg_val;
 }
@@ -34,6 +35,7 @@
 %type <expr_val> expr
 %type <arExpr_val> arExpr
 %type <boolExpr_val> boolExpr
+%type <logExpr_val> logExpr
 %type <dclr_val> dclr dclr_list
 %type <pckg_val> pckg pckg_list
 
@@ -42,6 +44,7 @@
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%token TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
 
 %token TOKEN_EOF
 %token TOKEN_ASSIGN
@@ -55,6 +58,7 @@
 %left TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_LPAREN TOKEN_RPAREN
 %left TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL
+%left TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
 
 %code requires {
 #include <stdio.h>
@@ -133,12 +137,13 @@ dclr:
         $$ = dclr_assignment($1, $3, $5); }
     ;
 
+
 expr:
     arExpr {
         $$ = expr_arithmetic($1); }
     |
-    boolExpr {
-        $$ = expr_boolean($1); }
+    logExpr {
+        $$ = expr_logic($1); }
     |
     TOKEN_STRING {
         $$ = expr_string($1); }
@@ -169,6 +174,24 @@ arExpr:
     |
     arExpr TOKEN_MOD arExpr {
         $$ = ar_expr_operation(MOD, $1, $3); }
+    ;
+
+
+logExpr:
+    boolExpr {
+        $$ = log_bool($1); }
+    |
+    logExpr TOKEN_AND logExpr {
+        $$ = log_operation(L_AND, $1, $3); }
+    |
+    logExpr TOKEN_OR logExpr {
+        $$ = log_operation(L_OR, $1, $3); }
+    |
+    logExpr TOKEN_XOR logExpr {
+        $$ = log_operation(L_XOR, $1, $3); }
+    |
+    TOKEN_NOT logExpr {
+        $$ = log_unary(L_NOT, $2); }
     ;
 
 

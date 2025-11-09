@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 59 "parser.bison"
+#line 63 "parser.bison"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,24 +84,28 @@ extern Stm* program;
     TOKEN_GREATER = 270,           /* TOKEN_GREATER  */
     TOKEN_LESS_EQUAL = 271,        /* TOKEN_LESS_EQUAL  */
     TOKEN_GREATER_EQUAL = 272,     /* TOKEN_GREATER_EQUAL  */
-    TOKEN_EOF = 273,               /* TOKEN_EOF  */
-    TOKEN_ASSIGN = 274,            /* TOKEN_ASSIGN  */
-    TOKEN_SEMI = 275,              /* TOKEN_SEMI  */
-    TOKEN_COLON = 276,             /* TOKEN_COLON  */
-    TOKEN_DOT = 277,               /* TOKEN_DOT  */
-    TOKEN_IF = 278,                /* TOKEN_IF  */
-    TOKEN_THEN = 279,              /* TOKEN_THEN  */
-    TOKEN_ELSE = 280,              /* TOKEN_ELSE  */
-    TOKEN_WHILE = 281,             /* TOKEN_WHILE  */
-    TOKEN_LOOP = 282,              /* TOKEN_LOOP  */
-    TOKEN_WITH = 283,              /* TOKEN_WITH  */
-    TOKEN_USE = 284,               /* TOKEN_USE  */
-    TOKEN_PROC = 285,              /* TOKEN_PROC  */
-    TOKEN_IS = 286,                /* TOKEN_IS  */
-    TOKEN_BEGIN = 287,             /* TOKEN_BEGIN  */
-    TOKEN_END = 288,               /* TOKEN_END  */
-    TOKEN_LPAREN = 289,            /* TOKEN_LPAREN  */
-    TOKEN_RPAREN = 290             /* TOKEN_RPAREN  */
+    TOKEN_AND = 273,               /* TOKEN_AND  */
+    TOKEN_OR = 274,                /* TOKEN_OR  */
+    TOKEN_XOR = 275,               /* TOKEN_XOR  */
+    TOKEN_NOT = 276,               /* TOKEN_NOT  */
+    TOKEN_EOF = 277,               /* TOKEN_EOF  */
+    TOKEN_ASSIGN = 278,            /* TOKEN_ASSIGN  */
+    TOKEN_SEMI = 279,              /* TOKEN_SEMI  */
+    TOKEN_COLON = 280,             /* TOKEN_COLON  */
+    TOKEN_DOT = 281,               /* TOKEN_DOT  */
+    TOKEN_IF = 282,                /* TOKEN_IF  */
+    TOKEN_THEN = 283,              /* TOKEN_THEN  */
+    TOKEN_ELSE = 284,              /* TOKEN_ELSE  */
+    TOKEN_WHILE = 285,             /* TOKEN_WHILE  */
+    TOKEN_LOOP = 286,              /* TOKEN_LOOP  */
+    TOKEN_WITH = 287,              /* TOKEN_WITH  */
+    TOKEN_USE = 288,               /* TOKEN_USE  */
+    TOKEN_PROC = 289,              /* TOKEN_PROC  */
+    TOKEN_IS = 290,                /* TOKEN_IS  */
+    TOKEN_BEGIN = 291,             /* TOKEN_BEGIN  */
+    TOKEN_END = 292,               /* TOKEN_END  */
+    TOKEN_LPAREN = 293,            /* TOKEN_LPAREN  */
+    TOKEN_RPAREN = 294             /* TOKEN_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -120,10 +124,11 @@ union YYSTYPE
     Expr* expr_val;
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
+    LogExpr* logExpr_val;
     Dclr* dclr_val;
     Pckg* pckg_val;
 
-#line 127 "parser.h"
+#line 132 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

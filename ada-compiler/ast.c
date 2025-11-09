@@ -84,10 +84,10 @@ Expr* expr_arithmetic(ArExpr* ar_expr) {
     return node;
 }
 
-Expr* expr_boolean(BoolExpr* bool_expr) {
+Expr* expr_logic(LogExpr* log_expr) {
     Expr* node = (Expr*) malloc(sizeof(Expr));
-    node->kind = EXPR_BOOLEAN;
-    node->attr.bool_expr = bool_expr;
+    node->kind = EXPR_LOGIC;
+    node->attr.log_expr = log_expr;
     return node;
 }
 
@@ -138,6 +138,32 @@ BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
     node->attr.bool_op.op = op;
     node->attr.bool_op.left = left;
     node->attr.bool_op.right = right;
+    return node;
+}
+
+// Logic Expressions
+
+LogExpr* log_bool(BoolExpr* boolExpr) {
+    LogExpr* node = (LogExpr*) malloc(sizeof(LogExpr));
+    node->tag = LOG_BOOL;
+    node->attr.boolExpr = boolExpr;
+    return node;
+}
+
+LogExpr* log_operation(log_op op, LogExpr* left, LogExpr* right) {
+    LogExpr* node = (LogExpr*) malloc(sizeof(LogExpr));
+    node->tag = LOG_OP;
+    node->attr.op_log.op = op;
+    node->attr.op_log.left = left;
+    node->attr.op_log.right = right;
+    return node;
+}
+
+LogExpr* log_unary(log_un op, LogExpr* unary) {
+    LogExpr* node = (LogExpr*) malloc(sizeof(LogExpr));
+    node->tag = LOG_UNARY;
+    node->attr.unary_op.op = op;
+    node->attr.unary_op.unary = unary;
     return node;
 }
 

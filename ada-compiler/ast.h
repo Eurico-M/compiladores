@@ -3,7 +3,6 @@
 #define __ast_h__
 
 // Expressões Aritméticas
-
 typedef enum {PLUS, MINUS, TIMES, DIV, MOD} ar_op;
 struct _ArExpr {
     enum {
@@ -25,7 +24,6 @@ struct _ArExpr {
 };
 
 // Expressões Booleanas
-
 typedef enum {EQUAL, DIFF, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL} bool_op;
 struct _BoolExpr {
     enum {
@@ -44,8 +42,30 @@ struct _BoolExpr {
     } attr;
 };
 
-// Statements
+// Expressões Lógicas
+typedef enum {L_AND, L_OR, L_XOR} log_op;
+typedef enum {L_NOT} log_un;
+struct _LogExpr {
+    enum {
+        LOG_OP,
+        LOG_UNARY,
+        LOG_BOOL
+    } tag;
+    union {
+        struct {
+            log_op op;
+            struct _LogExpr* left;
+            struct _LogExpr* right;
+        } op_log;
+        struct {
+            log_un op;
+            struct _LogExpr* unary;
+        } unary_op;
+        struct _BoolExpr* boolExpr;
+    } attr;
+};
 
+// Statements
 struct _Stm {
     enum {
         STM_COMPOUND,
@@ -94,6 +114,7 @@ struct _Stm {
     } attr;
 };
 
+// Packages
 struct _Pckg {
     enum {
         PCKG_SIMPLE,
@@ -109,7 +130,6 @@ struct _Pckg {
 };
 
 // Declarações
-
 struct _Dclr {
     enum {
         DCLR_COMPOUND,
@@ -134,16 +154,15 @@ struct _Dclr {
 };
 
 // Expressões
-
 struct _Expr {
     enum {
         EXPR_ARITHMETIC,
-        EXPR_BOOLEAN,
+        EXPR_LOGIC,
         EXPR_STRING
     } kind;
     union {
         struct _ArExpr* ar_expr;
-        struct _BoolExpr* bool_expr;
+        struct _LogExpr* log_expr;
         char* string_expr;
     } attr;
 };
@@ -153,6 +172,7 @@ typedef struct _Stm Stm;
 typedef struct _Expr Expr;
 typedef struct _ArExpr ArExpr;
 typedef struct _BoolExpr BoolExpr;
+typedef struct _LogExpr LogExpr;
 typedef struct _Dclr Dclr;
 typedef struct _Pckg Pckg;
 
@@ -168,7 +188,7 @@ Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
 Stm* stm_function(char* func_id, Expr* arg);
 
 Expr* expr_arithmetic(ArExpr* ar_expr);
-Expr* expr_boolean(BoolExpr* bool_expr);
+Expr* expr_logic(LogExpr* log_expr);
 Expr* expr_string(char* string_expr);
 
 ArExpr* ar_expr_identifier(char* id);
@@ -177,6 +197,10 @@ ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
 
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
+
+LogExpr* log_bool(BoolExpr* boolExpr);
+LogExpr* log_operation(log_op op, LogExpr* left, LogExpr* right);
+LogExpr* log_unary(log_un op, LogExpr* unary);
 
 Dclr* dclr_compound(Dclr* first, Dclr* second);
 Dclr* dclr_simple(char* id, char* type);
