@@ -6,31 +6,31 @@ procedure Test_Bools is
 begin
    -- Simple AND
    if X > 0 and Y < 10 then
-      Put(X);
+      Put_Line(X);
    end if;
 
    -- Simple OR
    if (X = 5) or Y = 3 then
-      Put(Y);
+      Put_Line(Y);
    end if;
 
    -- XOR
    if X = 5 xor Z = 7 then
-      Put(Z);
+      Put_Line(Z);
    end if;
 
    -- NOT
    if not X = 0 then
-      Put(X + Y);
+      Put_Line(X + Y);
    end if;
 
    -- Combined boolean operators to test associativity
    if (X > 0 and Y < 10) or Z = 5 then
-      Put(X + Z);
+      Put_Line(X + Z);
    end if;
 
    if not (X = true) and (Y = 5) or (Z > 0) then
-      Put(Y + Z);
+      Put_Line(Y + Z);
    end if;
 
 end Test_Bools;

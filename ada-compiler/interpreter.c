@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     
+    printf("\n");
     printf("+ Abstract Syntax Tree v1 +\n\n");
     printStm(program);
     printf("\n\n\n");
