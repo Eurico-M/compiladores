@@ -23,6 +23,8 @@ Em ada-compiler, os ficheiros a editar são:
 
 ### O que está feito:
 
+![ast viz](./ada-compiler/flowchart.png)
+
 Comandos (statements):
 - assigment
 - if then else
