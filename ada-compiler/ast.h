@@ -10,12 +10,14 @@ struct _ArExpr {
         ID,
         INT,
         FLOAT,
+        DELIMITED_AR_EXPR,
         AR_OP
     } tag;
     union {
         char* id;
         int int_val;
         float float_val;
+        struct _ArExpr* delimited_ar_expr;
         struct {
             ar_op op;
             struct _ArExpr* left;
@@ -26,21 +28,29 @@ struct _ArExpr {
 
 // Expressões Booleanas
 
-typedef enum {EQUAL, DIFF, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL} bool_op;
+typedef enum {EQUAL, DIFF, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL, AND, OR, XOR, NOT} bool_op;
 struct _BoolExpr {
     enum {
         // ID,
         // BOOL,
-        BOOL_OP
+        DELIMITED_BOOL_EXPR,
+        BOOL_OP,
+        BOOL_OP2
     } tag;
     union {
         // char* id;
         // bool boolean;
+        struct _BoolExpr* delimited_bool_expr;
         struct {
             bool_op op;
             struct _ArExpr* left;
             struct _ArExpr* right;
         } bool_op;
+        struct {
+            bool_op op;
+            struct _BoolExpr* left;
+            struct _BoolExpr* right;
+        } bool_op2;
     } attr;
 };
 
@@ -174,9 +184,12 @@ Expr* expr_string(char* string_expr);
 ArExpr* ar_expr_identifier(char* id);
 ArExpr* ar_expr_integer(int int_val);
 ArExpr* ar_expr_float(float float_val);
+ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
 
+BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
+BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right);
 
 Dclr* dclr_compound(Dclr* first, Dclr* second);
 Dclr* dclr_simple(char* id, char* type);

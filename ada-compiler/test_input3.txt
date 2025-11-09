@@ -1,0 +1,36 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
+procedure Test_Bools is
+   X : Integer := 5;
+   Y : Integer := 3;
+begin
+   -- Simple AND
+   if X > 0 and Y < 10 then
+      Put(X);
+   end if;
+
+   -- Simple OR
+   if (X = 5) or Y = 3 then
+      Put(Y);
+   end if;
+
+   -- XOR
+   if X = 5 xor Z = 7 then
+      Put(Z);
+   end if;
+
+   -- NOT
+   if not X = 0 then
+      Put(X + Y);
+   end if;
+
+   -- Combined boolean operators to test associativity
+   if (X > 0 and Y < 10) or Z = 5 then
+      Put(X + Z);
+   end if;
+
+   if not (X = 5) and (Y = 5) or (Z > 0) then
+      Put(Y + Z);
+   end if;
+
+end Test_Bools;
