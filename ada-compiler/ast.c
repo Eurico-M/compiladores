@@ -24,6 +24,7 @@ Stm* stm_if_then(Expr* condition, Stm* then_branch) {
     node->kind = STM_IF_THEN;
     node->attr.if_then.condition = condition;
     node->attr.if_then.then_branch = then_branch;
+    return node;
 }
 
 Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch) {
