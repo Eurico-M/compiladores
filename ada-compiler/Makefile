@@ -1,6 +1,6 @@
-OBJS = scanner.o parser.o ast.o interpreter.o printAbsTree.o printASTv2.o
+OBJS = scanner.o parser.o ast.o printAbsTree.o printASTv2.o st.o part2.o
 INTERM = scanner.c parser.c parser.h
-PROGRAM = ./interpreter
+PROGRAM = ./part2
 CC = gcc
 
 all: $(PROGRAM)
@@ -22,4 +22,3 @@ test: $(PROGRAM)
 	$(PROGRAM) example2.txt
 	$(PROGRAM) example3.txt
 	$(PROGRAM) example4.txt
-	
