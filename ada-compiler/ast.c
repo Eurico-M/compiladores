@@ -1,6 +1,8 @@
 
 #include <stdlib.h>
+#include <string.h>
 #include "ast.h"
+#include "parser.h"
 
 // Statements
 
@@ -181,11 +183,23 @@ Dclr* dclr_compound(Dclr* first, Dclr* second) {
     return node;
 }
 
+// Função auxiliar para converter "Integer" ou "Real" em ST_INTEGER ou ST_REAL
+st_type string_to_st_type(char* type) {
+    if (strcmp(type, "Integer") == 0) {
+        return ST_INTEGER;
+    }
+    else if (strcmp(type, "Real") == 0) {
+        return ST_REAL;
+    }
+
+    yyerror("unkown type");
+}
+
 Dclr* dclr_simple(char* id, char* type) {
     Dclr* node = (Dclr*) malloc(sizeof(Dclr));
     node->kind = DCLR_SIMPLE;
     node->attr.dclr_simple.id = id;
-    node->attr.dclr_simple.type = type;
+    node->attr.dclr_simple.type = string_to_st_type(type);
     return node;
 }
 
@@ -193,7 +207,7 @@ Dclr* dclr_assignment(char* id, char* type, Expr* expr) {
     Dclr* node = (Dclr*) malloc(sizeof(Dclr));
     node->kind = DCLR_ASSIGNMENT;
     node->attr.dclr_assignment.id = id;
-    node->attr.dclr_assignment.type = type;
+    node->attr.dclr_assignment.type = string_to_st_type(type);
     node->attr.dclr_assignment.expr = expr;
     return node;
 }

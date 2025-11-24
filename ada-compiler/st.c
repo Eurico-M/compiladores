@@ -3,41 +3,41 @@
 #include <stdio.h>
 #include "st.h"
 #include "ast.h"
+#include "parser.h"
+
+char* st_type_to_string(st_type type) {
+    switch (type) {
+        case ST_INTEGER:
+            return "Integer";
+        case ST_REAL:
+            return "Real";
+    }
+}
 
 void st_print(st_node* head) {
     st_node* cursor = head;
     while (cursor != NULL) {
-        printf("ID: %s, TYPE: ", cursor->id);
-        switch (cursor->type) {
-            case ST_INTEGER:
-                printf("Integer, VALUE: %d", cursor->value.integer_value);
-            case ST_REAL:
-                printf("Real, VALUE: %f", cursor->value.real_value);
-        }
-
+        printf("ID: %s, TYPE: %s", cursor->id, st_type_to_string(cursor->type));
     }
 }
 
-st_node* st_insert_integer(st_node* head, char* id, int value) {
+st_node* st_insert(st_node* head, char* id, st_type type) {
     st_node* new_node = (st_node*) malloc(sizeof(st_node));
     new_node->id = strdup(id);
-    new_node->type = ST_INTEGER;
-    new_node->value.integer_value = value;
+    new_node->type = type;
     new_node->next = head;
     return new_node;
 }
 
-char* st_search(st_node* head, char* id) {
+st_type st_search(st_node* head, char* id) {
     st_node* cursor = head;
     while (cursor != NULL) {
         if (strcmp(cursor->id, id) == 0) {
-            switch (cursor->type) {
-                case ST_INTEGER:
-            }
+            return cursor->type;
         }
         cursor = cursor->next;
     }
-    return "invalid type";
+    yyerror("undeclared variable");
 }
 
 void st_build_dclr(Dclr* dclr, st_node* head) {
