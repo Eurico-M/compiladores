@@ -4,17 +4,25 @@
 #include "st.h"
 #include "ast.h"
 
-void print_st(st_node* head) {
+void st_print(st_node* head) {
     st_node* cursor = head;
     while (cursor != NULL) {
-        printf("ID: %s -> TYPE: %s", cursor->id, cursor->type);
+        printf("ID: %s, TYPE: ", cursor->id);
+        switch (cursor->type) {
+            case ST_INTEGER:
+                printf("Integer, VALUE: %d", cursor->value.integer_value);
+            case ST_REAL:
+                printf("Real, VALUE: %f", cursor->value.real_value);
+        }
+
     }
 }
 
-st_node* st_insert(st_node* head, char* id, char* type) {
+st_node* st_insert_integer(st_node* head, char* id, int value) {
     st_node* new_node = (st_node*) malloc(sizeof(st_node));
     new_node->id = strdup(id);
-    new_node->type = strdup(type);
+    new_node->type = ST_INTEGER;
+    new_node->value.integer_value = value;
     new_node->next = head;
     return new_node;
 }
@@ -23,7 +31,9 @@ char* st_search(st_node* head, char* id) {
     st_node* cursor = head;
     while (cursor != NULL) {
         if (strcmp(cursor->id, id) == 0) {
-            return cursor->type;
+            switch (cursor->type) {
+                case ST_INTEGER:
+            }
         }
         cursor = cursor->next;
     }

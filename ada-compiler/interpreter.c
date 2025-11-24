@@ -2,8 +2,10 @@
 #include "parser.h"
 #include "printAbsTree.h"
 #include "printASTv2.h"
+#include "st.h"
 
 Stm* program = NULL;
+st_node* head = NULL;
 long tabs = 0;
 
 int main(int argc, char** argv) {
@@ -27,13 +29,16 @@ int main(int argc, char** argv) {
         printf("program NULL after parse\n");
         return 1;
     }
-    
+
     printf("+ Abstract Syntax Tree v1 +\n\n");
     printStm(program);
     printf("\n\n\n");
     printf("+ Abstract Syntax Tree v2 +\n\n");
     printStm_v2(program, tabs);
     printf("\n");
+
+    st_build_stm(program, head);
+    st_print(head);
 
     return 0;
 }
