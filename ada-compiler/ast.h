@@ -1,4 +1,3 @@
-
 #ifndef __ast_h__
 #define __ast_h__
 
@@ -14,7 +13,7 @@ struct _ArExpr {
         BOOLEAN,
         DELIMITED_AR_EXPR,
         AR_OP
-    } tag;
+    } kind;
     union {
         char* id;
         int int_val;
@@ -38,7 +37,7 @@ struct _BoolExpr {
         DELIMITED_BOOL_EXPR,
         BOOL_OP,
         BOOL_OP2
-    } tag;
+    } kind;
     union {
         // char* id;
         struct _BoolExpr* delimited_bool_expr;
@@ -200,6 +199,5 @@ Dclr* dclr_assignment(char* id, char* type, Expr* expr);
 
 Pckg* pckg_simple(char* id);
 Pckg* pckg_compound(Pckg* first, Pckg* second);
-
 
 #endif

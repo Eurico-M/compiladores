@@ -1,4 +1,4 @@
-OBJS = scanner.o parser.o ast.o printAbsTree.o printASTv2.o st.o interpreter.o
+OBJS = scanner.o parser.o ast.o interpreter.o printASTv1.o printASTv2.o
 INTERM = scanner.c parser.c parser.h
 PROGRAM = ./interpreter
 CC = gcc
@@ -17,8 +17,8 @@ $(PROGRAM): $(OBJS)
 clean:
 	rm -f $(PROGRAM) $(OBJS) $(INTERM)
 
-test: $(PROGRAM)
-	$(PROGRAM) example1.txt
-	$(PROGRAM) example2.txt
-	$(PROGRAM) example3.txt
-	$(PROGRAM) example4.txt
+tests: $(PROGRAM)
+	$(PROGRAM) tests/input1.txt
+	$(PROGRAM) tests/input2.txt
+	$(PROGRAM) tests/input3.txt
+	

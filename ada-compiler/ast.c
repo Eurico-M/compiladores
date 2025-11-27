@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <string.h>
 #include "ast.h"
@@ -27,6 +26,7 @@ Stm* stm_if_then(Expr* condition, Stm* then_branch) {
     node->kind = STM_IF_THEN;
     node->attr.if_then.condition = condition;
     node->attr.if_then.then_branch = then_branch;
+    return node;
 }
 
 Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch) {
@@ -104,35 +104,35 @@ Expr* expr_string(char* string_expr) {
 
 ArExpr* ar_expr_identifier(char* id) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = ID;
+    node->kind = ID;
     node->attr.id = id;
     return node;
 }
 
 ArExpr* ar_expr_integer(int int_val) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = INT;
+    node->kind = INT;
     node->attr.int_val = int_val;
     return node;
 }
 
 ArExpr* ar_expr_float(float float_val) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = FLOAT;
+    node->kind = FLOAT;
     node->attr.float_val = float_val;
     return node;
 }
 
 ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = DELIMITED_AR_EXPR;
+    node->kind = DELIMITED_AR_EXPR;
     node->attr.delimited_ar_expr = delimited_ar_expr;
     return node;
 }
 
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = AR_OP;
+    node->kind = AR_OP;
     node->attr.ar_op.op = op;
     node->attr.ar_op.left = left;
     node->attr.ar_op.right = right;
@@ -141,22 +141,23 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
 
 ArExpr* ar_expr_boolean(bool bool_ent) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->tag = BOOLEAN;
+    node->kind = BOOLEAN;
     node->attr.boolean_ent = bool_ent;
     return node;
 }
 
 // Boolean Expressions
+
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-    node->tag = DELIMITED_BOOL_EXPR;
+    node->kind = DELIMITED_BOOL_EXPR;
     node->attr.delimited_bool_expr = delimited_bool_expr;
     return node;
 }
 
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-    node->tag = BOOL_OP;
+    node->kind = BOOL_OP;
     node->attr.bool_op.op = op;
     node->attr.bool_op.left = left;
     node->attr.bool_op.right = right;
@@ -165,13 +166,12 @@ BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
 
 BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-    node->tag = BOOL_OP2;
+    node->kind = BOOL_OP2;
     node->attr.bool_op2.op = op;
     node->attr.bool_op2.left = left;
     node->attr.bool_op2.right = right;
     return node;
 }
-
 
 // Declarations
 

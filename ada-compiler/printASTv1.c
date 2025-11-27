@@ -6,16 +6,16 @@ void printArExpr(ArExpr* arExpr) {
     if (arExpr == 0) {
         yyerror("Null arithmetic expression");
     }
-    else if (arExpr->tag == ID) {
+    else if (arExpr->kind == ID) {
         printf("ID(%s)", arExpr->attr.id);
     }
-    else if (arExpr->tag == INT) {
+    else if (arExpr->kind == INT) {
         printf("INT(%d)", arExpr->attr.int_val);
     }
-    else if (arExpr->tag == FLOAT) {
+    else if (arExpr->kind == FLOAT) {
         printf("FLOAT(%f)", arExpr->attr.float_val);
     }
-    else if (arExpr->tag == BOOLEAN) {
+    else if (arExpr->kind == BOOLEAN) {
         if (arExpr->attr.boolean_ent) {
             printf("TRUE");
         }
@@ -23,49 +23,33 @@ void printArExpr(ArExpr* arExpr) {
             printf("FALSE");
         }
     }
-    else if(arExpr->tag == DELIMITED_AR_EXPR) {
+    else if(arExpr->kind == DELIMITED_AR_EXPR) {
         printArExpr(arExpr->attr.delimited_ar_expr);
     }
-    else if (arExpr->tag == AR_OP) {
+    else if (arExpr->kind == AR_OP) {
 
         switch (arExpr->attr.ar_op.op) {
             case PLUS:
                 printf("PLUS(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case MINUS:
                 printf("MINUS(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case TIMES:
                 printf("TIMES(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case DIV:
                 printf("DIV(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
             case MOD:
                 printf("MOD(");
-                printArExpr(arExpr->attr.ar_op.left);
-                printf(" ");
-                printArExpr(arExpr->attr.ar_op.right);
-                printf(")");
                 break;
-            default: yyerror("Unkown arithmetic operator");
+            default: yyerror("Unkown arithmetic operator(");
         }
+        printArExpr(arExpr->attr.ar_op.left);
+        printf(" ");
+        printArExpr(arExpr->attr.ar_op.right);
+        printf(")");
     }
 }
 
@@ -73,84 +57,59 @@ void printBoolExpr(BoolExpr* boolExpr) {
     if (boolExpr == 0) {
         yyerror("Null boolean expression");
     }
-    else if(boolExpr->tag == DELIMITED_BOOL_EXPR) {
+    else if(boolExpr->kind == DELIMITED_BOOL_EXPR) {
         printBoolExpr(boolExpr->attr.delimited_bool_expr);
     }
-    else if (boolExpr->tag == BOOL_OP) {
+    else if (boolExpr->kind == BOOL_OP) {
 
         switch (boolExpr->attr.bool_op.op) {
             case EQUAL:
                 printf("EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case DIFF:
                 printf("DIFF(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case LESS:
                 printf("LESS(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case GREATER:
                 printf("GREATER(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case LESS_EQUAL:
                 printf("LESS_EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
             case GREATER_EQUAL:
                 printf("GREATER_EQUAL(");
-                printArExpr(boolExpr->attr.bool_op.left);
-                printf(" ");
-                printArExpr(boolExpr->attr.bool_op.right);
-                printf(")");
                 break;
-            default: yyerror("Unkown boolean operator");
+            default: yyerror("Unkown boolean operator(");
         }
+            printArExpr(boolExpr->attr.bool_op.left);
+            printf(" ");
+            printArExpr(boolExpr->attr.bool_op.right);
+            printf(")");
     }
-    else if (boolExpr->tag == BOOL_OP2) {
+    else if (boolExpr->kind == BOOL_OP2) {
         switch (boolExpr->attr.bool_op2.op){
             case AND:
                 printf("AND(");
-                printBoolExpr(boolExpr->attr.bool_op2.left);
-                printBoolExpr(boolExpr->attr.bool_op2.right);
-                printf(")");
                 break;
             case OR:
                 printf("OR(");
-                printBoolExpr(boolExpr->attr.bool_op2.left);
-                printBoolExpr(boolExpr->attr.bool_op2.right);
-                printf(")");
                 break;
             case XOR:
                 printf("XOR(");
-                printBoolExpr(boolExpr->attr.bool_op2.left);
-                printBoolExpr(boolExpr->attr.bool_op2.right);
-                printf(")");
                 break;
             case NOT:
                 printf("NOT(");
-                printBoolExpr(boolExpr->attr.bool_op2.right);
-                printf(")");
                 break;
-            default: yyerror("Unkown boolean operator");
+            default: yyerror("Unkown boolean operator(");
         }
+
+        if (boolExpr->attr.bool_op2.op != NOT) {
+            printBoolExpr(boolExpr->attr.bool_op2.left);
+        }
+        printBoolExpr(boolExpr->attr.bool_op2.right);
+        printf(")");
     }
 }
 
@@ -170,7 +129,7 @@ void printExpr(Expr* expr) {
         printf(")");
     }
     else if (expr->kind == EXPR_STRING) {
-        printf("STRING(\"%s\"", expr->attr.string_expr);
+        printf("STRING(\"%s\")", expr->attr.string_expr);
     }
 }
 
