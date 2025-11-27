@@ -17,7 +17,8 @@ char* st_type_to_string(st_type type) {
 void st_print(st_node* head) {
     st_node* cursor = head;
     while (cursor != NULL) {
-        printf("ID: %s, TYPE: %s", cursor->id, st_type_to_string(cursor->type));
+        printf("ID: %s, TYPE: %s\n", cursor->id, st_type_to_string(cursor->type));
+        cursor = cursor->next;
     }
 }
 
@@ -41,20 +42,20 @@ st_type st_search(st_node* head, char* id) {
     return 1;
 }
 
-void st_build_dclr(Dclr* dclr, st_node* head) {
+void st_build_dclr(Dclr* dclr, st_node** head) {
     if (dclr->kind == DCLR_COMPOUND) {
         st_build_dclr(dclr->attr.dclr_compound.first, head);
         st_build_dclr(dclr->attr.dclr_compound.second, head);
     }
     else if (dclr->kind == DCLR_SIMPLE) {
-        head = st_insert(head, dclr->attr.dclr_simple.id, dclr->attr.dclr_simple.type);
+        *head = st_insert(*head, dclr->attr.dclr_simple.id, dclr->attr.dclr_simple.type);
     }
     else if (dclr->kind == DCLR_ASSIGNMENT) {
-        head = st_insert(head, dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
+        *head = st_insert(*head, dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
     }
 }
 
-void st_build_stm(Stm* program, st_node* head) {
+void st_build_stm(Stm* program, st_node** head) {
     if (program->kind == STM_PROCEDURE) {
         st_build_dclr(program->attr.stm_proc.dclr, head);
         st_build_stm(program->attr.stm_proc.body, head);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ast.h"
 #include "parser.h"
+#include "st.h"
 
 void printArExpr_v2(ArExpr* arExpr, long tabs) {
 
@@ -176,12 +177,12 @@ void printDclr_v2(Dclr* dclr, long tabs) {
     }
     else if (dclr->kind == DCLR_SIMPLE) {
         printf("%sDCLR_SIMPLE(\n", tabString);
-        printf("%s    %s(%s)\n", tabString, dclr->attr.dclr_simple.type, dclr->attr.dclr_simple.id);
+        printf("%s    %s(%s)\n", tabString, st_type_to_string(dclr->attr.dclr_simple.type), dclr->attr.dclr_simple.id);
         printf("%s)\n", tabString);
     }
     else if (dclr->kind == DCLR_ASSIGNMENT) {
         printf("%sDCLR_ASSIGN(\n", tabString);
-        printf("%s    %s(%s) =\n", tabString, dclr->attr.dclr_assignment.type, dclr->attr.dclr_assignment.id);
+        printf("%s    %s(%s) =\n", tabString, st_type_to_string(dclr->attr.dclr_assignment.type), dclr->attr.dclr_assignment.id);
         printExpr_v2(dclr->attr.dclr_assignment.expr, tabs + 2);
         printf("%s)\n", tabString);
     }
