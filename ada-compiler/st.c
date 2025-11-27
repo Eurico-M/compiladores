@@ -38,6 +38,7 @@ st_type st_search(st_node* head, char* id) {
         cursor = cursor->next;
     }
     yyerror("undeclared variable");
+    return 1;
 }
 
 void st_build_dclr(Dclr* dclr, st_node* head) {
