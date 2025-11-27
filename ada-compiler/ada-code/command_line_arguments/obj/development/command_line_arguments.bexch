@@ -1,0 +1,21 @@
+[GENERATED OBJECT FILE]
+b__command_line_arguments.o
+[PROJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/command_line_arguments/command_line_arguments.gpr
+20251027092426 c11885f05d8d82ee2dcdc282b32aaa8e
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/command_line_arguments/config/command_line_arguments_config.gpr
+20251027092426 f4e2708377be6ed7707a03a28846a846
+[BOUND OBJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/command_line_arguments/obj/development/command_line_arguments.o
+[GENERATED SOURCE FILES]
+b__command_line_arguments.ads
+b__command_line_arguments.adb
+b__command_line_arguments.ali
+[RESULTING OPTIONS]
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/command_line_arguments/obj/development/
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/command_line_arguments/obj/development/
+-L/home/eurico/.local/share/alire/toolchains/gnat_native_13.2.1_788a01f9/lib/gcc/x86_64-pc-linux-gnu/13.2.0/adalib/
+-static
+-static-libgcc
+/home/eurico/.local/share/alire/toolchains/gnat_native_13.2.1_788a01f9/lib/gcc/x86_64-pc-linux-gnu/13.2.0/adalib/libgnat.a
+-ldl
