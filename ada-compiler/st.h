@@ -1,7 +1,7 @@
 #include "ast.h"
 
-#ifndef __st_h__
-#define __st_h__
+#ifndef __ST_H__
+#define __ST_H__
 
 struct _st_node {
     char* id;
