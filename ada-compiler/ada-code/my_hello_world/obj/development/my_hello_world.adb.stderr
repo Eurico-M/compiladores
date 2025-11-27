@@ -1,0 +1,9 @@
+my_hello_world.adb:4:05: (style) bad indentation [-gnaty0]
+my_hello_world.adb:6:05: (style) bad indentation [-gnaty0]
+my_hello_world.adb:6:16: error: no candidate interpretations match the actuals:
+my_hello_world.adb:6:16: error: missing argument for parameter "Item" in call to "Put_Line" declared at a-textio.ads:555
+my_hello_world.adb:6:27: (style) bad casing of "A" declared at line 4 [-gnatyr]
+my_hello_world.adb:6:27: error: expected type "Standard.String"
+my_hello_world.adb:6:27: error: found type "Standard.Integer"
+my_hello_world.adb:6:27: error:   ==> in call to "Put_Line" at a-textio.ads:565
+my_hello_world.adb:7:05: (style) bad indentation [-gnaty0]
