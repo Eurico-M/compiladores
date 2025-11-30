@@ -5,7 +5,6 @@
 #include "st.h"
 
 Stm* program = NULL;
-st_node* head = NULL;
 long tabs = 0;
 
 int main(int argc, char** argv) {
@@ -38,12 +37,13 @@ int main(int argc, char** argv) {
     printStm_v2(program, tabs);
     printf("\n");
 
-    st_build_stm(program, &head);
-    if (head == NULL) {
+    st_init();
+    st_build_stm(program);
+    if (st_head == NULL) {
         printf("st_build failed\n");
     }
     printf("Symbol Table:\n");
-    st_print(head);
+    st_print();
 
     return 0;
 }

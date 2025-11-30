@@ -11,11 +11,14 @@ struct _st_node {
 
 typedef struct _st_node st_node;
 
-void st_print(st_node* head);
-st_node* st_insert(st_node* head, char* id, st_type type);
-st_type st_search(st_node* head, char* id);
-void st_build_stm(Stm* program, st_node** head);
+void st_init();
+void st_print();
+void st_insert(char* id, st_type type);
+st_type st_search(char* id);
+void st_build_stm(Stm* program);
 
 char* st_type_to_string(st_type type);
+
+extern st_node* st_head;
 
 #endif
