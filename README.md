@@ -1,3 +1,26 @@
+# Parte 2
+
+### Ficheiros criados/incluidos no Trabalho:
+
+- st.h - *definição da tabela de símbolos (lista ligada simples)*
+- st.c - *implementação da tabela de símbolos (e print da tabela)*
+- ic.h - *definição do código intermédio*
+- ic.c - *implementação do código intermédio*
+
+### Notas:
+
+#### Tabela de Símbolos:
+
+- Integer (int em C)
+- Real (float em C)
+
+Estrutura muito simples, cada "nó" só guarda o nome da variável e o tipo da variável.
+Representada como uma lista ligada simples de nós.
+
+#### Código Intermédio
+
+
+# Parte 1
 
 ### Ficheiros criados/incluidos no Trabalho:
 
