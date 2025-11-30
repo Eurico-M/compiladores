@@ -120,6 +120,7 @@ struct _Pckg {
 
 // Declarações
 
+typedef enum {ST_INTEGER, ST_REAL} st_type;
 struct _Dclr {
     enum {
         DCLR_COMPOUND,
@@ -133,13 +134,13 @@ struct _Dclr {
         } dclr_compound;
         struct {
             char* id;
-            char* type;
-        } dclr_simple;
+            st_type type;
+        } dclr_simple;          // x: Integer;
         struct {
             char* id;
-            char* type;
+            st_type type;
             struct _Expr* expr;
-        } dclr_assignment;
+        } dclr_assignment;      // x: Integer := 1+2;
     } attr;
 };
 

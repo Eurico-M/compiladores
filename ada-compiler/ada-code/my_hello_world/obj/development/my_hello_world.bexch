@@ -1,0 +1,20 @@
+[GENERATED OBJECT FILE]
+b__my_hello_world.o
+[PROJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/my_hello_world/my_hello_world.gpr
+20251103090948 6be551e0e33e47a2184c132e55423124
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/my_hello_world/config/my_hello_world_config.gpr
+20251103103127 3b73c8cac21fe53bf3eb59b52422505d
+[BOUND OBJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/my_hello_world/obj/development/my_hello_world.o
+[GENERATED SOURCE FILES]
+b__my_hello_world.ads
+b__my_hello_world.adb
+b__my_hello_world.ali
+[RESULTING OPTIONS]
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/my_hello_world/obj/development/
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/my_hello_world/obj/development/
+-L/home/eurico/.local/share/alire/toolchains/gnat_native_15.2.1_4640d4b3/lib/gcc/x86_64-pc-linux-gnu/15.2.0/adalib/
+-static
+/home/eurico/.local/share/alire/toolchains/gnat_native_15.2.1_4640d4b3/lib/gcc/x86_64-pc-linux-gnu/15.2.0/adalib/libgnat.a
+-ldl

@@ -1,0 +1,21 @@
+[GENERATED OBJECT FILE]
+b__test.o
+[PROJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/test/test.gpr
+20251105161439 4de731e772b9b1a99916b49a3068c072
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/test/config/test_config.gpr
+20251105083832 f6316e06356a28004740a2ae227a2427
+[BOUND OBJECT FILES]
+/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/test/obj/development/test.o
+[GENERATED SOURCE FILES]
+b__test.ads
+b__test.adb
+b__test.ali
+[RESULTING OPTIONS]
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/test/obj/development/
+-L/home/eurico/Documents/GitHub/compiladores/ada-compiler/ada-code/test/obj/development/
+-L/home/eurico/.local/share/alire/toolchains/gnat_native_13.2.1_788a01f9/lib/gcc/x86_64-pc-linux-gnu/13.2.0/adalib/
+-static
+-static-libgcc
+/home/eurico/.local/share/alire/toolchains/gnat_native_13.2.1_788a01f9/lib/gcc/x86_64-pc-linux-gnu/13.2.0/adalib/libgnat.a
+-ldl

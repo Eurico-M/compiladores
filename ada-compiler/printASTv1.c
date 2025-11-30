@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ast.h"
 #include "parser.h"
+#include "st.h"
 
 void printArExpr(ArExpr* arExpr) {
     if (arExpr == 0) {
@@ -143,11 +144,11 @@ void printDclr(Dclr* dclr) {
         // printf(")");
     }
     else if (dclr->kind == DCLR_SIMPLE) {
-        printf("DCLR_SIMPLE(%s(%s)", dclr->attr.dclr_simple.type, dclr->attr.dclr_simple.id);
+        printf("DCLR_SIMPLE(%s(%s)", st_type_to_string(dclr->attr.dclr_simple.type), dclr->attr.dclr_simple.id);
         printf(")");
     }
     else if (dclr->kind == DCLR_ASSIGNMENT) {
-        printf("DCLR_ASSIGN(%s(%s) = ", dclr->attr.dclr_assignment.type, dclr->attr.dclr_assignment.id);
+        printf("DCLR_ASSIGN(%s(%s) = ", st_type_to_string(dclr->attr.dclr_assignment.type), dclr->attr.dclr_assignment.id);
         printExpr(dclr->attr.dclr_assignment.expr);
         printf(")");
     }

@@ -1,4 +1,4 @@
-OBJS = scanner.o parser.o ast.o interpreter.o printASTv1.o printASTv2.o
+OBJS = scanner.o parser.o ast.o interpreter.o printASTv1.o printASTv2.o st.o
 INTERM = scanner.c parser.c parser.h
 PROGRAM = ./interpreter
 CC = gcc
@@ -21,4 +21,3 @@ tests: $(PROGRAM)
 	$(PROGRAM) tests/input1.txt
 	$(PROGRAM) tests/input2.txt
 	$(PROGRAM) tests/input3.txt
-	
