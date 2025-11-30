@@ -15,9 +15,22 @@
 - Real (float em C)
 
 Estrutura muito simples, cada "nó" só guarda o nome da variável e o tipo da variável.
+
 Representada como uma lista ligada simples de nós.
 
 #### Código Intermédio
+
+2 estruturas: uma para guardar as instruções de código intermédio e uma para guardar nós de uma lista de instruções.
+
+Instr:
+
+Estrutura com Opcode (tipo de instrução) e 3 endereços (código de 3 endereços, usar NULL para as instruções que requerem menos).
+
+ic_node:
+
+Lista ligada simples: cada nó guarda uma instrução e o próximo nó.
+
+Usar head e tail: head para percorrer a lista, tail para adicionar (queremos adicionar instruções por ordem, ou seja, fazer append ao fim da lista).
 
 
 # Parte 1
