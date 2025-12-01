@@ -7,9 +7,6 @@
 
 st_node* st_head = NULL;
 
-void st_init() {
-    st_head = NULL;
-}
 
 char* st_type_to_string(st_type type) {
     switch (type) {
@@ -49,25 +46,29 @@ st_type st_search(char* id) {
 }
 
 void st_build_dclr(Dclr* dclr) {
-    if (dclr->kind == DCLR_COMPOUND) {
-        st_build_dclr(dclr->attr.dclr_compound.first);
-        st_build_dclr(dclr->attr.dclr_compound.second);
-    }
-    else if (dclr->kind == DCLR_SIMPLE) {
-        st_insert(dclr->attr.dclr_simple.id, dclr->attr.dclr_simple.type);
-    }
-    else if (dclr->kind == DCLR_ASSIGNMENT) {
-        st_insert(dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
+    switch (dclr->kind) {
+        case DCLR_COMPOUND:
+            st_build_dclr(dclr->attr.dclr_compound.first);
+            st_build_dclr(dclr->attr.dclr_compound.second);
+            break;
+        case DCLR_SIMPLE:
+            st_insert(dclr->attr.dclr_simple.id, dclr->attr.dclr_simple.type);
+            break;
+        case DCLR_ASSIGNMENT:
+            st_insert(dclr->attr.dclr_assignment.id, dclr->attr.dclr_assignment.type);
+            break;
     }
 }
 
 void st_build_stm(Stm* program) {
-    if (program->kind == STM_PROCEDURE) {
-        st_build_dclr(program->attr.stm_proc.dclr);
-        st_build_stm(program->attr.stm_proc.body);
-    }
-    else if (program->kind == STM_COMPOUND) {
-        st_build_stm(program->attr.compound.first);
-        st_build_stm(program->attr.compound.second);
+    switch (program->kind) {
+        case STM_PROCEDURE:
+            st_build_dclr(program->attr.stm_proc.dclr);
+            st_build_stm(program->attr.stm_proc.body);
+            break;
+        case STM_COMPOUND:
+            st_build_stm(program->attr.compound.first);
+            st_build_stm(program->attr.compound.second);
+            break;
     }
 }

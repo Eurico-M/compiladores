@@ -30,7 +30,7 @@ typedef struct _ic_node ic_node;
 extern ic_node* ic_head;
 extern ic_node* ic_tail;
 
-void ic_init();
+
 
 
 #endif

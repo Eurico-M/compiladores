@@ -37,7 +37,6 @@ int main(int argc, char** argv) {
     printStm_v2(program, tabs);
     printf("\n");
 
-    st_init();
     st_build_stm(program);
     if (st_head == NULL) {
         printf("st_build failed\n");

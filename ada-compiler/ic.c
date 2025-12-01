@@ -3,15 +3,29 @@
 #include "ic.h"
 #include "ast.h"
 #include "parser.h"
+#include "st.h"
 
+// inicializar a lista ligada
 ic_node* ic_head = NULL;
 ic_node* ic_tail = NULL;
 
-void ic_init() {
-    ic_head = NULL;
-    ic_tail = NULL;
+// inicializar contadores de temporaŕios e labels
+int temp_count = 0;
+int label_count = 0;
+
+int newTemp() {
+    return temp_count++;
 }
 
+void popTemp(int k) {
+    temp_count -= k;
+}
+
+int newLabel() {
+    return label_count++;
+}
+
+// inserir uma Instrução na lista, criando um nó para suportar lista ligada
 void ic_insert(Instr* instr) {
     ic_node* node = (ic_node*)malloc(sizeof(ic_node));
     node->instr = instr;
@@ -28,6 +42,7 @@ void ic_insert(Instr* instr) {
     }
 }
 
+// criar uma Instrução em código intermédio
 void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3) {
     Instr* node = (Instr*)malloc(sizeof(Instr));
     node->opcode = opc;
@@ -37,16 +52,29 @@ void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3) {
     ic_insert(node);
 }
 
-void transExp(Expr expr, dest) {
-    switch (expr.kind) {
+void transArExp(ArExpr* ar_expr, int dest) {
+    switch (ar_expr->kind) {
+        case INT:
 
     }
 }
 
-void transStm(Stm stm) {
-    switch (stm.kind) {
+void transExp(Expr* expr, int dest) {
+    switch (expr->kind) {
+        case EXPR_ARITHMETIC:
+
+    }
+}
+
+void transStm(Stm* stm) {
+    switch (stm->kind) {
         case STM_ASSIGNMENT:
-
-
+            int dest = st_search(stm->attr.assign.ident);
+            transExp(stm->attr.assign.expr, dest);
+            break;
+        case STM_COMPOUND:
+            transStm(stm->attr.compound.first);
+            transStm(stm->attr.compound.second);
+            break;
     }
 }

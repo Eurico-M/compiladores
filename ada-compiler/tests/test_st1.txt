@@ -1,7 +1,9 @@
 procedure Test is
     x : Integer;
     y : Real;
+    z : Integer;
 begin
     x := 1;
     y := 1.1;
+    z := 2;
 end Test;

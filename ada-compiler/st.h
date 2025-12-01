@@ -11,7 +11,6 @@ struct _st_node {
 
 typedef struct _st_node st_node;
 
-void st_init();
 void st_print();
 void st_insert(char* id, st_type type);
 st_type st_search(char* id);
