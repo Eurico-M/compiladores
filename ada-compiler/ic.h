@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "ast.h"
 
 #ifndef __IC_H__
 #define __IC_H__
@@ -13,11 +14,21 @@ typedef enum {
     COND
 } Opcode;
 
+// typedef enum {
+//     IC_PLUS,
+//     IC_MINUS,
+//     IC_MULT,
+//     IC_DIV,
+//     IC_MOD
+// } BinOp;
+
 typedef intptr_t Addr;
 
 typedef struct {
     Opcode opcode;
     Addr arg1, arg2, arg3;
+    // BinOp binop;
+    ar_op binop;
 } Instr;
 
 struct _ic_node {
@@ -30,7 +41,8 @@ typedef struct _ic_node ic_node;
 extern ic_node* ic_head;
 extern ic_node* ic_tail;
 
-
+void transStm(Stm* stm);
+void print_instrs();
 
 
 #endif

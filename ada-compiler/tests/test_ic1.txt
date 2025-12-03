@@ -1,0 +1,5 @@
+procedure Test is
+    x : Integer;
+begin
+    x := 1;
+end Test;
