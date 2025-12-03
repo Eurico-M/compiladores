@@ -1,0 +1,7 @@
+procedure Test is
+    x : Integer;
+    y : Integer;
+begin
+    y := 1;
+    x := y + 2 * 3;
+end Test;

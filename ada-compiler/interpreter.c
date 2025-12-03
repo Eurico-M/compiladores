@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "parser.h"
-#include "printASTv1.h"
+// #include "printASTv1.h"
 #include "printASTv2.h"
 #include "st.h"
+#include "ic.h"
 
 Stm* program = NULL;
 long tabs = 0;
@@ -30,20 +31,26 @@ int main(int argc, char** argv) {
     }
 
     printf("\n");
-    printf("+ Abstract Syntax Tree v1 +\n\n");
-    printStm(program);
-    printf("\n\n\n");
+    // printf("+ Abstract Syntax Tree v1 +\n\n");
+    // printStm(program);
+    // printf("\n\n\n");
     printf("+ Abstract Syntax Tree v2 +\n\n");
     printStm_v2(program, tabs);
     printf("\n");
 
-    st_init();
     st_build_stm(program);
     if (st_head == NULL) {
         printf("st_build failed\n");
     }
     printf("Symbol Table:\n");
     st_print();
+
+    transStm(program);
+    if (ic_head == NULL) {
+        printf("transStm failed\n");
+    }
+    printf("Código Intermédio:\n");
+    ic_print();
 
     return 0;
 }

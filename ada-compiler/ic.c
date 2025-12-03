@@ -1,17 +1,74 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "ic.h"
 #include "ast.h"
-#include "parser.h"
+#include "st.h"
 
+#define NULO -1
+
+// inicializar a lista ligada
 ic_node* ic_head = NULL;
 ic_node* ic_tail = NULL;
 
-void ic_init() {
-    ic_head = NULL;
-    ic_tail = NULL;
+// inicializar contadores de temporaŕios e labels
+int temp_count = 0;
+int label_count = 0;
+
+int newTemp() {
+    return temp_count++;
 }
 
+void popTemp(int k) {
+    temp_count -= k;
+}
+
+int newLabel() {
+    return label_count++;
+}
+
+// imprimir uma instrução
+void print_instr(Instr* instr) {
+    switch (instr->opcode) {
+        case MOVE:
+            printf("t%ld := t%ld\n", instr->arg1, instr->arg2);
+            break;
+        case MOVEI:
+            printf("t%ld := %ld\n", instr->arg1, instr->arg2);
+            break;
+        case OP:
+            printf("t%ld := t%ld", instr->arg1, instr->arg2);
+            switch (instr->binop) {
+                case PLUS:
+                    printf(" + ");
+                    break;
+                case MINUS:
+                    printf(" - ");
+                    break;
+                case TIMES:
+                    printf(" * ");
+                    break;
+                case DIV:
+                    printf(" / ");
+                    break;
+                case MOD:
+                    printf(" %% ");
+                    break;
+            }
+            printf("t%ld\n", instr->arg3);
+    }
+}
+
+// imprimir lista de instruções
+void ic_print() {
+    ic_node* cur = ic_head;
+    while (cur != NULL) {
+        print_instr(cur->instr);
+        cur = cur->next;
+    }
+}
+
+// inserir uma Instrução na lista, criando um nó para suportar lista ligada
 void ic_insert(Instr* instr) {
     ic_node* node = (ic_node*)malloc(sizeof(ic_node));
     node->instr = instr;
@@ -28,25 +85,69 @@ void ic_insert(Instr* instr) {
     }
 }
 
-void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3) {
+// criar uma Instrução em código intermédio
+void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3, ar_op binop) {
     Instr* node = (Instr*)malloc(sizeof(Instr));
     node->opcode = opc;
     node->arg1 = arg1;
     node->arg2 = arg2;
     node->arg3 = arg3;
+    node->binop = binop;
     ic_insert(node);
 }
 
-void transExp(Expr expr, dest) {
-    switch (expr.kind) {
+void transArExp(ArExpr* ar_expr, Addr dest) {
+    switch (ar_expr->kind) {
+        case INT:
+            emit(MOVEI, dest, ar_expr->attr.int_val, NULO, NULO);       // dest := num
+            break;
+        case ID:
+            Addr temp = st_search(ar_expr->attr.id);                    // temp = lookup(id,table)
+            emit(MOVE, dest, temp, NULO, NULO);                         // dest := temp
+            break;
+        case AR_OP:
+            Addr t1 = newTemp();
+            Addr t2 = newTemp();
+            transArExp(ar_expr->attr.ar_op.left, t1);
+            transArExp(ar_expr->attr.ar_op.right, t2);
+            emit(OP, dest, t1, t2, ar_expr->attr.ar_op.op);             // dest := t1 binop t2
+            break;
 
     }
 }
 
-void transStm(Stm stm) {
-    switch (stm.kind) {
+void transExp(Expr* expr, Addr dest) {
+    switch (expr->kind) {
+        case EXPR_ARITHMETIC:
+            transArExp(expr->attr.ar_expr, dest);
+            break;
+    }
+}
+
+void transDclr(Dclr* dclr) {
+    switch (dclr->kind) {
+        case DCLR_SIMPLE:
+            break;
+        case DCLR_ASSIGNMENT:
+            Addr dest = st_search(dclr->attr.dclr_assignment.id);
+            transExp(dclr->attr.dclr_assignment.expr, dest);
+            break;
+    }
+}
+
+void transStm(Stm* stm) {
+    switch (stm->kind) {
+        case STM_PROCEDURE:
+            transDclr(stm->attr.stm_proc.dclr);
+            transStm(stm->attr.stm_proc.body);
+            break;
         case STM_ASSIGNMENT:
-
-
+            Addr dest = st_search(stm->attr.assign.ident);
+            transExp(stm->attr.assign.expr, dest);
+            break;
+        case STM_COMPOUND:
+            transStm(stm->attr.compound.first);
+            transStm(stm->attr.compound.second);
+            break;
     }
 }
