@@ -26,6 +26,8 @@ Instr:
 
 Estrutura com Opcode (tipo de instrução) e 3 endereços (código de 3 endereços, usar NULL para as instruções que requerem menos).
 
+Guardei também as operações binárias aqui (+,-,etc.). Isto porque se guardarmos só OP como está no slides, como é que sabemos que tipo de operação estamos a fazer? Só se, em vez de guardar OP como um opcode, guardassemos o tipo de operação como opcode. Não sei.
+
 ic_node:
 
 Lista ligada simples: cada nó guarda uma instrução e o próximo nó.
