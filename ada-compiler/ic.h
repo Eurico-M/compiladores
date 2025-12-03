@@ -42,7 +42,7 @@ extern ic_node* ic_head;
 extern ic_node* ic_tail;
 
 void transStm(Stm* stm);
-void print_instrs();
+void ic_print();
 
 
 #endif

@@ -5,6 +5,7 @@
 #include "ast.h"
 #include "parser.h"
 
+
 st_node* st_head = NULL;
 
 
@@ -33,11 +34,11 @@ void st_insert(char* id, st_type type) {
     st_head = new_node;
 }
 
-st_type st_search(char* id) {
+Addr st_search(char* id) {
     st_node* cursor = st_head;
     while (cursor != NULL) {
         if (strcmp(cursor->id, id) == 0) {
-            return cursor->type;
+            return (Addr)cursor->id;
         }
         cursor = cursor->next;
     }

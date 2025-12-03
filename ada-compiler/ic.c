@@ -1,9 +1,11 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "ic.h"
 #include "ast.h"
-#include "parser.h"
 #include "st.h"
+
+#define NULO -1
 
 // inicializar a lista ligada
 ic_node* ic_head = NULL;
@@ -26,13 +28,13 @@ int newLabel() {
 }
 
 // imprimir uma instrução
-void print_ic(Instr* instr) {
+void print_instr(Instr* instr) {
     switch (instr->opcode) {
         case MOVE:
             printf("t%ld := t%ld\n", instr->arg1, instr->arg2);
             break;
         case MOVEI:
-            printf("t%ld := t%ld\n", instr->arg1, instr->arg2);
+            printf("t%ld := %ld\n", instr->arg1, instr->arg2);
             break;
         case OP:
             printf("t%ld := t%ld", instr->arg1, instr->arg2);
@@ -58,10 +60,10 @@ void print_ic(Instr* instr) {
 }
 
 // imprimir lista de instruções
-void print_instrs() {
+void ic_print() {
     ic_node* cur = ic_head;
     while (cur != NULL) {
-        print_ic(cur->instr);
+        print_instr(cur->instr);
         cur = cur->next;
     }
 }
@@ -94,18 +96,18 @@ void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3, ar_op binop) {
     ic_insert(node);
 }
 
-void transArExp(ArExpr* ar_expr, int dest) {
+void transArExp(ArExpr* ar_expr, Addr dest) {
     switch (ar_expr->kind) {
         case INT:
-            emit(MOVEI, dest, ar_expr->attr.int_val, NULL, NULL);       // dest := num
+            emit(MOVEI, dest, ar_expr->attr.int_val, NULO, NULO);       // dest := num
             break;
         case ID:
-            int temp = st_search(ar_expr->attr.id);                     // temp = lookup(id,table)
-            emit(MOVE, dest, temp, NULL, NULL);                         // dest := temp
+            Addr temp = st_search(ar_expr->attr.id);                    // temp = lookup(id,table)
+            emit(MOVE, dest, temp, NULO, NULO);                         // dest := temp
             break;
         case AR_OP:
-            int t1 = newTemp();
-            int t2 = newTemp();
+            Addr t1 = newTemp();
+            Addr t2 = newTemp();
             transArExp(ar_expr->attr.ar_op.left, t1);
             transArExp(ar_expr->attr.ar_op.right, t2);
             emit(OP, dest, t1, t2, ar_expr->attr.ar_op.op);             // dest := t1 binop t2
@@ -114,7 +116,7 @@ void transArExp(ArExpr* ar_expr, int dest) {
     }
 }
 
-void transExp(Expr* expr, int dest) {
+void transExp(Expr* expr, Addr dest) {
     switch (expr->kind) {
         case EXPR_ARITHMETIC:
             transArExp(expr->attr.ar_expr, dest);
@@ -122,10 +124,25 @@ void transExp(Expr* expr, int dest) {
     }
 }
 
+void transDclr(Dclr* dclr) {
+    switch (dclr->kind) {
+        case DCLR_SIMPLE:
+            break;
+        case DCLR_ASSIGNMENT:
+            Addr dest = st_search(dclr->attr.dclr_assignment.id);
+            transExp(dclr->attr.dclr_assignment.expr, dest);
+            break;
+    }
+}
+
 void transStm(Stm* stm) {
     switch (stm->kind) {
+        case STM_PROCEDURE:
+            transDclr(stm->attr.stm_proc.dclr);
+            transStm(stm->attr.stm_proc.body);
+            break;
         case STM_ASSIGNMENT:
-            int dest = st_search(stm->attr.assign.ident);
+            Addr dest = st_search(stm->attr.assign.ident);
             transExp(stm->attr.assign.expr, dest);
             break;
         case STM_COMPOUND:
