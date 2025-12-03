@@ -42,15 +42,17 @@ int main(int argc, char** argv) {
     if (st_head == NULL) {
         printf("st_build failed\n");
     }
-    printf("Symbol Table:\n");
+    printf("+ Symbol Table +\n");
     st_print();
+    printf("\n");
 
     transStm(program);
     if (ic_head == NULL) {
         printf("transStm failed\n");
     }
-    printf("Código Intermédio:\n");
+    printf("+ Intermediate Code +\n");
     ic_print();
+    printf("\n");
 
     return 0;
 }

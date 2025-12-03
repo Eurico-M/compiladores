@@ -110,6 +110,7 @@ void transArExp(ArExpr* ar_expr, Addr dest) {
             Addr t2 = newTemp();
             transArExp(ar_expr->attr.ar_op.left, t1);
             transArExp(ar_expr->attr.ar_op.right, t2);
+            popTemp(2);
             emit(OP, dest, t1, t2, ar_expr->attr.ar_op.op);             // dest := t1 binop t2
             break;
 
