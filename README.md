@@ -73,7 +73,7 @@ t0 := t1 + t2
 t0 -> x
 ```
 
-Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MIPS. Sem esquecer de percorrer a ST uma última vez para declarar todas as varáveis:
+Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MIPS. Sem esquecer de percorrer a ST uma última vez para declarar todas as variáveis:
 ```
 .data
 y: .word 0
