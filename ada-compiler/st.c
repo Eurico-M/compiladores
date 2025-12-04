@@ -21,6 +21,7 @@ char* st_type_to_string(st_type type) {
 void st_print() {
     st_node* cursor = st_head;
     while (cursor != NULL) {
+        // printf("ID: %s, TYPE: %s, ADDRESS: %ld\n", cursor->id, st_type_to_string(cursor->type), (void*)cursor);
         printf("ID: %s, TYPE: %s\n", cursor->id, st_type_to_string(cursor->type));
         cursor = cursor->next;
     }
@@ -38,7 +39,7 @@ Addr st_search(char* id) {
     st_node* cursor = st_head;
     while (cursor != NULL) {
         if (strcmp(cursor->id, id) == 0) {
-            return (Addr)cursor->id;
+            return (Addr)cursor;
         }
         cursor = cursor->next;
     }

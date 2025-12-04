@@ -4,6 +4,7 @@
 #define __MC_H__
 
 
+void mc_print();
 
 
 #endif

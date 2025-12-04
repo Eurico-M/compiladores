@@ -6,6 +6,7 @@
 #include "st.h"
 
 #define NULO -1
+#define MAX_TEMPS 10000
 
 // inicializar a lista ligada
 ic_node* ic_head = NULL;
@@ -26,6 +27,11 @@ void popTemp(int k) {
 int newLabel() {
     return label_count++;
 }
+
+char* addr_to_var_name(Addr addr) {
+    return ((st_node*)addr)->id;
+}
+
 
 // imprimir uma instrução
 void print_instr(Instr* instr) {
@@ -56,6 +62,13 @@ void print_instr(Instr* instr) {
                     break;
             }
             printf("t%ld\n", instr->arg3);
+            break;
+        case LOAD:
+            printf("t%ld <- %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            break;
+        case STORE:
+            printf("t%ld -> %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            break;
     }
 }
 
@@ -103,7 +116,7 @@ void transArExp(ArExpr* ar_expr, Addr dest) {
             break;
         case ID:
             Addr temp = st_search(ar_expr->attr.id);                    // temp = lookup(id,table)
-            emit(MOVE, dest, temp, NULO, NULO);                         // dest := temp
+            emit(LOAD, dest, temp, NULO, NULO);                         // dest := temp
             break;
         case AR_OP:
             Addr t1 = newTemp();
@@ -143,8 +156,12 @@ void transStm(Stm* stm) {
             transStm(stm->attr.stm_proc.body);
             break;
         case STM_ASSIGNMENT:
-            Addr dest = st_search(stm->attr.assign.ident);
-            transExp(stm->attr.assign.expr, dest);
+            Addr t1 = newTemp();
+            Addr t2 = st_search(stm->attr.assign.ident);
+            emit(LOAD, t1, t2, NULO, NULO);
+            transExp(stm->attr.assign.expr, t1);
+            emit(STORE, t1, t2, NULO, NULO);
+            popTemp(1);
             break;
         case STM_COMPOUND:
             transStm(stm->attr.compound.first);
