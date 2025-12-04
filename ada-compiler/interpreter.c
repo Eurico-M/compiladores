@@ -4,6 +4,7 @@
 #include "printASTv2.h"
 #include "st.h"
 #include "ic.h"
+#include "mc.h"
 
 Stm* program = NULL;
 long tabs = 0;
@@ -42,15 +43,21 @@ int main(int argc, char** argv) {
     if (st_head == NULL) {
         printf("st_build failed\n");
     }
-    printf("Symbol Table:\n");
+    printf("+ Symbol Table +\n");
     st_print();
+    printf("\n");
 
     transStm(program);
     if (ic_head == NULL) {
         printf("transStm failed\n");
     }
-    printf("Código Intermédio:\n");
+    printf("+ Intermediate Code +\n");
     ic_print();
+    printf("\n");
+
+    printf("+ MIPS +\n");
+    mc_print();
+    printf("\n");
 
     return 0;
 }

@@ -11,7 +11,9 @@ typedef enum {
     OPI,            // t1 := t2 op num
     LABEL,
     JUMP,
-    COND
+    COND,
+    LOAD,
+    STORE
 } Opcode;
 
 // typedef enum {
@@ -43,6 +45,7 @@ extern ic_node* ic_tail;
 
 void transStm(Stm* stm);
 void ic_print();
+char* addr_to_var_name(Addr addr);
 
 
 #endif
