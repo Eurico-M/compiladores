@@ -13,7 +13,7 @@
 
 #### Tabela de Símbolos (ST):
 
-A Tabela de Símbolos é um representada por uma lista de st_node.
+A Tabela de Símbolos é representada por uma lista de st_node.
 
 Cada st_node tem:
 - char* id *nome da variável*
