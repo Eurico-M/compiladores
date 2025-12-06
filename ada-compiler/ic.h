@@ -13,24 +13,20 @@ typedef enum {
     JUMP,
     COND,
     LOAD,
-    STORE
+    STORE,
+    IC_ADD,
+    IC_SUB,
+    IC_MUL,
+    IC_DIV,
+    IC_MOD
 } Opcode;
 
-// typedef enum {
-//     IC_PLUS,
-//     IC_MINUS,
-//     IC_MULT,
-//     IC_DIV,
-//     IC_MOD
-// } BinOp;
 
 typedef intptr_t Addr;
 
 typedef struct {
     Opcode opcode;
     Addr arg1, arg2, arg3;
-    // BinOp binop;
-    ar_op binop;
 } Instr;
 
 struct _ic_node {

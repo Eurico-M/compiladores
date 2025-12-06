@@ -139,13 +139,6 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     return node;
 }
 
-ArExpr* ar_expr_boolean(bool bool_ent) {
-    ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->kind = BOOLEAN;
-    node->attr.boolean_ent = bool_ent;
-    return node;
-}
-
 // Boolean Expressions
 
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr) {
@@ -158,18 +151,18 @@ BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr) {
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
     node->kind = BOOL_OP;
-    node->attr.bool_op.op = op;
-    node->attr.bool_op.left = left;
-    node->attr.bool_op.right = right;
+    node->attr.bool_ar_op.op = op;
+    node->attr.bool_ar_op.left = left;
+    node->attr.bool_ar_op.right = right;
     return node;
 }
 
 BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
     node->kind = BOOL_OP2;
-    node->attr.bool_op2.op = op;
-    node->attr.bool_op2.left = left;
-    node->attr.bool_op2.right = right;
+    node->attr.bool_bool_op.op = op;
+    node->attr.bool_bool_op.left = left;
+    node->attr.bool_bool_op.right = right;
     return node;
 }
 
@@ -193,6 +186,7 @@ st_type string_to_st_type(char* type) {
     }
 
     yyerror("unkown type");
+    return 0;
 }
 
 Dclr* dclr_simple(char* id, char* type) {

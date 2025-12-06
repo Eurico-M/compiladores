@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mc.h"
-#include "ast.h"
 #include "ic.h"
 #include "st.h"
 
@@ -14,25 +13,20 @@ void mc_print_instr(Instr* instr) {
         case MOVEI:
             printf("li $t%ld, %ld", instr->arg1, instr->arg2);
             break;
-        case OP:
-            switch (instr->binop) {
-                case PLUS:
-                    printf("add ");
-                    break;
-                case MINUS:
-                    printf("sub ");
-                    break;
-                case TIMES:
-                    printf("mul ");
-                    break;
-                case DIV:
-                    printf("div ");
-                    break;
-                case MOD:
-                    printf("rem ");
-                    break;
-            }
-            printf("$t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
+        case IC_ADD:
+            printf("add $t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_SUB:
+            printf("sub $t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MUL:
+            printf("mul $t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_DIV:
+            printf("div $t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MOD:
+            printf("rem $t%ld, $t%ld, $t%ld", instr->arg1, instr->arg2, instr->arg3);
             break;
         case LOAD:
             printf("lw $t%ld, %s", instr->arg1, addr_to_var_name(instr->arg2));

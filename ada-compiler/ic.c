@@ -37,39 +37,34 @@ char* addr_to_var_name(Addr addr) {
 void print_instr(Instr* instr) {
     switch (instr->opcode) {
         case MOVE:
-            printf("t%ld := t%ld\n", instr->arg1, instr->arg2);
+            printf("t%ld := t%ld", instr->arg1, instr->arg2);
             break;
         case MOVEI:
-            printf("t%ld := %ld\n", instr->arg1, instr->arg2);
+            printf("t%ld := %ld", instr->arg1, instr->arg2);
             break;
-        case OP:
-            printf("t%ld := t%ld", instr->arg1, instr->arg2);
-            switch (instr->binop) {
-                case PLUS:
-                    printf(" + ");
-                    break;
-                case MINUS:
-                    printf(" - ");
-                    break;
-                case TIMES:
-                    printf(" * ");
-                    break;
-                case DIV:
-                    printf(" / ");
-                    break;
-                case MOD:
-                    printf(" %% ");
-                    break;
-            }
-            printf("t%ld\n", instr->arg3);
+        case IC_ADD:
+            printf("t%ld := t%ld + t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_SUB:
+            printf("t%ld := t%ld - t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_DIV:
+            printf("t%ld := t%ld / t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MUL:
+            printf("t%ld := t%ld * t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MOD:
+            printf("t%ld := t%ld %% t%ld", instr->arg1, instr->arg2, instr->arg3);
             break;
         case LOAD:
-            printf("t%ld <- %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            printf("t%ld <- %s", instr->arg1, addr_to_var_name(instr->arg2));
             break;
         case STORE:
-            printf("t%ld -> %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            printf("t%ld -> %s", instr->arg1, addr_to_var_name(instr->arg2));
             break;
     }
+    printf("\n");
 }
 
 // imprimir lista de instruções
@@ -99,24 +94,23 @@ void ic_insert(Instr* instr) {
 }
 
 // criar uma Instrução em código intermédio
-void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3, ar_op binop) {
+void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3) {
     Instr* node = (Instr*)malloc(sizeof(Instr));
     node->opcode = opc;
     node->arg1 = arg1;
     node->arg2 = arg2;
     node->arg3 = arg3;
-    node->binop = binop;
     ic_insert(node);
 }
 
 void transArExp(ArExpr* ar_expr, Addr dest) {
     switch (ar_expr->kind) {
         case INT:
-            emit(MOVEI, dest, ar_expr->attr.int_val, NULO, NULO);       // dest := num
+            emit(MOVEI, dest, ar_expr->attr.int_val, NULO);
             break;
         case ID:
-            Addr temp = st_search(ar_expr->attr.id);                    // temp = lookup(id,table)
-            emit(LOAD, dest, temp, NULO, NULO);                         // dest := temp
+            Addr temp = st_search(ar_expr->attr.id);                        
+            emit(LOAD, dest, temp, NULO);                                   
             break;
         case AR_OP:
             Addr t1 = newTemp();
@@ -124,9 +118,24 @@ void transArExp(ArExpr* ar_expr, Addr dest) {
             transArExp(ar_expr->attr.ar_op.left, t1);
             transArExp(ar_expr->attr.ar_op.right, t2);
             popTemp(2);
-            emit(OP, dest, t1, t2, ar_expr->attr.ar_op.op);             // dest := t1 binop t2
+            switch (ar_expr->attr.ar_op.op) {
+                case PLUS:
+                    emit(IC_ADD, dest, t1, t2);
+                    break;
+                case MINUS:
+                    emit(IC_SUB, dest, t1, t2);
+                    break;
+                case TIMES:
+                    emit(IC_MUL, dest, t1, t2);
+                    break;
+                case DIV:
+                    emit(IC_DIV, dest, t1, t2);
+                    break;
+                case MOD:
+                    emit(IC_MOD, dest, t1, t2);
+                    break;
+            }
             break;
-
     }
 }
 
@@ -158,9 +167,9 @@ void transStm(Stm* stm) {
         case STM_ASSIGNMENT:
             Addr t1 = newTemp();
             Addr t2 = st_search(stm->attr.assign.ident);
-            emit(LOAD, t1, t2, NULO, NULO);
+            emit(LOAD, t1, t2, NULO);
             transExp(stm->attr.assign.expr, t1);
-            emit(STORE, t1, t2, NULO, NULO);
+            emit(STORE, t1, t2, NULO);
             popTemp(1);
             break;
         case STM_COMPOUND:

@@ -3,14 +3,12 @@
 
 // Expressões Aritméticas
 
-typedef enum {false, true} bool;
 typedef enum {PLUS, MINUS, TIMES, DIV, MOD} ar_op;
 struct _ArExpr {
     enum {
         ID,
         INT,
         FLOAT,
-        BOOLEAN,
         DELIMITED_AR_EXPR,
         AR_OP
     } kind;
@@ -18,7 +16,6 @@ struct _ArExpr {
         char* id;
         int int_val;
         float float_val;
-        bool boolean_ent;
         struct _ArExpr* delimited_ar_expr;
         struct {
             ar_op op;
@@ -45,12 +42,12 @@ struct _BoolExpr {
             bool_op op;
             struct _ArExpr* left;
             struct _ArExpr* right;
-        } bool_op;
+        } bool_ar_op;
         struct {
             bool_op op;
             struct _BoolExpr* left;
             struct _BoolExpr* right;
-        } bool_op2;
+        } bool_bool_op;
     } attr;
 };
 
@@ -187,7 +184,6 @@ ArExpr* ar_expr_integer(int int_val);
 ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
-ArExpr* ar_expr_boolean(bool boolean_ent);
 
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
