@@ -8,6 +8,7 @@ typedef struct _BoolExpr BoolExpr;
 typedef struct _Expr Expr;
 typedef struct _Dclr Dclr;
 typedef struct _Stm Stm;
+typedef struct _Cnd Cnd;
 
 
 struct _Pckg {
@@ -27,7 +28,7 @@ struct _Pckg {
 
 // Expressões Aritméticas
 
-typedef enum {false, true} bool;
+typedef enum {FALSE, TRUE} boolean;
 typedef enum {PLUS, MINUS, TIMES, DIV, MOD} ar_op;
 struct _ArExpr {
     enum {
@@ -42,7 +43,7 @@ struct _ArExpr {
         char* id;
         int int_val;
         float float_val;
-        bool boolean_ent;
+        boolean boolean_ent;
         ArExpr* delimited_ar_expr;
         struct {
             ar_op op;
@@ -59,8 +60,8 @@ struct _BoolExpr {
     enum {
         // ID,
         DELIMITED_BOOL_EXPR,
-        BOOL_OP,
-        BOOL_OP2
+        BOOL_AR_OP,
+        BOOL_LG_OP
     } kind;
     union {
         // char* id;
@@ -69,12 +70,12 @@ struct _BoolExpr {
             bool_op op;
             ArExpr* left;
             ArExpr* right;
-        } bool_op;
+        } bool_ar_op;
         struct {
             bool_op op;
             BoolExpr* left;
             BoolExpr* right;
-        } bool_op2;
+        } bool_lg_op;
     } attr;
 };
 
@@ -121,6 +122,21 @@ struct _Dclr {
     } attr;
 };
 
+// Condições
+typedef enum {RL_EQ, RL_NE, RL_LT, RL_GT} rel_op;
+struct _Cnd {
+    enum {
+        CND_RELOP
+    } kind;
+    union {
+        struct {
+            rel_op op;
+            ArExpr* left;
+            ArExpr* right;
+        } cnd_relop;
+    } attr;
+};
+
 
 // Statements
 
@@ -146,16 +162,16 @@ struct _Stm {
             Expr* expr;
         } assign;
         struct {
-            Expr* condition;
+            Cnd* condition;
             Stm* then_branch;
         } if_then;
         struct {
-            Expr* condition;
+            Cnd* condition;
             Stm* then_branch;
             Stm* else_branch;
         } if_then_else;
         struct {
-            Expr* condition;
+            Cnd* condition;
             Stm* body;
         } while_stm;
         Pckg* pckg_with;
@@ -182,7 +198,7 @@ ArExpr* ar_expr_integer(int int_val);
 ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
-ArExpr* ar_expr_boolean(bool boolean_ent);
+ArExpr* ar_expr_boolean(boolean boolean_ent);
 
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
@@ -198,12 +214,14 @@ Dclr* dclr_assignment(char* id, char* type, Expr* expr);
 
 Stm* stm_compound(Stm* first, Stm* second);
 Stm* stm_assign(char* ident, Expr* expr);
-Stm* stm_if_then(Expr* condition, Stm* then_branch);
-Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch);
-Stm* stm_while(Expr* condition, Stm* body);
+Stm* stm_if_then(Cnd* condition, Stm* then_branch);
+Stm* stm_if_then_else(Cnd* condition, Stm* then_branch, Stm* else_branch);
+Stm* stm_while(Cnd* condition, Stm* body);
 Stm* stm_with(Pckg* pckg_with);
 Stm* stm_use(Pckg* pckg_use);
 Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
 Stm* stm_function(char* func_id, Expr* arg);
+
+Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right);
 
 #endif

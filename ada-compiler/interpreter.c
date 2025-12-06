@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     ic_print();
     printf("\n\n\n");
 
-    printf("+ MIPS +\n");
+    printf("+ MIPS +\n\n");
     mc_print();
     printf("\n\n\n");
 

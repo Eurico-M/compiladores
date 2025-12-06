@@ -75,8 +75,8 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     else if (boolExpr->kind == DELIMITED_BOOL_EXPR) {
         printBoolExpr_v2(boolExpr->attr.delimited_bool_expr, tabs);
     }
-    else if (boolExpr->kind == BOOL_OP) {
-        switch (boolExpr->attr.bool_op.op) {
+    else if (boolExpr->kind == BOOL_AR_OP) {
+        switch (boolExpr->attr.bool_ar_op.op) {
             case EQUAL:
                 printf("%sEQUAL(\n", tabString);
                 break;
@@ -97,12 +97,12 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
                 break;
             default: yyerror("Unkown boolean operator(");
         }
-        printArExpr_v2(boolExpr->attr.bool_op.left, tabs + 1);
-        printArExpr_v2(boolExpr->attr.bool_op.right, tabs + 1);
+        printArExpr_v2(boolExpr->attr.bool_ar_op.left, tabs + 1);
+        printArExpr_v2(boolExpr->attr.bool_ar_op.right, tabs + 1);
         printf("%s)\n", tabString);
     }
-    else if (boolExpr->kind == BOOL_OP2) {
-        switch (boolExpr->attr.bool_op2.op){
+    else if (boolExpr->kind == BOOL_LG_OP) {
+        switch (boolExpr->attr.bool_lg_op.op){
             case AND:
                 printf("%sAND(\n", tabString);
                 break;
@@ -118,10 +118,10 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
             default: yyerror("Unkown boolean operator(");
         }
 
-        if (boolExpr->attr.bool_op2.op != NOT) {
-            printBoolExpr_v2(boolExpr->attr.bool_op2.left, tabs + 1);
+        if (boolExpr->attr.bool_lg_op.op != NOT) {
+            printBoolExpr_v2(boolExpr->attr.bool_lg_op.left, tabs + 1);
         }
-        printBoolExpr_v2(boolExpr->attr.bool_op2.right, tabs + 1);
+        printBoolExpr_v2(boolExpr->attr.bool_lg_op.right, tabs + 1);
         printf("%s)\n", tabString);
     }
 }
@@ -213,6 +213,40 @@ void printPckg_v2(Pckg* pckg, long tabs) {
     }
 }
 
+void printCnd_v2(Cnd* cnd, long tabs) {
+    
+    char tabString[4 * tabs + 1];
+
+    for (int i = 0; i < 4 * tabs; i++) {
+        tabString[i] = ' ';
+    }
+
+    tabString[4 * tabs] = '\0';
+
+    if (cnd == 0) {
+        yyerror("Null condition");
+    }
+    else if (cnd->kind == CND_RELOP) {
+        switch (cnd->attr.cnd_relop.op) {
+            case RL_EQ:
+                printf("%sEQUAL(\n", tabString);
+                break;
+            case RL_NE:
+                printf("%sNOT_EQUAL(\n", tabString);
+                break;
+            case RL_GT:
+                printf("%sGREATER(\n", tabString);
+                break;
+            case RL_LT:
+                printf("%sLESS(\n", tabString);
+                break;
+        }
+        printArExpr_v2(cnd->attr.cnd_relop.left, tabs + 1);
+        printArExpr_v2(cnd->attr.cnd_relop.right, tabs + 1);
+        printf("%s)\n", tabString);
+    }
+}
+
 void printStm_v2(Stm* stm, long tabs) {
 
     char tabString[4 * tabs + 1];
@@ -242,14 +276,14 @@ void printStm_v2(Stm* stm, long tabs) {
     }
     else if (stm->kind == STM_IF_THEN) {
         printf("%sIF(\n", tabString);
-        printExpr_v2(stm->attr.if_then.condition, tabs + 1);
+        printCnd_v2(stm->attr.if_then.condition, tabs + 1);
         printf("%s) THEN(\n", tabString);
         printStm_v2(stm->attr.if_then.then_branch, tabs + 1);
         printf("%s) END_IF\n", tabString);
     }
     else if (stm->kind == STM_IF_THEN_ELSE) {
         printf("%sIF(\n", tabString);
-        printExpr_v2(stm->attr.if_then_else.condition, tabs + 1);
+        printCnd_v2(stm->attr.if_then_else.condition, tabs + 1);
         printf("%s) THEN(\n", tabString);
         printStm_v2(stm->attr.if_then_else.then_branch, tabs + 1);
         printf("%s)\n", tabString);
@@ -259,7 +293,7 @@ void printStm_v2(Stm* stm, long tabs) {
     }
     else if (stm->kind == STM_WHILE) {
         printf("%sWHILE(\n", tabString);
-        printExpr_v2(stm->attr.while_stm.condition, tabs + 1);
+        printCnd_v2(stm->attr.while_stm.condition, tabs + 1);
         printf("%s) LOOP(\n", tabString);
         printStm_v2(stm->attr.while_stm.body, tabs + 1);
         printf("%s) END_LOOP\n", tabString);
