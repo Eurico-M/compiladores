@@ -16,9 +16,9 @@
 A Tabela de Símbolos é representada por uma lista de st_node.
 
 Cada st_node tem:
-- char* id *nome da variável*
-- st_type type *tipo da variável, definido na AST*
-- st_node* next *apontador para o próximo nó*
+- char* id - *nome da variável*
+- st_type type - *tipo da variável, definido na AST*
+- st_node* next - *apontador para o próximo nó*
 
 A lista é uma lista ligada simples e, como na nossa implementação sem âmbitos a ordem das variáveis não interessa, podemos manter apenas a cabeça da lista e ir acrescentando os nós ao início da lista.
 
@@ -27,12 +27,12 @@ A lista é uma lista ligada simples e, como na nossa implementação sem âmbito
 O Código Intermédio é uma lista de ic_node.
 
 Cada ic_node tem:
-- Instr* instr *instrução em código de 3 endereços*
-- ic_node* next *apontador para o próximo nó*
+- Instr* instr - *instrução em código de 3 endereços*
+- ic_node* next - *apontador para o próximo nó*
 
 A estrutura de uma Instrução em Código de 3 Endereços é:
-- Opcode opcode *Opcode já muito similar ao MIPS (ADD, LABEL, etc.)*
-- Addr arg1, arg2, arg3, arg4 *Argumentos. A nossa implementação usa no máximo 4 argumentos: nas instruções com condições precisamos de guardar os dois operandos da comparação e as duas etiquetas que representam o caminho verdadeiro ou falso depois da comparação.
+- Opcode opcode - *Opcode já muito similar ao MIPS (ADD, LABEL, etc.)*
+- Addr arg1, arg2, arg3, arg4 - *Argumentos. A nossa implementação usa no máximo 4 argumentos: nas instruções com condições precisamos de guardar os dois operandos da comparação e as duas etiquetas que representam o caminho verdadeiro ou falso depois da comparação.*
 
 A lista é uma lista ligada simples, mas agora precisámos de manter a cabeça (para percorrer a lista) e a cauda, para adicionar nós ao fim da lista em tempo constante (já que as instruções precisam de estar ordenadas).
 
