@@ -9,47 +9,84 @@
 - mc.h - *definição da função de imprimir código MIPS*
 - mc.c - *implementação da função de imprimir código MIPS*
 
+### Estruturas usadas:
+
+#### Tabela de Símbolos (ST):
+
+A Tabela de Símbolos é um representada por uma lista de st_node.
+
+Cada st_node tem:
+- char* id *nome da variável*
+- st_type type *tipo da variável, definido na AST*
+- st_node* next *apontador para o próximo nó*
+
+A lista é uma lista ligada simples e, como na nossa implementação sem âmbitos a ordem das variáveis não interessa, podemos manter apenas a cabeça da lista e ir acrescentando os nós ao início da lista.
+
+#### Código Intermédio (IC):
+
+O Código Intermédio é uma lista de ic_node.
+
+Cada ic_node tem:
+- Instr* instr *instrução em código de 3 endereços*
+- ic_node* next *apontador para o próximo nó*
+
+A estrutura de uma Instrução em Código de 3 Endereços é:
+- Opcode opcode *Opcode já muito similar ao MIPS (ADD, LABEL, etc.)*
+- Addr arg1, arg2, arg3, arg4 *Argumentos. A nossa implementação usa no máximo 4 argumentos: nas instruções com condições precisamos de guardar os dois operandos da comparação e as duas etiquetas que representam o caminho verdadeiro ou falso depois da comparação.
+
+A lista é uma lista ligada simples, mas agora precisámos de manter a cabeça (para percorrer a lista) e a cauda, para adicionar nós ao fim da lista em tempo constante (já que as instruções precisam de estar ordenadas).
+
+#### Código MIPS (MC):
+
+A geração de código MIPS não carece de nenhuma estrutura auxiliar - basta percorrer a lista de Código Intermédio e ir imprimindo as Instruções traduzidas para formato MIPS.
+
+
 ### Mas afinal o que é isto de 'compilador'?
 
 Código em Ada:
 ```
 procedure Test is
-    x : Integer;
-    y : Integer;
+    x : Integer := 1;
+    y : Integer := 2;
 begin
-    y := 1;
-    x := y + 2 * 3;
+    if x > y then
+        x := y + 1;
+    end if;
 end Test;
 ```
 
 Através de magia negra (flex + bison ('flexing bison' é um bom nome para uma banda, uma coisa indie alternativa)) cria-se a Abstract Syntax Tree (AST):
 ```
 PROCEDURE(Test) IS(
-    DCLR_SIMPLE(
-        Integer(x)
+    DCLR_ASSIGN(
+        Integer(x) =
+            ARITHMETIC_EXPRESSION(
+                INT(1)
+            )
     )
-    DCLR_SIMPLE(
-        Integer(y)
+    DCLR_ASSIGN(
+        Integer(y) =
+            ARITHMETIC_EXPRESSION(
+                INT(2)
+            )
     )
 BEGIN(
-    ASSIGN(
-        ID(y)
-        ARITHMETIC_EXPRESSION(
-            INT(1)
+    IF(
+        GREATER(
+            ID(x)
+            ID(y)
         )
-    )
-    ASSIGN(
-        ID(x)
-        ARITHMETIC_EXPRESSION(
-            PLUS(
-                ID(y)
-                TIMES(
-                    INT(2)
-                    INT(3)
+    ) THEN(
+        ASSIGN(
+            ID(x)
+            ARITHMETIC_EXPRESSION(
+                PLUS(
+                    ID(y)
+                    INT(1)
                 )
             )
         )
-    )
+    ) END_IF
 )) END_Test
 ```
 
@@ -61,16 +98,22 @@ ID: x, TYPE: Integer
 
 Usando a AST e a ST gera-se Código Intermédio (IC), neste trabalho um código de 3 endereços:
 ```
-t0 <- y
+t0 <- x
 t0 := 1
+t0 -> x
+t0 <- y
+t0 := 2
 t0 -> y
 t0 <- x
 t1 <- y
-t3 := 2
-t4 := 3
-t2 := t3 * t4
-t0 := t1 + t2
-t0 -> x
+COND t0 > t1 label0 label1
+LABEL label0
+t2 <- x
+t3 <- y
+t4 := 1
+t2 := t3 + t4
+t2 -> x
+LABEL label1
 ```
 
 Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MIPS. Sem esquecer de percorrer a ST uma última vez para declarar todas as variáveis:
@@ -78,18 +121,26 @@ Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MI
 .data
 y: .word 0
 x: .word 0
+
 .text
 main:
-lw $t0, y
-li $t0, 1
-sw $t0, y
-lw $t0, x
-lw $t1, y
-li $t3, 2
-li $t4, 3
-mul $t2, $t3, $t4
-add $t0, $t1, $t2
-sw $t0, x
+    lw $t0, x
+    li $t0, 1
+    sw $t0, x
+    lw $t0, y
+    li $t0, 2
+    sw $t0, y
+    lw $t0, x
+    lw $t1, y
+    bgt $t0, $t1, label0
+    j label1
+label0:
+    lw $t2, x
+    lw $t3, y
+    li $t4, 1
+    add $t2, $t3, $t4
+    sw $t2, x
+label1:
 ```
 
 
