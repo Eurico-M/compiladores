@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     // printf("\n\n\n");
     printf("+ Abstract Syntax Tree v2 +\n\n");
     printStm_v2(program, tabs);
-    printf("\n");
+    printf("\n\n\n");
 
     st_build_stm(program);
     if (st_head == NULL) {
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     }
     printf("+ Symbol Table +\n");
     st_print();
-    printf("\n");
+    printf("\n\n\n");
 
     transStm(program);
     if (ic_head == NULL) {
@@ -53,11 +53,11 @@ int main(int argc, char** argv) {
     }
     printf("+ Intermediate Code +\n");
     ic_print();
-    printf("\n");
+    printf("\n\n\n");
 
     printf("+ MIPS +\n");
     mc_print();
-    printf("\n");
+    printf("\n\n\n");
 
     return 0;
 }
