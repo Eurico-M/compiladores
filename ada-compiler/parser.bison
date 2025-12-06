@@ -15,19 +15,19 @@
     int int_val;
     float float_val;
     char* string_val;
-    bool bool_val;
     Stm* stm_val;
     Expr* expr_val;
     ArExpr* arExpr_val;
     BoolExpr* boolExpr_val;
     Dclr* dclr_val;
     Pckg* pckg_val;
+    Cnd* cnd_val;
 }
 
 %type <int_val> TOKEN_INT
 %type <float_val> TOKEN_FLOAT
 %type <string_val> TOKEN_ID TOKEN_STRING
-%type <bool_val> TOKEN_BOOL
+
 
 %type <stm_val> program
 %type <stm_val> stm stm_list
@@ -36,9 +36,10 @@
 %type <boolExpr_val> boolExpr
 %type <dclr_val> dclr dclr_list
 %type <pckg_val> pckg pckg_list
+%type <cnd_val> cnd
 
 
-%token TOKEN_INT TOKEN_FLOAT TOKEN_BOOL
+%token TOKEN_INT TOKEN_FLOAT
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
@@ -96,13 +97,13 @@ stm:
     TOKEN_ID TOKEN_ASSIGN expr TOKEN_SEMI {
         $$ = stm_assign($1, $3); }
     |
-    TOKEN_IF expr TOKEN_THEN stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
+    TOKEN_IF cnd TOKEN_THEN stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
         $$ = stm_if_then($2, $4); }
     |
-    TOKEN_IF expr TOKEN_THEN stm_list TOKEN_ELSE stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
+    TOKEN_IF cnd TOKEN_THEN stm_list TOKEN_ELSE stm_list TOKEN_END TOKEN_IF TOKEN_SEMI {
         $$ = stm_if_then_else($2, $4, $6); }
     |
-    TOKEN_WHILE expr TOKEN_LOOP stm_list TOKEN_END TOKEN_LOOP TOKEN_SEMI {
+    TOKEN_WHILE cnd TOKEN_LOOP stm_list TOKEN_END TOKEN_LOOP TOKEN_SEMI {
         $$ = stm_while($2, $4); }
     |
     TOKEN_WITH pckg_list TOKEN_SEMI {
@@ -116,6 +117,20 @@ stm:
     |
     TOKEN_ID TOKEN_LPAREN expr TOKEN_RPAREN TOKEN_SEMI {
         $$ = stm_function($1, $3); }
+    ;
+
+cnd:
+    arExpr TOKEN_EQUAL arExpr {
+        $$ = cnd_relop(RL_EQ, $1, $3); }
+    |
+    arExpr TOKEN_DIFF arExpr {
+        $$ = cnd_relop(RL_NE, $1, $3); }
+    |
+    arExpr TOKEN_GREATER arExpr {
+        $$ = cnd_relop(RL_GT, $1, $3); }
+    |
+    arExpr TOKEN_LESS arExpr {
+        $$ = cnd_relop(RL_LT, $1, $3); }
     ;
 
 
@@ -158,9 +173,6 @@ arExpr:
     |
     TOKEN_FLOAT {
         $$ = ar_expr_float($1); }
-    |
-    TOKEN_BOOL {
-        $$ = ar_expr_boolean($1); }
     |
     TOKEN_LPAREN arExpr TOKEN_RPAREN {
         $$ = ar_expr_delimited($2); }

@@ -1,7 +1,8 @@
 procedure Test is
-    x : Integer;
-    y : Integer;
+    x : Integer := 1;
+    y : Integer := 2;
 begin
-    y := 1;
-    x := y + 2 * 3;
+    if x > y then
+        x := y + 1;
+    end if;
 end Test;

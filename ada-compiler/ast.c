@@ -61,7 +61,7 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     return node;
 }
 
-ArExpr* ar_expr_boolean(bool bool_ent) {
+ArExpr* ar_expr_boolean(boolean bool_ent) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
     node->kind = BOOLEAN;
     node->attr.boolean_ent = bool_ent;
@@ -80,19 +80,19 @@ BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr) {
 
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-    node->kind = BOOL_OP;
-    node->attr.bool_op.op = op;
-    node->attr.bool_op.left = left;
-    node->attr.bool_op.right = right;
+    node->kind = BOOL_AR_OP;
+    node->attr.bool_ar_op.op = op;
+    node->attr.bool_ar_op.left = left;
+    node->attr.bool_ar_op.right = right;
     return node;
 }
 
 BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right) {
     BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-    node->kind = BOOL_OP2;
-    node->attr.bool_op2.op = op;
-    node->attr.bool_op2.left = left;
-    node->attr.bool_op2.right = right;
+    node->kind = BOOL_LG_OP;
+    node->attr.bool_lg_op.op = op;
+    node->attr.bool_lg_op.left = left;
+    node->attr.bool_lg_op.right = right;
     return node;
 }
 
@@ -179,7 +179,7 @@ Stm* stm_assign(char* ident, Expr* expr) {
     return node;
 }
 
-Stm* stm_if_then(Expr* condition, Stm* then_branch) {
+Stm* stm_if_then(Cnd* condition, Stm* then_branch) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_IF_THEN;
     node->attr.if_then.condition = condition;
@@ -187,7 +187,7 @@ Stm* stm_if_then(Expr* condition, Stm* then_branch) {
     return node;
 }
 
-Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch) {
+Stm* stm_if_then_else(Cnd* condition, Stm* then_branch, Stm* else_branch) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_IF_THEN_ELSE;
     node->attr.if_then_else.condition = condition;
@@ -196,7 +196,7 @@ Stm* stm_if_then_else(Expr* condition, Stm* then_branch, Stm* else_branch) {
     return node;
 }
 
-Stm* stm_while(Expr* condition, Stm* body) {
+Stm* stm_while(Cnd* condition, Stm* body) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_WHILE;
     node->attr.while_stm.condition = condition;
@@ -232,5 +232,16 @@ Stm* stm_function(char* func_id, Expr* arg) {
     node->kind = STM_FUNCTION;
     node->attr.stm_func.func_id = func_id;
     node->attr.stm_func.arg = arg;
+    return node;
+}
+
+// Condições
+
+Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right) {
+    Cnd* node = (Cnd*) malloc(sizeof(Cnd));
+    node->kind = CND_RELOP;
+    node->attr.cnd_relop.op = op;
+    node->attr.cnd_relop.left = left;
+    node->attr.cnd_relop.right = right;
     return node;
 }

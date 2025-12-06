@@ -37,39 +37,49 @@ char* addr_to_var_name(Addr addr) {
 void print_instr(Instr* instr) {
     switch (instr->opcode) {
         case MOVE:
-            printf("t%ld := t%ld\n", instr->arg1, instr->arg2);
+            printf("t%ld := t%ld", instr->arg1, instr->arg2);
             break;
         case MOVEI:
-            printf("t%ld := %ld\n", instr->arg1, instr->arg2);
+            printf("t%ld := %ld", instr->arg1, instr->arg2);
             break;
-        case OP:
-            printf("t%ld := t%ld", instr->arg1, instr->arg2);
-            switch (instr->binop) {
-                case PLUS:
-                    printf(" + ");
-                    break;
-                case MINUS:
-                    printf(" - ");
-                    break;
-                case TIMES:
-                    printf(" * ");
-                    break;
-                case DIV:
-                    printf(" / ");
-                    break;
-                case MOD:
-                    printf(" %% ");
-                    break;
-            }
-            printf("t%ld\n", instr->arg3);
+        case IC_ADD:
+            printf("t%ld := t%ld + t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_SUB:
+            printf("t%ld := t%ld - t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MUL:
+            printf("t%ld := t%ld * t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_DIV:
+            printf("t%ld := t%ld / t%ld", instr->arg1, instr->arg2, instr->arg3);
+            break;
+        case IC_MOD:
+            printf("t%ld := t%ld %% t%ld", instr->arg1, instr->arg2, instr->arg3);
             break;
         case LOAD:
-            printf("t%ld <- %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            printf("t%ld <- %s", instr->arg1, addr_to_var_name(instr->arg2));
             break;
         case STORE:
-            printf("t%ld -> %s\n", instr->arg1, addr_to_var_name(instr->arg2));
+            printf("t%ld -> %s", instr->arg1, addr_to_var_name(instr->arg2));
+            break;
+        case IC_EQ:
+            printf("COND t%ld == t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case IC_NE:
+            printf("COND t%ld != t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case IC_GT:
+            printf("COND t%ld > t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case IC_LT:
+            printf("COND t%ld < t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case LABEL:
+            printf("LABEL label%ld", instr->arg1);
             break;
     }
+    printf("\n");
 }
 
 // imprimir lista de instruções
@@ -99,13 +109,13 @@ void ic_insert(Instr* instr) {
 }
 
 // criar uma Instrução em código intermédio
-void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3, ar_op binop) {
+void emit(Opcode opc, Addr arg1, Addr arg2, Addr arg3, Addr arg4) {
     Instr* node = (Instr*)malloc(sizeof(Instr));
     node->opcode = opc;
     node->arg1 = arg1;
     node->arg2 = arg2;
     node->arg3 = arg3;
-    node->binop = binop;
+    node->arg4 = arg4;
     ic_insert(node);
 }
 
@@ -124,11 +134,28 @@ void transArExp(ArExpr* ar_expr, Addr dest) {
             transArExp(ar_expr->attr.ar_op.left, t1);
             transArExp(ar_expr->attr.ar_op.right, t2);
             popTemp(2);
-            emit(OP, dest, t1, t2, ar_expr->attr.ar_op.op);             // dest := t1 binop t2
+            switch (ar_expr->attr.ar_op.op) {
+                case PLUS:
+                    emit(IC_ADD, dest, t1, t2, NULO);
+                    break;
+                case MINUS:
+                    emit(IC_SUB, dest, t1, t2, NULO);
+                    break;
+                case TIMES:
+                    emit(IC_MUL, dest, t1, t2, NULO);
+                    break;
+                case DIV:
+                    emit(IC_DIV, dest, t1, t2, NULO);
+                    break;
+                case MOD:
+                    emit(IC_MOD, dest, t1, t2, NULO);
+                    break;
+            }
             break;
 
     }
 }
+
 
 void transExp(Expr* expr, Addr dest) {
     switch (expr->kind) {
@@ -143,9 +170,41 @@ void transDclr(Dclr* dclr) {
         case DCLR_SIMPLE:
             break;
         case DCLR_ASSIGNMENT:
-            Addr dest = st_search(dclr->attr.dclr_assignment.id);
-            transExp(dclr->attr.dclr_assignment.expr, dest);
+            Addr t1 = newTemp();
+            Addr t2 = st_search(dclr->attr.dclr_assignment.id);
+            emit(LOAD, t1, t2, NULO, NULO);
+            transExp(dclr->attr.dclr_assignment.expr, t1);
+            emit(STORE, t1, t2, NULO, NULO);
+            popTemp(1);
             break;
+        case DCLR_COMPOUND:
+            transDclr(dclr->attr.dclr_compound.first);
+            transDclr(dclr->attr.dclr_compound.second);
+            break;
+    }
+}
+
+void transCond(Cnd* cnd, Addr label_true, Addr label_false) {
+    switch (cnd->kind) {
+        case CND_RELOP:
+            Addr t1 = newTemp();
+            Addr t2 = newTemp();
+            transArExp(cnd->attr.cnd_relop.left, t1);
+            transArExp(cnd->attr.cnd_relop.right, t2);
+            switch (cnd->attr.cnd_relop.op) {
+                case RL_EQ:
+                    emit(IC_EQ, t1, t2, label_true, label_false);
+                    break;
+                case RL_NE:
+                    emit(IC_NE, t1, t2, label_true, label_false);
+                    break;
+                case RL_GT:
+                    emit(IC_GT, t1, t2, label_true, label_false);
+                    break;
+                case RL_LT:
+                    emit(IC_LT, t1, t2, label_true, label_false);
+                    break;
+            }
     }
 }
 
@@ -166,6 +225,14 @@ void transStm(Stm* stm) {
         case STM_COMPOUND:
             transStm(stm->attr.compound.first);
             transStm(stm->attr.compound.second);
+            break;
+        case STM_IF_THEN:
+            Addr label1 = newLabel();
+            Addr label2 = newLabel();
+            transCond(stm->attr.if_then.condition, label1, label2);
+            emit(LABEL, label1, NULO, NULO, NULO);
+            transStm(stm->attr.if_then.then_branch);
+            emit(LABEL, label2, NULO, NULO, NULO);
             break;
     }
 }
