@@ -40,6 +40,10 @@ A lista é uma lista ligada simples, mas agora precisámos de manter a cabeça (
 
 A geração de código MIPS não carece de nenhuma estrutura auxiliar - basta percorrer a lista de Código Intermédio e ir imprimindo as Instruções traduzidas para formato MIPS.
 
+Para usar os nomes da variáveis "em cru" no Código MIPS, é preciso percorrer a Tabela de Símbolos e declarar, no cabeçalho de MIPS, os nomes das variáveis e reservar espaço correspondente ao tipo. No nosso trabalho, aceitamos variáveis de tipo Integer, e estamos a reservar um espaço *.word*. Estamos também a atribuir um valor por defeito de 0.
+
+Assim, os nossos Integer são palavras de 32 bits e são inicializados a zero.
+
 
 ### Mas afinal o que é isto de 'compilador'?
 
