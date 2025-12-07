@@ -22,7 +22,12 @@ typedef enum {
     IC_EQ,
     IC_NE,
     IC_GT,
-    IC_LT
+    IC_LT,
+    IC_GE,
+    IC_LE,
+    PUT,
+    PUTI,
+    GET
 } Opcode;
 
 // typedef enum {

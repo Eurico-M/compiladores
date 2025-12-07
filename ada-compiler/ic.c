@@ -78,6 +78,24 @@ void print_instr(Instr* instr) {
         case LABEL:
             printf("LABEL label%ld", instr->arg1);
             break;
+        case IC_GE:
+            printf("COND t%ld >= t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case IC_LE:
+            printf("COND t%ld <= t%ld label%ld label%ld", instr->arg1, instr->arg2, instr->arg3, instr->arg4);
+            break;
+        case JUMP:
+            printf("JUMP label%ld", instr->arg1);
+            break;
+        case PUTI:
+            printf("PUT %ld", instr->arg1);
+            break;
+        case PUT:
+            printf("PUT t%ld", instr->arg1);
+            break;
+        case GET:
+            printf("GET %s", addr_to_var_name(instr->arg1));
+            break;
     }
     printf("\n");
 }
@@ -204,7 +222,34 @@ void transCond(Cnd* cnd, Addr label_true, Addr label_false) {
                 case RL_LT:
                     emit(IC_LT, t1, t2, label_true, label_false);
                     break;
+                case RL_LE:
+                    emit(IC_LE, t1, t2, label_true, label_false);
+                    break;
+                case RL_GE:
+                    emit(IC_GE, t1, t2, label_true, label_false);
+                    break;
             }
+            popTemp(2);
+    }
+}
+
+void transFnc(Stm* stm) {
+    if (strcmp(stm->attr.stm_func.func_id, "Put_Line") == 0) {
+        switch (stm->attr.stm_func.arg->kind) {
+            case INT:
+                emit(PUTI, stm->attr.stm_func.arg->attr.int_val, NULO, NULO, NULO);
+                break;
+            default:
+                Addr t1 = newTemp();
+                transArExp(stm->attr.stm_func.arg, t1);
+                emit(PUT, t1, NULO, NULO, NULO);
+                popTemp(1);
+                break;
+        }
+    }
+    else if (strcmp(stm->attr.stm_func.func_id, "Get_Line") == 0) {
+        Addr dest = st_search(stm->attr.stm_func.arg->attr.id);
+        emit(GET, dest, NULO, NULO, NULO);
     }
 }
 
@@ -234,5 +279,32 @@ void transStm(Stm* stm) {
             transStm(stm->attr.if_then.then_branch);
             emit(LABEL, label2, NULO, NULO, NULO);
             break;
+        case STM_IF_THEN_ELSE:
+            Addr label3 = newLabel();
+            Addr label4 = newLabel();
+            Addr label5 = newLabel();
+            transCond(stm->attr.if_then_else.condition, label3, label4);
+            emit(LABEL, label3, NULO, NULO, NULO);
+            transStm(stm->attr.if_then_else.then_branch);
+            emit(JUMP, label5, NULO, NULO, NULO);
+            emit(LABEL, label4, NULO, NULO, NULO);
+            transStm(stm->attr.if_then_else.else_branch);
+            emit(LABEL, label5, NULO, NULO, NULO);
+            break;
+        case STM_WHILE:
+            Addr label6 = newLabel();
+            Addr label7 = newLabel();
+            Addr label8 = newLabel();
+            emit(LABEL, label6, NULO, NULO, NULO);
+            transCond(stm->attr.while_stm.condition, label7, label8);
+            emit(LABEL, label7, NULO, NULO, NULO);
+            transStm(stm->attr.while_stm.body);
+            emit(JUMP, label6, NULO, NULO, NULO);
+            emit(LABEL, label8, NULO, NULO, NULO);
+            break;
+        case STM_FUNCTION:
+            transFnc(stm);
+            break;
+
     }
 }

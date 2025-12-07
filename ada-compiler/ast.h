@@ -123,7 +123,7 @@ struct _Dclr {
 };
 
 // Condições
-typedef enum {RL_EQ, RL_NE, RL_LT, RL_GT} rel_op;
+typedef enum {RL_EQ, RL_NE, RL_LT, RL_GT, RL_GE, RL_LE} rel_op;
 struct _Cnd {
     enum {
         CND_RELOP
@@ -183,7 +183,7 @@ struct _Stm {
         } stm_proc;
         struct {
             char* func_id;
-            Expr* arg;
+            ArExpr* arg;
         } stm_func;
     } attr;
 };
@@ -220,7 +220,7 @@ Stm* stm_while(Cnd* condition, Stm* body);
 Stm* stm_with(Pckg* pckg_with);
 Stm* stm_use(Pckg* pckg_use);
 Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
-Stm* stm_function(char* func_id, Expr* arg);
+Stm* stm_function(char* func_id, ArExpr* arg);
 
 Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right);
 
