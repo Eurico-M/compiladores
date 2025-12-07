@@ -227,7 +227,7 @@ Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body) {
     return node;
 }
 
-Stm* stm_function(char* func_id, Expr* arg) {
+Stm* stm_function(char* func_id, ArExpr* arg) {
     Stm* node = (Stm*) malloc(sizeof(Stm));
     node->kind = STM_FUNCTION;
     node->attr.stm_func.func_id = func_id;

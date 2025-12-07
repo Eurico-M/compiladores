@@ -115,7 +115,7 @@ stm:
     TOKEN_PROC TOKEN_ID TOKEN_IS dclr_list TOKEN_BEGIN stm_list TOKEN_END TOKEN_ID TOKEN_SEMI {
         $$ = stm_procedure($2, $4, $6); }
     |
-    TOKEN_ID TOKEN_LPAREN expr TOKEN_RPAREN TOKEN_SEMI {
+    TOKEN_ID TOKEN_LPAREN arExpr TOKEN_RPAREN TOKEN_SEMI {
         $$ = stm_function($1, $3); }
     ;
 
@@ -131,6 +131,12 @@ cnd:
     |
     arExpr TOKEN_LESS arExpr {
         $$ = cnd_relop(RL_LT, $1, $3); }
+    |
+    arExpr TOKEN_LESS_EQUAL arExpr {
+        $$ = cnd_relop(RL_LE, $1, $3); }
+    |
+    arExpr TOKEN_GREATER_EQUAL arExpr {
+        $$ = cnd_relop(RL_GE, $1, $3); }
     ;
 
 
