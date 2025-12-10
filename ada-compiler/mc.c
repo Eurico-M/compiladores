@@ -10,99 +10,101 @@ long addr_temp_mips(Addr a) {
 }
 
 
-void mc_print_instr(Instr* instr) {
+void mc_print_instr(Instr* instr, FILE* out) {
     switch (instr->opcode) {
         case MOVE:
-            printf("    move $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2));
+            fprintf(out, "    move $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2));
             break;
         case MOVEI:
-            printf("    li $%ld, %ld\n", addr_temp_mips(instr->arg1), instr->arg2);
+            fprintf(out, "    li $%ld, %ld\n", addr_temp_mips(instr->arg1), instr->arg2);
             break;
         case IC_ADD:
-            printf("    add $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
+            fprintf(out, "    add $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
             break;
         case IC_MUL:
-            printf("    mul $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
+            fprintf(out, "    mul $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
             break;
         case IC_SUB:
-            printf("    sub $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
+            fprintf(out, "    sub $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
             break;
         case IC_DIV:
-            printf("    div $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
+            fprintf(out, "    div $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
             break;
         case IC_MOD:
-            printf("    rem $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
+            fprintf(out, "    rem $%ld, $%ld, $%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), addr_temp_mips(instr->arg3));
             break;
         case LOAD:
-            printf("    lw $%ld, %s\n", addr_temp_mips(instr->arg1), addr_to_var_name(instr->arg2));
+            fprintf(out, "    lw $%ld, %s\n", addr_temp_mips(instr->arg1), addr_to_var_name(instr->arg2));
             break;
         case STORE:
-            printf("    sw $%ld, %s\n", addr_temp_mips(instr->arg1), addr_to_var_name(instr->arg2));
+            fprintf(out, "    sw $%ld, %s\n", addr_temp_mips(instr->arg1), addr_to_var_name(instr->arg2));
             break;
         case LABEL:
-            printf("label%ld:\n", instr->arg1);
+            fprintf(out, "label%ld:\n", instr->arg1);
             break;
         case IC_EQ:
-            printf("    beq $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    beq $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
             break;
         case IC_NE:
-            printf("    bne $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    bne $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
             break;
         case IC_LT:
-            printf("    blt $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    blt $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
             break;
         case IC_GT:
-            printf("    bgt $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    bgt $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
             break;
         case IC_GE:
-            printf("    bge $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    bge $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
+            break;
         case IC_LE:
-            printf("    ble $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
-            printf("    j label%ld\n", instr->arg4);
+            fprintf(out, "    ble $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
+            fprintf(out, "    j label%ld\n", instr->arg4);
+            break;
         case JUMP:
-            printf("    j label%ld\n", instr->arg1);
+            fprintf(out, "    j label%ld\n", instr->arg1);
             break;
         case PUTI:
-            printf("    li $v0, 1\n");
-            printf("    li $a0, %ld\n", instr->arg1);
-            printf("    syscall\n");
+            fprintf(out, "    li $v0, 1\n");
+            fprintf(out, "    li $a0, %ld\n", instr->arg1);
+            fprintf(out, "    syscall\n");
             break;
         case PUT:
-            printf("    li $v0, 1\n");
-            printf("    move $a0, $%ld\n", addr_temp_mips(instr->arg1));
-            printf("    syscall\n");
+            fprintf(out, "    li $v0, 1\n");
+            fprintf(out, "    move $a0, $%ld\n", addr_temp_mips(instr->arg1));
+            fprintf(out, "    syscall\n");
             break;
         case GET:
-            printf("    li $v0, 5\n");
-            printf("    syscall\n");
-            printf("    sw $v0, %s\n", addr_to_var_name(instr->arg1));
+            fprintf(out, "    li $v0, 5\n");
+            fprintf(out, "    syscall\n");
+            fprintf(out, "    sw $v0, %s\n", addr_to_var_name(instr->arg1));
             break;
 
     }
 }
 
-void mc_print_vars(char* id) {
-    printf("%s: .word 0\n", id);
+void mc_print_vars(char* id, FILE* out) {
+    fprintf(out, "%s: .word 0\n", id);
 }
 
-void mc_print() {
-    printf(".data\n");
+void mc_print(FILE* out) {
+    fprintf(out, ".data\n");
     st_node* kur = st_head;
     while (kur != NULL) {
-        mc_print_vars(kur->id);
+        mc_print_vars(kur->id, out);
         kur = kur->next;
     }
-    printf("\n");
-    printf(".text\n");
-    printf("main:\n");
+    fprintf(out, "\n");
+    fprintf(out, ".text\n");
+    fprintf(out, "main:\n");
     ic_node* cur = ic_head;
     while (cur != NULL) {
-        mc_print_instr(cur->instr);
+        mc_print_instr(cur->instr, out);
         cur = cur->next;
     }
 }

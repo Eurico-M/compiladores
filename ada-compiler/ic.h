@@ -7,8 +7,6 @@
 typedef enum {
     MOVE,           // t1 := t2
     MOVEI,          // t1 := num
-    OP,             // t1 := t2 op t3
-    OPI,            // t1 := t2 op num
     LABEL,
     JUMP,
     COND,

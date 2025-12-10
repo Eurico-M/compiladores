@@ -1,0 +1,8 @@
+procedure Test is
+    a : Integer;
+    b : Integer;
+begin
+    if a /= 0 and b > a then
+        b := b - a;
+    end if;
+end Test;

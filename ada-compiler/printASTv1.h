@@ -1,3 +1,5 @@
+#include "ast.h"
+
 #ifndef PRINT_AST_V1_H
 #define PRINT_AST_V1_H
 

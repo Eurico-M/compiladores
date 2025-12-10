@@ -18,7 +18,7 @@
     Stm* stm_val;
     Expr* expr_val;
     ArExpr* arExpr_val;
-    BoolExpr* boolExpr_val;
+    //BoolExpr* boolExpr_val;
     Dclr* dclr_val;
     Pckg* pckg_val;
     Cnd* cnd_val;
@@ -33,7 +33,7 @@
 %type <stm_val> stm stm_list
 %type <expr_val> expr
 %type <arExpr_val> arExpr
-%type <boolExpr_val> boolExpr
+//%type <boolExpr_val> boolExpr
 %type <dclr_val> dclr dclr_list
 %type <pckg_val> pckg pckg_list
 %type <cnd_val> cnd
@@ -43,6 +43,7 @@
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
+%token TOKEN_TRUE TOKEN_FALSE
 
 %token TOKEN_EOF
 %token TOKEN_ASSIGN
@@ -137,6 +138,21 @@ cnd:
     |
     arExpr TOKEN_GREATER_EQUAL arExpr {
         $$ = cnd_relop(RL_GE, $1, $3); }
+    |
+    TOKEN_TRUE {
+        $$ = cnd_cnst(True); }
+    |
+    TOKEN_FALSE {
+        $$ = cnd_cnst(False); }
+    |
+    cnd TOKEN_AND cnd {
+        $$ = cnd_lgop(LG_AND, $1, $3); }
+    |
+    cnd TOKEN_OR cnd {
+        $$ = cnd_lgop(LG_OR, $1, $3); }
+    |
+    TOKEN_NOT cnd {
+        $$ = cnd_lgop(LG_NOT, $2, NULL); }
     ;
 
 
@@ -162,9 +178,9 @@ expr:
     arExpr {
         $$ = expr_arithmetic($1); }
     |
-    boolExpr {
-        $$ = expr_boolean($1); }
-    |
+    //boolExpr {
+    //    $$ = expr_boolean($1); }
+    //|
     TOKEN_STRING {
         $$ = expr_string($1); }
     ;
@@ -177,9 +193,9 @@ arExpr:
     TOKEN_INT {
         $$ = ar_expr_integer($1); }
     |
-    TOKEN_FLOAT {
-        $$ = ar_expr_float($1); }
-    |
+    //TOKEN_FLOAT {
+    //    $$ = ar_expr_float($1); }
+    //|
     TOKEN_LPAREN arExpr TOKEN_RPAREN {
         $$ = ar_expr_delimited($2); }
     |
@@ -199,7 +215,7 @@ arExpr:
         $$ = ar_expr_operation(MOD, $1, $3); }
     ;
 
-
+/*
 boolExpr:
     TOKEN_LPAREN boolExpr TOKEN_RPAREN {
         $$ = bool_expr_delimited($2); }
@@ -234,7 +250,7 @@ boolExpr:
     TOKEN_NOT boolExpr {
         $$ = bool_expr_operation2(NOT, NULL, $2); }
     ;
-
+*/
 
 pckg_list:
     pckg {

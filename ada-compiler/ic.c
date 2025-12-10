@@ -230,6 +230,38 @@ void transCond(Cnd* cnd, Addr label_true, Addr label_false) {
                     break;
             }
             popTemp(2);
+            break;
+
+        case CND_CNST:
+            switch (cnd->attr.c) {
+                case True:
+                    emit(JUMP, label_true, NULO, NULO, NULO);
+                    break;
+                case False:
+                    emit(JUMP, label_false, NULO, NULO, NULO);
+                    break;
+            }
+            break;
+        
+        case CND_LGOP:
+            switch (cnd->attr.cnd_lgop.op) {
+                case LG_NOT:
+                    transCond(cnd->attr.cnd_lgop.left, label_false, label_true);
+                    break;
+                case LG_AND:
+                    Addr label_and = newLabel();
+                    transCond(cnd->attr.cnd_lgop.left, label_and, label_false);
+                    emit(LABEL, label_and, NULO, NULO, NULO);
+                    transCond(cnd->attr.cnd_lgop.right, label_true, label_false);
+                    break;
+                case LG_OR:
+                    Addr label_or = newLabel();
+                    transCond(cnd->attr.cnd_lgop.left, label_true, label_or);
+                    emit(LABEL, label_or, NULO, NULO, NULO);
+                    transCond(cnd->attr.cnd_lgop.right, label_true, label_false);
+                    break;
+            }
+            break;
     }
 }
 

@@ -38,12 +38,12 @@ ArExpr* ar_expr_integer(int int_val) {
     return node;
 }
 
-ArExpr* ar_expr_float(float float_val) {
-    ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->kind = FLOAT;
-    node->attr.float_val = float_val;
-    return node;
-}
+// ArExpr* ar_expr_float(float float_val) {
+//     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
+//     node->kind = FLOAT;
+//     node->attr.float_val = float_val;
+//     return node;
+// }
 
 ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr) {
     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
@@ -61,12 +61,12 @@ ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right) {
     return node;
 }
 
-ArExpr* ar_expr_boolean(boolean bool_ent) {
-    ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
-    node->kind = BOOLEAN;
-    node->attr.boolean_ent = bool_ent;
-    return node;
-}
+// ArExpr* ar_expr_boolean(boolean bool_ent) {
+//     ArExpr* node = (ArExpr*) malloc(sizeof(ArExpr));
+//     node->kind = BOOLEAN;
+//     node->attr.boolean_ent = bool_ent;
+//     return node;
+// }
 
 
 // Boolean Expressions
@@ -141,6 +141,7 @@ st_type string_to_st_type(char* type) {
     }
 
     yyerror("unkown type");
+    return 0;
 }
 
 Dclr* dclr_simple(char* id, char* type) {
@@ -243,5 +244,21 @@ Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right) {
     node->attr.cnd_relop.op = op;
     node->attr.cnd_relop.left = left;
     node->attr.cnd_relop.right = right;
+    return node;
+}
+
+Cnd* cnd_cnst(cnst c) {
+    Cnd* node = (Cnd*) malloc(sizeof(Cnd));
+    node->kind = CND_CNST;
+    node->attr.c = c;
+    return node;
+}
+
+Cnd* cnd_lgop(lg_op op, Cnd* left, Cnd* right) {
+    Cnd* node = (Cnd*) malloc(sizeof(Cnd));
+    node->kind = CND_LGOP;
+    node->attr.cnd_lgop.op = op;
+    node->attr.cnd_lgop.left = left;
+    node->attr.cnd_lgop.right = right;
     return node;
 }
