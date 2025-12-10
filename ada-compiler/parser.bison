@@ -24,7 +24,7 @@
     Cnd* cnd_val;
 }
 
-%type <int_val> TOKEN_INT
+%type <int_val> TOKEN_INT TOKEN_TRUE TOKEN_FALSE
 %type <float_val> TOKEN_FLOAT
 %type <string_val> TOKEN_ID TOKEN_STRING
 
@@ -43,6 +43,7 @@
 %token TOKEN_ID TOKEN_STRING
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_MOD
 %token TOKEN_EQUAL TOKEN_DIFF TOKEN_LESS TOKEN_GREATER TOKEN_LESS_EQUAL TOKEN_GREATER_EQUAL TOKEN_AND TOKEN_OR TOKEN_XOR TOKEN_NOT
+%token TOKEN_TRUE TOKEN_FALSE
 
 %token TOKEN_EOF
 %token TOKEN_ASSIGN
@@ -137,6 +138,12 @@ cnd:
     |
     arExpr TOKEN_GREATER_EQUAL arExpr {
         $$ = cnd_relop(RL_GE, $1, $3); }
+    |
+    TOKEN_TRUE {
+        $$ = cnd_cnst(True); }
+    |
+    TOKEN_FALSE {
+        $$ = cnd_cnst(False); }
     ;
 
 

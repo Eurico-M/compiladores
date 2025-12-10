@@ -85,13 +85,15 @@ struct _BoolExpr {
 struct _Expr {
     enum {
         EXPR_ARITHMETIC,
-        EXPR_BOOLEAN,
-        EXPR_STRING
+        EXPR_CND
+        // EXPR_BOOLEAN,
+        // EXPR_STRING
     } kind;
     union {
         ArExpr* ar_expr;
-        BoolExpr* bool_expr;
-        char* string_expr;
+        Cnd* cnd_expr;
+        // BoolExpr* bool_expr;
+        // char* string_expr;
     } attr;
 };
 
@@ -124,9 +126,11 @@ struct _Dclr {
 
 // Condições
 typedef enum {RL_EQ, RL_NE, RL_LT, RL_GT, RL_GE, RL_LE} rel_op;
+typedef enum {False, True} cnst;
 struct _Cnd {
     enum {
-        CND_RELOP
+        CND_RELOP,
+        CND_CNST
     } kind;
     union {
         struct {
@@ -134,6 +138,7 @@ struct _Cnd {
             ArExpr* left;
             ArExpr* right;
         } cnd_relop;
+        cnst c;
     } attr;
 };
 
@@ -200,13 +205,14 @@ ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
 ArExpr* ar_expr_boolean(boolean boolean_ent);
 
-BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
-BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
-BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right);
+// BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
+// BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
+// BoolExpr* bool_expr_operation2(bool_op op, BoolExpr* left, BoolExpr* right);
 
 Expr* expr_arithmetic(ArExpr* ar_expr);
-Expr* expr_boolean(BoolExpr* bool_expr);
-Expr* expr_string(char* string_expr);
+Expr* expr_cnd(Cnd* cnd_expr);
+// Expr* expr_boolean(BoolExpr* bool_expr);
+// Expr* expr_string(char* string_expr);
 
 Dclr* dclr_compound(Dclr* first, Dclr* second);
 Dclr* dclr_simple(char* id, char* type);
@@ -223,5 +229,6 @@ Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
 Stm* stm_function(char* func_id, ArExpr* arg);
 
 Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right);
+Cnd* cnd_cnst(cnst c);
 
 #endif

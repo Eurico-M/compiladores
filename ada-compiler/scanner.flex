@@ -34,6 +34,8 @@ int yyline = 1;
 "xor"     { return TOKEN_XOR; }
 "not"     { return TOKEN_NOT; }
 
+"False"   { yylval.int_val = 0; return TOKEN_FALSE; }
+"True"    { yylval.int_val = 1; return TOKEN_TRUE; }
 
 ";"       { return TOKEN_SEMI; }
 ":"       { return TOKEN_COLON; }

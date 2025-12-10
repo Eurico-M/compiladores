@@ -61,9 +61,11 @@ void mc_print_instr(Instr* instr) {
         case IC_GE:
             printf("    bge $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
             printf("    j label%ld\n", instr->arg4);
+            break;
         case IC_LE:
             printf("    ble $%ld, $%ld, label%ld\n", addr_temp_mips(instr->arg1), addr_temp_mips(instr->arg2), instr->arg3);
             printf("    j label%ld\n", instr->arg4);
+            break;
         case JUMP:
             printf("    j label%ld\n", instr->arg1);
             break;

@@ -126,6 +126,56 @@ void printBoolExpr_v2(BoolExpr* boolExpr, long tabs) {
     }
 }
 
+void printCnd_v2(Cnd* cnd, long tabs) {
+    
+    char tabString[4 * tabs + 1];
+
+    for (int i = 0; i < 4 * tabs; i++) {
+        tabString[i] = ' ';
+    }
+
+    tabString[4 * tabs] = '\0';
+
+    if (cnd == 0) {
+        yyerror("Null condition");
+    }
+    else if (cnd->kind == CND_RELOP) {
+        switch (cnd->attr.cnd_relop.op) {
+            case RL_EQ:
+                printf("%sEQUAL(\n", tabString);
+                break;
+            case RL_NE:
+                printf("%sNOT_EQUAL(\n", tabString);
+                break;
+            case RL_GT:
+                printf("%sGREATER(\n", tabString);
+                break;
+            case RL_LT:
+                printf("%sLESS(\n", tabString);
+                break;
+            case RL_GE:
+                printf("%sGREATER_OR_EQUAL(\n", tabString);
+                break;
+            case RL_LE:
+                printf("%sLESS_OR_EQUAL(\n", tabString);
+                break;
+        }
+        printArExpr_v2(cnd->attr.cnd_relop.left, tabs + 1);
+        printArExpr_v2(cnd->attr.cnd_relop.right, tabs + 1);
+        printf("%s)\n", tabString);
+    }
+    else if (cnd->kind == CND_CNST) {
+        switch (cnd->attr.c) {
+            case True:
+                printf("TRUE\n");
+                break;
+            case False:
+                printf("FALSE\n");
+                break;
+        }
+    }
+}
+
 
 void printExpr_v2(Expr* expr, long tabs) {
 
@@ -143,16 +193,20 @@ void printExpr_v2(Expr* expr, long tabs) {
     else if (expr->kind == EXPR_ARITHMETIC) {
         printf("%sARITHMETIC_EXPRESSION(\n", tabString);
         printArExpr_v2(expr->attr.ar_expr, tabs + 1);
-        printf("%s)\n", tabString);
     }
-    else if (expr->kind == EXPR_BOOLEAN) {
-        printf("%sBOOLEAN_EXPRESSION(\n", tabString);
-        printBoolExpr_v2(expr->attr.bool_expr, tabs + 1);
-        printf("%s)\n", tabString);
+    else if (expr->kind == EXPR_CND) {
+        printf("%sCONDITIONAL_EXPRESSION(\n", tabString);
+        printCnd_v2(expr->attr.cnd_expr, tabs + 1);
     }
-    else if (expr->kind == EXPR_STRING) {
-        printf("%sSTRING(\"%s\")\n", tabString, expr->attr.string_expr);
-    }
+    printf("%s)\n", tabString);
+    // else if (expr->kind == EXPR_BOOLEAN) {
+    //     printf("%sBOOLEAN_EXPRESSION(\n", tabString);
+    //     printBoolExpr_v2(expr->attr.bool_expr, tabs + 1);
+    //     printf("%s)\n", tabString);
+    // }
+    // else if (expr->kind == EXPR_STRING) {
+    //     printf("%sSTRING(\"%s\")\n", tabString, expr->attr.string_expr);
+    // }
 }
 
 void printDclr_v2(Dclr* dclr, long tabs) {
@@ -213,39 +267,6 @@ void printPckg_v2(Pckg* pckg, long tabs) {
     }
 }
 
-void printCnd_v2(Cnd* cnd, long tabs) {
-    
-    char tabString[4 * tabs + 1];
-
-    for (int i = 0; i < 4 * tabs; i++) {
-        tabString[i] = ' ';
-    }
-
-    tabString[4 * tabs] = '\0';
-
-    if (cnd == 0) {
-        yyerror("Null condition");
-    }
-    else if (cnd->kind == CND_RELOP) {
-        switch (cnd->attr.cnd_relop.op) {
-            case RL_EQ:
-                printf("%sEQUAL(\n", tabString);
-                break;
-            case RL_NE:
-                printf("%sNOT_EQUAL(\n", tabString);
-                break;
-            case RL_GT:
-                printf("%sGREATER(\n", tabString);
-                break;
-            case RL_LT:
-                printf("%sLESS(\n", tabString);
-                break;
-        }
-        printArExpr_v2(cnd->attr.cnd_relop.left, tabs + 1);
-        printArExpr_v2(cnd->attr.cnd_relop.right, tabs + 1);
-        printf("%s)\n", tabString);
-    }
-}
 
 void printStm_v2(Stm* stm, long tabs) {
 
@@ -319,7 +340,7 @@ void printStm_v2(Stm* stm, long tabs) {
     }
     else if (stm->kind == STM_FUNCTION) {
         printf("%sFUNCTION(\n%s    %s(\n", tabString, tabString, stm->attr.stm_func.func_id);
-        printExpr_v2(stm->attr.stm_func.arg, tabs + 2);
+        printArExpr_v2(stm->attr.stm_func.arg, tabs + 2);
         printf("%s    )\n", tabString);
         printf("%s)\n", tabString);
     }

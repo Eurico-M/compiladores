@@ -106,19 +106,26 @@ Expr* expr_arithmetic(ArExpr* ar_expr) {
     return node;
 }
 
-Expr* expr_boolean(BoolExpr* bool_expr) {
+Expr* expr_cnd(Cnd* cnd_expr) {
     Expr* node = (Expr*) malloc(sizeof(Expr));
-    node->kind = EXPR_BOOLEAN;
-    node->attr.bool_expr = bool_expr;
+    node->kind = EXPR_CND;
+    node->attr.cnd_expr = cnd_expr;
     return node;
 }
 
-Expr* expr_string(char* string_expr) {
-    Expr* node = (Expr*) malloc(sizeof(Expr));
-    node->kind = EXPR_STRING;
-    node->attr.string_expr = string_expr;
-    return node;
-}
+// Expr* expr_boolean(BoolExpr* bool_expr) {
+//     Expr* node = (Expr*) malloc(sizeof(Expr));
+//     node->kind = EXPR_BOOLEAN;
+//     node->attr.bool_expr = bool_expr;
+//     return node;
+// }
+
+// Expr* expr_string(char* string_expr) {
+//     Expr* node = (Expr*) malloc(sizeof(Expr));
+//     node->kind = EXPR_STRING;
+//     node->attr.string_expr = string_expr;
+//     return node;
+// }
 
 
 // Declarations
@@ -243,5 +250,12 @@ Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right) {
     node->attr.cnd_relop.op = op;
     node->attr.cnd_relop.left = left;
     node->attr.cnd_relop.right = right;
+    return node;
+}
+
+Cnd* cnd_cnst(cnst c) {
+    Cnd* node = (Cnd*) malloc(sizeof(Cnd));
+    node->kind = CND_CNST;
+    node->attr.c = c;
     return node;
 }
