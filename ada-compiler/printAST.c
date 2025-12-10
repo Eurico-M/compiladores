@@ -22,17 +22,17 @@ void printArExpr_v2(ArExpr* arExpr, long tabs) {
     else if (arExpr->kind == INT) {
         printf("%sINT(%d)\n", tabString, arExpr->attr.int_val);
     }
-    else if (arExpr->kind == FLOAT) {
-        printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
-    }
-    else if (arExpr->kind == BOOLEAN) {
-        if (arExpr->attr.boolean_ent) {
-            printf("%strue\n", tabString);
-        }
-        else {
-            printf("%sfalse\n", tabString);
-        }
-    }
+    // else if (arExpr->kind == FLOAT) {
+    //     printf("%sFLOAT(%.3f)\n", tabString, arExpr->attr.float_val);
+    // }
+    // else if (arExpr->kind == BOOLEAN) {
+    //     if (arExpr->attr.boolean_ent) {
+    //         printf("%strue\n", tabString);
+    //     }
+    //     else {
+    //         printf("%sfalse\n", tabString);
+    //     }
+    // }
     else if(arExpr->kind == DELIMITED_AR_EXPR) {
         printArExpr_v2(arExpr->attr.delimited_ar_expr, tabs);
     }
@@ -240,10 +240,47 @@ void printCnd_v2(Cnd* cnd, long tabs) {
             case RL_LT:
                 printf("%sLESS(\n", tabString);
                 break;
+            case RL_GE:
+                printf("%sGREATER_OR_EQUAL(\n", tabString);
+                break;
+            case RL_LE:
+                printf("%sLESS_OR_EQUAL(\n", tabString);
+                break;
         }
         printArExpr_v2(cnd->attr.cnd_relop.left, tabs + 1);
         printArExpr_v2(cnd->attr.cnd_relop.right, tabs + 1);
         printf("%s)\n", tabString);
+    }
+    else if (cnd->kind == CND_CNST) {
+        switch (cnd->attr.c) {
+            case True:
+                printf("%sTRUE\n", tabString);
+                break;
+            case False:
+                printf("%sFALSE\n", tabString);
+                break;
+        }
+    }
+    else if (cnd->kind == CND_LGOP) {
+        switch (cnd->attr.cnd_lgop.op) {
+            case LG_AND:
+                printf("%sLOGIC_AND(\n", tabString);
+                printCnd_v2(cnd->attr.cnd_lgop.left, tabs + 1);
+                printCnd_v2(cnd->attr.cnd_lgop.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            case LG_OR:
+                printf("%sLOGIC_OR(\n", tabString);
+                printCnd_v2(cnd->attr.cnd_lgop.left, tabs + 1);
+                printCnd_v2(cnd->attr.cnd_lgop.right, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+            case LG_NOT:
+                printf("%sLOGIC_NOT(\n", tabString);
+                printCnd_v2(cnd->attr.cnd_lgop.left, tabs + 1);
+                printf("%s)\n", tabString);
+                break;
+        }
     }
 }
 
@@ -319,7 +356,7 @@ void printStm_v2(Stm* stm, long tabs) {
     }
     else if (stm->kind == STM_FUNCTION) {
         printf("%sFUNCTION(\n%s    %s(\n", tabString, tabString, stm->attr.stm_func.func_id);
-        printExpr_v2(stm->attr.stm_func.arg, tabs + 2);
+        printArExpr_v2(stm->attr.stm_func.arg, tabs + 2);
         printf("%s    )\n", tabString);
         printf("%s)\n", tabString);
     }

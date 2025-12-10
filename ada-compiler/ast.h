@@ -28,22 +28,22 @@ struct _Pckg {
 
 // Expressões Aritméticas
 
-typedef enum {FALSE, TRUE} boolean;
+//typedef enum {FALSE, TRUE} boolean;
 typedef enum {PLUS, MINUS, TIMES, DIV, MOD} ar_op;
 struct _ArExpr {
     enum {
         ID,
         INT,
-        FLOAT,
-        BOOLEAN,
+        //FLOAT,
+        //BOOLEAN,
         DELIMITED_AR_EXPR,
         AR_OP
     } kind;
     union {
         char* id;
         int int_val;
-        float float_val;
-        boolean boolean_ent;
+        //float float_val;
+        //boolean boolean_ent;
         ArExpr* delimited_ar_expr;
         struct {
             ar_op op;
@@ -123,10 +123,14 @@ struct _Dclr {
 };
 
 // Condições
+typedef enum {False, True} cnst;
 typedef enum {RL_EQ, RL_NE, RL_LT, RL_GT, RL_GE, RL_LE} rel_op;
+typedef enum {LG_AND, LG_OR, LG_NOT} lg_op;
 struct _Cnd {
     enum {
-        CND_RELOP
+        CND_RELOP,
+        CND_CNST,
+        CND_LGOP
     } kind;
     union {
         struct {
@@ -134,6 +138,12 @@ struct _Cnd {
             ArExpr* left;
             ArExpr* right;
         } cnd_relop;
+        cnst c;
+        struct {
+            lg_op op;
+            Cnd* left;
+            Cnd* right;
+        } cnd_lgop;
     } attr;
 };
 
@@ -195,10 +205,10 @@ Pckg* pckg_compound(Pckg* first, Pckg* second);
 
 ArExpr* ar_expr_identifier(char* id);
 ArExpr* ar_expr_integer(int int_val);
-ArExpr* ar_expr_float(float float_val);
+// ArExpr* ar_expr_float(float float_val);
 ArExpr* ar_expr_delimited(ArExpr* delimited_ar_expr);
 ArExpr* ar_expr_operation(ar_op op, ArExpr* left, ArExpr* right);
-ArExpr* ar_expr_boolean(boolean boolean_ent);
+// ArExpr* ar_expr_boolean(boolean boolean_ent);
 
 BoolExpr* bool_expr_delimited (BoolExpr* delimited_bool_expr);
 BoolExpr* bool_expr_operation(bool_op op, ArExpr* left, ArExpr* right);
@@ -223,5 +233,7 @@ Stm* stm_procedure(char* proc_id, Dclr* dclr, Stm* body);
 Stm* stm_function(char* func_id, ArExpr* arg);
 
 Cnd* cnd_relop(rel_op op, ArExpr* left, ArExpr* right);
+Cnd* cnd_cnst(cnst c);
+Cnd* cnd_lgop(lg_op op, Cnd* left, Cnd* right);
 
 #endif

@@ -1,5 +1,7 @@
-#ifndef PRINT_AST_V2_H
-#define PRINT_AST_V2_H
+#include "ast.h"
+
+#ifndef PRINT_AST_H
+#define PRINT_AST_H
 
 void printArExpr_v2(ArExpr* arExpr, long tabs);
 void printBoolExpr_v2(BoolExpr* boolExpr, long tabs);

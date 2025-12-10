@@ -1,0 +1,12 @@
+procedure Test is
+    x : Integer;
+begin
+    Get_Line(x);
+    if x >= 42 and x % 2 = 0 then
+        x := x + 1;
+        Put_Line(x);
+    else
+        x := x - 1;
+        Put_Line(x);
+    end if;
+end Test;

@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include "parser.h"
-// #include "printASTv1.h"
-#include "printASTv2.h"
+#include "printAST.h"
 #include "st.h"
 #include "ic.h"
 #include "mc.h"
@@ -10,6 +10,10 @@ Stm* program = NULL;
 long tabs = 0;
 
 int main(int argc, char** argv) {
+
+    char output_filename[256];
+    FILE* output_file = NULL;
+
     --argc; ++argv;
     if (argc != 0) {
         yyin = fopen(*argv, "r");
@@ -19,7 +23,16 @@ int main(int argc, char** argv) {
         }
     } //  yyin = stdin
 
+    // gerar nome do ficheiro de output
+    strcpy(output_filename, *argv);
+    char* dot = strrchr(output_filename, '.');
+    strcpy(dot, ".asm");
+
+    // fazer parse do ficheiro de input
     int result = yyparse();
+
+    // fechar ficheiro de input
+    fclose(yyin);
 
     if (result != 0) {
         printf("parser failed\n");
@@ -32,10 +45,7 @@ int main(int argc, char** argv) {
     }
 
     printf("\n");
-    // printf("+ Abstract Syntax Tree v1 +\n\n");
-    // printStm(program);
-    // printf("\n\n\n");
-    printf("+ Abstract Syntax Tree v2 +\n\n");
+    printf("+ Abstract Syntax Tree +\n\n");
     printStm_v2(program, tabs);
     printf("\n\n\n");
 
@@ -56,8 +66,13 @@ int main(int argc, char** argv) {
     printf("\n\n\n");
 
     printf("+ MIPS +\n\n");
-    mc_print();
+    mc_print(stdout);
     printf("\n\n\n");
+
+    // imprimir para ficheiro de output
+    output_file = fopen(output_filename, "w");
+    mc_print(output_file);
+    fclose(output_file);
 
     return 0;
 }
