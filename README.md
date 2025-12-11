@@ -239,11 +239,8 @@ Apesar de considerarmos o trabalho completo para efeitos de entrega, há ainda m
 - Extender os tipos suportados, de momento só o tipo Integer é suportado.
 - Várias optimizações com vários graus de dificuldade de implementação.
 
-O desenho da Abstract Syntax Tree foi limitado pela nossa falta de conhecimento da matéria futura (como não podia deixar de ser). Nesta segunda parte foi necessário reescrever algumas partes da AST, nomeadamente a forma de lidar com Expressões Booleanas (Condições). O resultado é uma estrutra de AST que carece de uma reescrita para ser mais compreensível e fácil de ler.
-
-Em particular, o slide 47 da aula 10 mostra um desenho de Expressões e Condições que seria o objetivo final de uma eventual reescrita:
-
-![slide47](./ada-compiler/images/slide_exp_cond.png)
+O desenho da Abstract Syntax Tree foi limitado pela nossa falta de conhecimento da matéria futura (como não podia deixar de ser). Nesta segunda parte foi necessário reescrever algumas partes da AST, nomeadamente a forma de lidar com Expressões Booleanas (Condições). O resultado é uma estrutra de AST que carece de uma reescrita para ser mais compreensível e fácil de ler.   
+Em particular, o slide 47 da aula 10 mostra um desenho de Expressões e Condições que seria o objetivo final de uma eventual reescrita.
 
 Conversando entre nós, declarámos que este trabalho foi dos mais interessantes do nosso percurso académico [^1]. Permite (como o professor salientou numa das aulas) apreender de forma holística o funcionamento de um programa de computador e, assim, o funcionamento de um computador.
 
