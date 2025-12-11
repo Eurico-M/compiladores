@@ -1,13 +1,196 @@
+# CiCADA
+
+Compilador em C para ADA
+
 # Parte 2
+
+## Uso:
+
+Para usar, basta compilar:
+```
+make
+```
+E correr com o nome do ficheiro de input como argumento:
+```
+./cicada input.txt
+```
 
 ### Ficheiros criados/incluidos no Trabalho:
 
+- cicada.c - *ficheiro principal que lê um input, chama as funções para atuar sobre o input, e faz output de um ficheiro .asm (assembly em MIPS) e também de vários prints para o stdout*
 - st.h - *definição da tabela de símbolos (lista ligada simples)*
 - st.c - *implementação da tabela de símbolos (e print da tabela)*
 - ic.h - *definição do código intermédio*
 - ic.c - *implementação do código intermédio*
 - mc.h - *definição da função de imprimir código MIPS*
 - mc.c - *implementação da função de imprimir código MIPS*
+
+### Exemplo:
+
+Começamos com código em Ada:
+```
+procedure Test is
+    x : Integer;
+begin
+    Get_Line(x);
+    if x >= 42 and x % 2 = 0 then
+        x := x + 1;
+        Put_Line(x);
+    else
+        x := x - 1;
+        Put_Line(x);
+    end if;
+end Test;
+```
+
+Fazemos o parse do texto com Flex e Bison, criando a Abstract Syntax Tree (AST):
+```
+PROCEDURE(Test) IS(
+    DCLR_SIMPLE(
+        Integer(x)
+    )
+BEGIN(
+    FUNCTION(
+        Get_Line(
+            ID(x)
+        )
+    )
+    IF(
+        LOGIC_AND(
+            GREATER_OR_EQUAL(
+                ID(x)
+                INT(42)
+            )
+            EQUAL(
+                MOD(
+                    ID(x)
+                    INT(2)
+                )
+                INT(0)
+            )
+        )
+    ) THEN(
+        ASSIGN(
+            ID(x)
+            ARITHMETIC_EXPRESSION(
+                PLUS(
+                    ID(x)
+                    INT(1)
+                )
+            )
+        )
+        FUNCTION(
+            Put_Line(
+                ID(x)
+            )
+        )
+    )
+    ELSE(
+        ASSIGN(
+            ID(x)
+            ARITHMETIC_EXPRESSION(
+                MINUS(
+                    ID(x)
+                    INT(1)
+                )
+            )
+        )
+        FUNCTION(
+            Put_Line(
+                ID(x)
+            )
+        )
+    ) END_IF
+)) END_Test
+```
+
+Percorremos a AST à procura de variáveis e colocámo-las numa lista, a Symbol Table (ST):
+```
+ID: x, TYPE: Integer
+```
+
+Usando a AST e a ST gera-se Código Intermédio (IC), neste trabalho um código de 3 endereços:
+```
+GET x
+t0 <- x
+t1 := 42
+COND t0 >= t1 label3 label1
+LABEL label3
+t2 <- x
+t3 := 2
+t0 := t2 % t3
+t1 := 0
+COND t0 == t1 label0 label1
+LABEL label0
+t0 <- x
+t1 <- x
+t2 := 1
+t0 := t1 + t2
+t0 -> x
+t0 <- x
+PUT t0
+JUMP label2
+LABEL label1
+t0 <- x
+t1 <- x
+t2 := 1
+t0 := t1 - t2
+t0 -> x
+t0 <- x
+PUT t0
+LABEL label2
+```
+
+Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MIPS. Sem esquecer de percorrer a ST uma última vez para declarar todas as variáveis:
+```
+.data
+x: .word 0
+
+.text
+main:
+    li $v0, 5
+    syscall
+    sw $v0, x
+    lw $8, x
+    li $9, 42
+    bge $8, $9, label3
+    j label1
+label3:
+    lw $10, x
+    li $11, 2
+    rem $8, $10, $11
+    li $9, 0
+    beq $8, $9, label0
+    j label1
+label0:
+    lw $8, x
+    lw $9, x
+    li $10, 1
+    add $8, $9, $10
+    sw $8, x
+    lw $8, x
+    li $v0, 1
+    move $a0, $8
+    syscall
+    j label2
+label1:
+    lw $8, x
+    lw $9, x
+    li $10, 1
+    sub $8, $9, $10
+    sw $8, x
+    lw $8, x
+    li $v0, 1
+    move $a0, $8
+    syscall
+label2:
+```
+
+Este código pode ser corrido no simulador de MIPS MARS:
+![mips](./ada-compiler/images/mips_running.png)
+
+Com input de 44, devolve 45.  
+Com input de 51, devolve 50.
 
 ### Estruturas usadas:
 
@@ -40,140 +223,32 @@ A lista é uma lista ligada simples, mas agora precisámos de manter a cabeça (
 
 A geração de código MIPS não carece de nenhuma estrutura auxiliar - basta percorrer a lista de Código Intermédio e ir imprimindo as Instruções traduzidas para formato MIPS.
 
-Para usar os nomes da variáveis "em cru" no Código MIPS, é preciso percorrer a Tabela de Símbolos e declarar, no cabeçalho de MIPS, os nomes das variáveis e reservar espaço correspondente ao tipo. No nosso trabalho, aceitamos variáveis de tipo Integer, e estamos a reservar um espaço *.word*. Estamos também a atribuir um valor por defeito de 0.
-
+Para usar os nomes da variáveis "em cru" no Código MIPS, é preciso percorrer a Tabela de Símbolos e declarar, no cabeçalho de MIPS, os nomes das variáveis e reservar espaço correspondente ao tipo. No nosso trabalho, aceitamos variáveis de tipo Integer, e estamos a reservar um espaço *.word*. Estamos também a atribuir um valor por defeito de 0.  
 Assim, os nossos Integer são palavras de 32 bits e são inicializados a zero.
 
+Os registos são representados pelos seus valores inteiros e não pelos nomes.
+Isto porque $t0 é equivalente a $8, mas enquanto que os registos temporários podem ser representados com $8 até $25, seria necessário representar $t0...$t7, $s0...$s7, $t8, $t9 (o que é completamente exequível mas, para este trabalho, desnecessário).
 
-### Mas afinal o que é isto de 'compilador'?
+## Notas Finais:
 
-Código em Ada:
-```
-procedure Test is
-    x : Integer := 1;
-    y : Integer := 2;
-begin
-    if x > y then
-        x := y + 1;
-    end if;
-end Test;
-```
+Apesar de considerarmos o trabalho completo para efeitos de entrega, há ainda muitas características que não foram incluídas e seriam interessantes de explorar:
 
-Através de magia negra (flex + bison ('flexing bison' é um bom nome para uma banda, uma coisa indie alternativa)) cria-se a Abstract Syntax Tree (AST):
-```
-PROCEDURE(Test) IS(
-    DCLR_ASSIGN(
-        Integer(x) =
-            ARITHMETIC_EXPRESSION(
-                INT(1)
-            )
-    )
-    DCLR_ASSIGN(
-        Integer(y) =
-            ARITHMETIC_EXPRESSION(
-                INT(2)
-            )
-    )
-BEGIN(
-    IF(
-        GREATER(
-            ID(x)
-            ID(y)
-        )
-    ) THEN(
-        ASSIGN(
-            ID(x)
-            ARITHMETIC_EXPRESSION(
-                PLUS(
-                    ID(y)
-                    INT(1)
-                )
-            )
-        )
-    ) END_IF
-)) END_Test
-```
+- Incluir âmbitos e fazer alocação de registos.
+- Implementar funções. A implementação de Get_Line e Put_Line foi feita diretamente no código MIPS (syscall 1 e syscall 5).
+- Extender os tipos suportados, de momento só o tipo Integer é suportado.
+- Várias optimizações com vários graus de dificuldade de implementação.
 
-Percorremos a AST à procura de variáveis. Vão todas para uma tabela. Chamamos a isto uma Symbol Table (ST):
-```
-ID: y, TYPE: Integer
-ID: x, TYPE: Integer
-```
+O desenho da Abstract Syntax Tree foi limitado pela nossa falta de conhecimento da matéria futura (como não podia deixar de ser). Nesta segunda parte foi necessário reescrever algumas partes da AST, nomeadamente a forma de lidar com Expressões Booleanas (Condições). O resultado é uma estrutra de AST que carece de uma reescrita para ser mais compreensível e fácil de ler.
 
-Usando a AST e a ST gera-se Código Intermédio (IC), neste trabalho um código de 3 endereços:
-```
-t0 <- x
-t0 := 1
-t0 -> x
-t0 <- y
-t0 := 2
-t0 -> y
-t0 <- x
-t1 <- y
-COND t0 > t1 label0 label1
-LABEL label0
-t2 <- x
-t3 <- y
-t4 := 1
-t2 := t3 + t4
-t2 -> x
-LABEL label1
-```
+Em particular, o slide 47 da aula 10 mostra um desenho de Expressões e Condições que seria o objetivo final de uma eventual reescrita:
 
-Por fim, e como o IC é já muito parecido com o MIPS, é só traduzi-lo para MIPS. Sem esquecer de percorrer a ST uma última vez para declarar todas as variáveis:
-```
-.data
-y: .word 0
-x: .word 0
+![slide47](./ada-compiler/images/slide_exp_cond.png)
 
-.text
-main:
-    lw $t0, x
-    li $t0, 1
-    sw $t0, x
-    lw $t0, y
-    li $t0, 2
-    sw $t0, y
-    lw $t0, x
-    lw $t1, y
-    bgt $t0, $t1, label0
-    j label1
-label0:
-    lw $t2, x
-    lw $t3, y
-    li $t4, 1
-    add $t2, $t3, $t4
-    sw $t2, x
-label1:
-```
+Conversando entre nós, declarámos que este trabalho foi dos mais interessantes do nosso percurso académico [1]. Permite (como o professor salientou numa das aulas) apreender de forma holística o funcionamento de um programa de computador e, assim, o funcionamento de um computador.
+
+[1]: Eurico: O que quer dizer, no meu caso, que compete com muitos anos em muitas áreas diferentes e fica a um nível de, por exemplo, fazer triangulações de pontos e cotas de um caminho usando um teodolito em Engenharia Civil na FEUP; ou fazer parte do coro numa atuação da Missa em Dó Menor de Mozart na Igreja da Lapa em Educação Musical na ESE.
 
 
-### Notas:
-
-#### Tabela de Símbolos:
-
-- Integer (int em C)
-- Real (float em C)
-
-Estrutura muito simples, cada "nó" só guarda o nome da variável e o tipo da variável.
-
-Representada como uma lista ligada simples de nós.
-
-#### Código Intermédio
-
-2 estruturas: uma para guardar as instruções de código intermédio e uma para guardar nós de uma lista de instruções.
-
-Instr:
-
-Estrutura com Opcode (tipo de instrução) e 3 endereços (código de 3 endereços, usar NULL para as instruções que requerem menos).
-
-Guardei também as operações binárias aqui (+,-,etc.). Isto porque se guardarmos só OP como está no slides, como é que sabemos que tipo de operação estamos a fazer? Só se, em vez de guardar OP como um opcode, guardassemos o tipo de operação como opcode. Não sei.
-
-ic_node:
-
-Lista ligada simples: cada nó guarda uma instrução e o próximo nó.
-
-Usar head e tail: head para percorrer a lista, tail para adicionar (queremos adicionar instruções por ordem, ou seja, fazer append ao fim da lista).
 
 
 # Parte 1
