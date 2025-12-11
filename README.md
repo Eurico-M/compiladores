@@ -186,7 +186,8 @@ label1:
 label2:
 ```
 
-Este código pode ser corrido no simulador de MIPS MARS:
+Este código pode ser corrido no simulador de MIPS MARS:  
+
 ![mips](./ada-compiler/images/mips_running.png)
 
 Com input de 44, devolve 45.  
