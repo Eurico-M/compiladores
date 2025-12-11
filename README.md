@@ -242,9 +242,7 @@ Apesar de considerarmos o trabalho completo para efeitos de entrega, há ainda m
 O desenho da Abstract Syntax Tree foi limitado pela nossa falta de conhecimento da matéria futura (como não podia deixar de ser). Nesta segunda parte foi necessário reescrever algumas partes da AST, nomeadamente a forma de lidar com Expressões Booleanas (Condições). O resultado é uma estrutra de AST que carece de uma reescrita para ser mais compreensível e fácil de ler.   
 Em particular, o slide 47 da aula 10 mostra um desenho de Expressões e Condições que seria o objetivo final de uma eventual reescrita.
 
-Conversando entre nós, declarámos que este trabalho foi dos mais interessantes do nosso percurso académico [^1]. Permite (como o professor salientou numa das aulas) apreender de forma holística o funcionamento de um programa de computador e, assim, o funcionamento de um computador.
-
-[^1]: Eurico: O que quer dizer, no meu caso, que compete com muitos anos em muitas áreas diferentes e fica a um nível de, por exemplo, fazer triangulações de pontos e cotas de um caminho usando um teodolito em Engenharia Civil na FEUP; ou fazer parte do coro numa atuação da Missa em Dó Menor de Mozart na Igreja da Lapa em Educação Musical na ESE.
+Conversando entre nós, declarámos que este trabalho foi dos mais interessantes do nosso percurso académico. Permite (como o professor salientou numa das aulas) apreender de forma holística o funcionamento de um programa de computador e, assim, o funcionamento de um computador.
 
 
 
