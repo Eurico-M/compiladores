@@ -1,4 +1,4 @@
-OBJS = scanner.o parser.o ast.o cicada.o printASTv2.o st.o ic.o mc.o
+OBJS = scanner.o parser.o ast.o cicada.o printAST.o st.o ic.o mc.o
 INTERM = scanner.c parser.c parser.h
 PROGRAM = ./cicada
 CC = gcc
